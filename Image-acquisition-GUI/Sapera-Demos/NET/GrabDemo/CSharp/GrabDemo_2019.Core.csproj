@@ -1,0 +1,174 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>SapNETCSharpGrabDemo</AssemblyName>
+    <RootNamespace>DALSA.SaperaLT.Demos.NET.CSharp.GrabDemo</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+    <NoWarn>1701;1702;CA1416</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+    <NoWarn>1701;1702;CA1416</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup> 
+
+  <ItemGroup>
+    <Reference Include="DALSA.SaperaLT.SapClassBasic.Core">
+      <HintPath>..\..\..\..\Components\NET\Bin\DALSA.SaperaLT.SapClassBasic.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Common\CSharp\AbortDlg.cs">
+      <Link>AbortDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\AbortDlg.designer.cs">
+      <Link>AbortDlg.designer.cs</Link>
+      <DependentUpon>AbortDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\AboutBox.cs">
+      <Link>AboutBox.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\AboutBox.Designer.cs">
+      <Link>AboutBox.Designer.cs</Link>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\AcqConfigDlg.cs">
+      <Link>AcqConfigDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\AcqConfigDlg.Designer.cs">
+      <Link>AcqConfigDlg.Designer.cs</Link>
+      <DependentUpon>AcqConfigDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\AviFileDlg.cs">
+      <Link>AviFileDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\AviFileDlg.designer.cs">
+      <Link>AviFileDlg.designer.cs</Link>
+      <DependentUpon>AviFileDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\BufDlg.cs">
+      <Link>BufDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\BufDlg.designer.cs">
+      <Link>BufDlg.designer.cs</Link>
+      <DependentUpon>BufDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\ImageBox.cs">
+      <Link>ImageBox.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\ImageBox.designer.cs">
+      <Link>ImageBox.designer.cs</Link>
+      <DependentUpon>ImageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\JpegFileDlg.cs">
+      <Link>JpegFileDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\JpegFileDlg.designer.cs">
+      <Link>JpegFileDlg.designer.cs</Link>
+      <DependentUpon>JpegFileDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\LoadSaveDlg.cs">
+      <Link>LoadSaveDlg.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\RawFileDlg.cs">
+      <Link>RawFileDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\RawFileDlg.designer.cs">
+      <Link>RawFileDlg.designer.cs</Link>
+      <DependentUpon>RawFileDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\SystemMenu.cs">
+      <Link>SystemMenu.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\TiffFileDlg.cs">
+      <Link>TiffFileDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\TiffFileDlg.designer.cs">
+      <Link>TiffFileDlg.designer.cs</Link>
+      <DependentUpon>TiffFileDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\ViewDlg.cs">
+      <Link>ViewDlg.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Common\CSharp\ViewDlg.designer.cs">
+      <Link>ViewDlg.designer.cs</Link>
+      <DependentUpon>ViewDlg.cs</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="..\..\Common\CSharp\AbortDlg.resx">
+      <Link>AbortDlg.resx</Link>
+      <DependentUpon>AbortDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\AboutBox.resx">
+      <Link>AboutBox.resx</Link>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\AcqConfigDlg.resx">
+      <Link>AcqConfigDlg.resx</Link>
+      <DependentUpon>AcqConfigDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\AviFileDlg.resx">
+      <Link>AviFileDlg.resx</Link>
+      <DependentUpon>AviFileDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\BufDlg.resx">
+      <Link>BufDlg.resx</Link>
+      <DependentUpon>BufDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\ImageBox.resx">
+      <Link>ImageBox.resx</Link>
+      <DependentUpon>ImageBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\JpegFileDlg.resx">
+      <Link>JpegFileDlg.resx</Link>
+      <DependentUpon>JpegFileDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\RawFileDlg.resx">
+      <Link>RawFileDlg.resx</Link>
+      <DependentUpon>RawFileDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\TiffFileDlg.resx">
+      <Link>TiffFileDlg.resx</Link>
+      <DependentUpon>TiffFileDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Common\CSharp\ViewDlg.resx">
+      <Link>ViewDlg.resx</Link>
+      <DependentUpon>ViewDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
