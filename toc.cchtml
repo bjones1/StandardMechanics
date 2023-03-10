@@ -7,8 +7,8 @@
         <ol>
             <li><a href="Image-acquisition-GUI/Python/sapera_test.py">Python
                     implementation</a></li>
-            <li><a href="Image-acquisition-GUI/Sapera.NET.pdf">Sapera .NET
-                    manual</a></li>
+            <li><a href="Image-acquisition-GUI/Serial-Access/README.cchtml">Serial
+                    Access</a></li>
         </ol>
     </li>
     <li><a href="Image-processing-GUI/intro.cchtml">Image processing GUI</a>
@@ -16,5 +16,6 @@
             <li><a href="Image-processing-GUI/LEAP.py">LEAP</a></li>
         </ol>
     </li>
+    <li><a href="datasheets/">Datasheets</a></li>
     <li><a href="toc.cchtml">Table of contents</a></li>
 </ol>
