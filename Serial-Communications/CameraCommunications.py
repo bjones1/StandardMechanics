@@ -8,7 +8,7 @@ StopBit = serial.STOPBITS_ONE
 Parity = serial.PARITY_NONE
 XonXoff = serial.XOFF
 
-
+# Testing
 
 # <p>Command Functions</p>
 def GetSupportedBaudRates(serialHandle):
