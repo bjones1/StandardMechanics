@@ -1,0 +1,119 @@
+<h1>Image acquisition GUI</h1>
+<p>The camera is a JAI Sweep SW-4000M-PMCL line-scan camera. The frame grabber
+    is a X64 Xcelera-CL PX.</p>
+<p>This directory contains files for projects that involve edits to the Grab
+    Demo Application from the&nbsp;<a tabindex="-1"
+        title="http://secure-web.cisco.com/1mrckxpn1-vdtvmxccio1_t96o-9hnixex9_ebnspl2xtum23jouzmrzeg9sgbg9sf4ho7wi_rmuhjll-v5-uv4rlxry0qpiriwhdyuqwiroeotrdjy6rlneb148hgyaa49nubyixo2limldtvae1juuci_w5yxheq04bgkjck-n418l8ar_rx1x6ziwyoj1uf7yettsuczuopcm1wl8vg-b9bfp-1oebpc1mnhesaey6b380pqjohq__jbaj0ja8zn2i18tajsnhlvkle9z3ony3jpsb2fqmuuumdx1gnxiluwxsrqpzytuv-wdft640/http%3a%2f%2fteledynedalsa.com%2fsapera-lt-dl%2f%3fdl%3d1%26pkg%3dsdk%26key%3dxx4ln5dbkgwlc1l5ehgyia%253d%253d"
+        href="http://secure-web.cisco.com/1MRCkxpN1-vDtVMxCCiO1_T96o-9hNixEX9_ebnspL2Xtum23jOuZMrZEg9sgbG9sf4ho7wi_rMUhJll-v5-UV4RLxry0QpiRiwhdYuQwIroeOtrdjy6rLNeb148hGYaa49NUbyiXO2liMLDtVAe1jUuci_W5YXhEq04BgKJcK-N418l8Ar_Rx1x6ZIwYOj1uF7YetTSuCZUoPCM1Wl8vG-b9bFP-1oEbPc1MnHeSaEY6B380pQjOhq__Jbaj0jA8zN2i18TajSNhLVKlE9z3OnY3jpSb2fqmuUUmDX1GNXilUWXsrqPzyTuV-wdfT640/http%3A%2F%2Fteledynedalsa.com%2Fsapera-lt-dl%2F%3Fdl%3D1%26pkg%3DSDK%26key%3DxX4LN5dBkgWlC1l5ehGyIA%253d%253d"
+        target="_blank" rel="noreferrer noopener">Teledyne Dalsa Sapera LT
+        SDK</a>. Trey's requirements:</p>
+<div>
+    <ol>
+        <li>Facelift to the GUI
+            <ul type="circle">
+                <li>SM Logos displayed as opposed to Teledyne Dalsa&rsquo;s in
+                    Grab Demo and CCF selection screen</li>
+                <li>SM Icon</li>
+                <li>Rename the software</li>
+                <li>I believe looking through the license information that
+                    these changes are okay, but this will likely need to be
+                    checked as I am not accustomed to the verbiage in those.
+                </li>
+            </ul>
+        </li>
+        <li>Initialize/confirm certain camera operating values
+            <ul type="circle">
+                <li>CurrentBaudrate (init to bit4: 115200bps)</li>
+                <li>CL Clock (init to 0: 85 MHz)</li>
+                <li>ExposureMode (init to 0: Off)</li>
+                <li>Line Rate (init to 500)</li>
+                <li>Gain Level (init to 1000)</li>
+                <li>AnalogBaseGain (init to 0: 0dB)</li>
+                <li>DeviceTapGeometry (init to 4: Geometry_1X10_1Y)</li>
+            </ul>
+        </li>
+        <li>Add a menu option to send commands to the camera
+            <ul type="circle">
+                <li>This can replace the &ldquo;Area Scan&rdquo; option that
+                    will never be used in this application.</li>
+                <li>Functions should be able to change the following
+                    <ul type="square">
+                        <li>ExposureMode</li>
+                        <li>ExposureTimeRaw</li>
+                        <li>Line Rate (I would want this value to be read in
+                            units of lines/s and then converted to the cameras
+                            expected units of 10 microsecond steps. For
+                            example, user inputs 200000 [lines/s] and the
+                            camera receives Line Rate = 500 [10us].</li>
+                        <li>Gain Level</li>
+                        <li>AnalogBaseGain (This function is sometimes not
+                            accepted by the camera for some reason, so a
+                            readback check to ensure the camera updated would
+                            be necessary)</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ol>
+    <h2>Serial port access</h2>
+    <p>I emailed JAI to ask for their source code; they would not provide it;
+        they also had no additional help.</p>
+    <h3>Teledyne tech support</h3>
+    <p>From an e-mail to Teledyne tech support:</p>
+    <p class="MsoNormal">The specific camera in use will dictate how control is
+        handled;</p>
+    <ol start="1" type="1">
+        <li class="m_-2111839407362098892MsoListParagraph">Newer CameraLink
+            cameras support various GenICam standards, primarily GenCP or
+            GenTL, for communication similar to what has been offered in GigE
+            Vision for the last decade. These GenICam compliant cameras are
+            able to be controlled as a SapAcqDevice in the same manner as a
+            GigE camera. For that control, I would direct you to the
+            CameraFeatures example included in SaperaLT.</li>
+        <li class="m_-2111839407362098892MsoListParagraph">For older cameras
+            which only support ASCII control over the serial port, there are
+            two options;</li>
+        <ol start="1" type="a">
+            <li class="m_-2111839407362098892MsoListParagraph">Direct control
+                through the serial port is handled using the CameraLink
+                API&rsquo;s clallserial.dll. Documentation for how this
+                communication is handled should be available as a part of the
+                CameraLink Standard through the Association for Advancing
+                Automation (A3).</li>
+            <li class="m_-2111839407362098892MsoListParagraph">The Xcelera
+                serial port(s) can be mapped to a Windows COM port using the
+                Sapera Configuration utility, as described in the
+                SaperaGettingStarted_<wbr>FrameGrabbers document. This is a
+                one-time setup (per system) and the COM port setting will
+                persist. Once mapped, communication is performed using the
+                Windows API as a standard COM port.</li>
+        </ol>
+    </ol>
+    <p class="m_-2111839407362098892MsoListParagraph">Teledyne does not offer a
+        wrapper, demos, or documentation for either of these approaches as they
+        are documented elsewhere.</p>
+    <p class="m_-2111839407362098892MsoListParagraph">Of the two, utilizing the
+        Windows API should be the simpler approach.</p>
+    <ol start="3" type="1">
+        <li class="m_-2111839407362098892MsoListParagraph">Cameras from some
+            manufacturers may not support either of the above and instead have
+            a proprietary control method. Trey mentioned at one point in our
+            previous conversations that he was using a JAI linescan camera
+            &ndash; I do not know if that is the camera still in use. JAI does
+            have a JAI Control Tool for configuring their cameras through, I
+            believe, a mapped Windows COM port. I do not know if JAI documents
+            how to use this tool in a custom application, or alternate control
+            methods for their cameras. That would need to be clarified by JAI,
+            and may require a combination of 2b. and JAI&rsquo;s supported
+            control method.</li>
+    </ol>
+    <h3>Other resources</h3>
+    <p>The CameraLink API is accessible from a claserial DLL in C:\Program
+        Files\Teledyne DALSA\GenICam 3.20\bin\Win64_x64. Page 49 of the
+        CameraLink PDF (it's downloaded in this repo) gives the functions
+        available. We can call them from Python using the <a
+            href="https://docs.python.org/3/library/ctypes.html">ctypes</a>
+        interface. However, using direct serial port access (such as <a
+            href="https://pyserial.readthedocs.io/en/latest/">pyserial</a>) is
+        easiest in the short run.</p>
+</div>

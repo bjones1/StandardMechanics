@@ -12,8 +12,26 @@
                             href="Image-acquisition-GUI/Serial-Access/README.cchtml">Serial
                             Access</a></li>
                 </ol>
+            
+                <ol>
+                    <li><a
+                            href="Image-acquisition-GUI/Serial-Access/README.cchtml">Serial
+                            Access</a></li>
+                </ol>
             </li>
         </ol>
     </li>
-    <li><a href="toc.cchtml">Table of contents</a></li>
+    <li><a href="toc.cchtml">Team Projects</a>
+        <ol>
+            <li>Facelift to the GUI</li>
+            <li><a href="Initialize%20camera/README.cchtml">Initialize/confirm
+                    certain camera operating values</a>
+                <ol>
+                    <li><a href="Initialize%20camera/InitializeCamera.py">Python
+                            Code</a></li>
+                </ol>
+            </li>
+            <li>Add a menu option to send commands to the camera</li>
+        </ol>
+    </li>
 </ol>
