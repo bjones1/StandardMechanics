@@ -518,9 +518,6 @@
     </p>
     <p>Send: TAGM?\r\n</p>
     <p>Response: TAGM=[PARAM]\r\n</p>
-    <h3>Python Libraries</h3>
-    <p>&nbsp;<span style="background-color: rgb(251, 238, 184);">[TODO]</span>
-    </p>
     <p>&nbsp;</p>
     <h2>Customer and Technical Advisor Q&amp;A</h2>
     <p>The purpose of this section is to archieve historical technical concerns
@@ -544,9 +541,9 @@
     <p><strong>03.22.23</strong> MNguyen - fix the items highlighted in yellow:
         muliple pdf files in several location issue, update application diagram
     </p>
-    <p><strong>03.28.23</strong> KFarrar - Investigate Python Libraries,
-        Determine Valid Parameters for Exposure Time Raw, Pull in Main Branch
-        so Documentation can be linked appropriately</p>
+    <p><strong>03.28.23</strong> KFarrar - Determine Valid Parameters for
+        Exposure Time Raw, Pull in Main Branch so Documentation can be linked
+        appropriately</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
 </div>
