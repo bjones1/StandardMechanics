@@ -51,7 +51,7 @@ if __name__ == "__main__":
             # 00111 - 7
             # 00011 - 3
             # 00001 - 1
-            serialHandle.write(b'1\r\n')
+            serialHandle.write(b'SBDRT=0x1F\r\n')
         
         # If the response is CBDRT=<baudRate>\r\n then set the baud rate
         # where <baudRate> is an integer value between 1 and 16
