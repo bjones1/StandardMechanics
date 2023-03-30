@@ -305,7 +305,7 @@ namespace DALSA.SaperaLT.Demos.NET.CSharp.GrabDemo
         //
         //*****************************************************************************************
 
-        private void button_New_Click(object sender, EventArgs e)
+        public void button_New_Click(object sender, EventArgs e)
         {
             m_Buffers.Clear();
             m_ImageBox.Refresh();
