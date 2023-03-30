@@ -1,13 +1,40 @@
-import serial # pip install pyserial (https://pypi.org/project/pyserial/)
+# <h2>Python Imports</h2>
+# <table style="border-collapse: collapse; width: 101.811%; height: 46px;"
+#     border="1">
+#     <colgroup>
+#         <col style="width: 33.42%;">
+#         <col style="width: 33.42%;">
+#         <col style="width: 33.291%;">
+#     </colgroup>
+#     <tbody>
+#         <tr>
+#             <td>Import&nbsp;</td>
+#             <td>Library</td>
+#             <td>Purpose</td>
+#         </tr>
+#         <tr>
+#             <td>serial</td>
+#             <td><a href="https://pypi.org/project/pyserial/">PySerial</a></td>
+#             <td>Standard Library for connecting to a computer's serial ports
+#                 across multiple operating systems using uniform commands</td>
+#         </tr>
+#     </tbody>
+# </table>
+# <p>&nbsp;</p>
+import serial # pip install pyserial 
 
 class JAISerial:
-# <div>The JAI-4000M Serial Manager is a class that allows for easy
-#     communication with the JAI SW-4000M-PMCL camera via serial
-#     communication.</div>
-# <div>Default Class Parameters were determined by the JAI SW-4000M-PMCL
-#     Command List <a
-#         href="../datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=3"
+# <div>The JAISerial Class within Serial Manager is a class that allows for easy
+#     communication with the JAI SW-4000M-PMCL camera via serial communication.
+# </div>
+# <div>The main idea is to make a package which can be used throughout other
+#     Python Codes to facilitate direct communication with the camera.</div>
+# <div>Default Class Parameters were determined by the JAI SW-4000M-PMCL Command
+#     List <a href="../datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=3"
 #         target="_blank" rel="noopener">datasheet</a>.</div>
+# <div>Currently a blocker in that CodeChat does not seem to want to parse past
+#     this point, as such please pay attention to inline comments until it is
+#     resolved.</div>
     def __init__(self, serialPort, baudRWate=9600, dataLength=serial.EIGHTBITS, stopBit=serial.STOPBITS_ONE, parity=serial.PARITY_NONE, XonXoff=0, timeout=None):
         """
         Initializes a JAI-4000M Serial Manager on the specified serial port.
