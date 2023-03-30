@@ -614,11 +614,10 @@
         configure the RS-232 Com Port and would require mapping the Com Port to
         an alias such as COM1. &nbsp;</p>
     <p><img style="display: block; margin-left: auto; margin-right: auto;"
-            src="https://mstate.sharepoint.com/:i:/r/sites/Course_xl_bj147_797050-ARVvPmM1lEGxH/Shared%20Documents/General/Standard%20Mechanics/Serial%20Dataflow.png?csf=1&amp;web=1&amp;e=03Ttf1"
-            alt="" width="1018" height="586"></p>
-    <p style="text-align: justify;">The Jai SW-4000M high-speed camera Com Port
+            src="SerialDataflow.png" width="1058" height="612"></p>
+    <p style="text-align: justify;">The Jai SW-4000M high-speed camera COM Port
         must be configured according to the table below. The Camera Link
-        protocol allows a single RS-232 Com Port to be opened to configure the
+        protocol allows a single RS-232 COM Port to be opened to configure the
         camera settings. Port access to the camera is provided via the Sapera
         Configuration Utility for the X64 Xcelera-CL PX4, which allows
         configuring a device-to-host mapping via the Camera Link Connector 1
@@ -680,15 +679,18 @@
         to accomplish the tasks identified within the scope of work. This
         section provides an overview of pySerial and the commands necessary to
         accomplish the tasks identified within the scope of work. <a
-            href="https://pypi.org/project/pyserial/">PySerial</a>&nbsp;is a
-        Python library that provides a simple way to communicate with serial
-        ports. Using PySerial, developers can quickly establish a serial
-        connection, send and receive data, and control various serial port
-        settings. Its simplicity and flexibility make it a popular choice for
-        many Python developers who need to communicate with serial devices. The
-        command and response data structure was created to ensure proper
-        transmit, tx and recieve, rx commands.&nbsp;</p>
-    <p style="text-align: justify;">Command Request/Response Structure</p>
+            href="https://pypi.org/project/pyserial/">PySerial</a> is a Python
+        library that provides a simple way to communicate with serial ports.
+        Using PySerial, developers can quickly establish a serial connection,
+        send and receive data, and control various serial port settings. Its
+        simplicity and flexibility make it a popular choice for many Python
+        developers who need to communicate with serial devices. The command and
+        response data structure was created to ensure proper transmit, tx and
+        recieve, rx commands.&nbsp;</p>
+    <h3 style="text-align: justify;">Command Request/Response Structure
+        (Sourced from <a
+            href="../datasheets/Command-List-SW-4000M8000M-PMCL.pdf">JAI
+            Command List Document</a>)</h3>
     <p style="text-align: justify;"><strong>Set Value Command
             Structure</strong></p>
     <p>Serial Command: NN=[PARAM]\r\n</p>
@@ -744,7 +746,7 @@
     <p style="text-align: justify;">Response: SDBRT=31\r\n</p>
     <p style="text-align: justify;"><em>(SBDRT returns the supported BaudRates
             for the Camera)</em></p>
-    <p style="text-align: justify;">Commands of Interest</p>
+    <h3 style="text-align: justify;">Commands of Interest</h3>
     <table
         style="border-collapse: collapse; width: 72.6303%; height: 490.341px; border-width: 1px; margin-left: auto; margin-right: auto;"
         border="1">
@@ -866,19 +868,20 @@
             </tr>
         </tbody>
     </table>
-    <p style="text-align: justify;">Supported Baudrates (SBDRT)</p>
+    <h3 style="text-align: justify;">Supported Baudrates (SBDRT)</h3>
     <p style="text-align: justify;">This simply a query command which allows
         for verification of the available BaudRates. BAUD in the return is the
-        5 bit binary value in decimal form and represents the supported bits.
-    </p>
+        5 bit binary value in hexadecimal form and represents the supported
+        bits.</p>
     <p style="text-align: justify;">Encoding Scheme:</p>
     <table
-        style="border-collapse: collapse; width: 25.3093%; height: 147px; border-width: 1px; margin-left: auto; margin-right: auto;"
+        style="border-collapse: collapse; width: 25.306%; height: 147px; border-width: 1px; margin-left: auto; margin-right: auto;"
         border="1">
         <colgroup>
-            <col style="width: 43.3902%;">
-            <col style="width: 28.5824%;">
-            <col style="width: 27.8937%;">
+            <col style="width: 43.5005%;">
+            <col style="width: 28.6221%;">
+            <col style="width: 13.9958%;">
+            <col style="width: 13.9958%;">
         </colgroup>
         <tbody>
             <tr style="height: 21px;">
@@ -891,6 +894,9 @@
                 <td style="height: 21px; border-width: 1px;">
                     <p>Decimal</p>
                 </td>
+                <td style="border-width: 1px;">
+                    <p>Hexadecimal</p>
+                </td>
             </tr>
             <tr style="height: 21px;">
                 <td style="height: 21px; border-width: 1px;">
@@ -901,6 +907,9 @@
                 </td>
                 <td style="height: 21px; border-width: 1px;">
                     <p>1</p>
+                </td>
+                <td style="border-width: 1px;">
+                    <p>0x01</p>
                 </td>
             </tr>
             <tr style="height: 21px;">
@@ -913,6 +922,9 @@
                 <td style="height: 21px; border-width: 1px;">
                     <p>3</p>
                 </td>
+                <td style="border-width: 1px;">
+                    <p>0x03</p>
+                </td>
             </tr>
             <tr style="height: 21px;">
                 <td style="height: 21px; border-width: 1px;">
@@ -923,6 +935,9 @@
                 </td>
                 <td style="height: 21px; border-width: 1px;">
                     <p>7</p>
+                </td>
+                <td style="border-width: 1px;">
+                    <p>0x07</p>
                 </td>
             </tr>
             <tr style="height: 21px;">
@@ -935,6 +950,9 @@
                 <td style="height: 21px; border-width: 1px;">
                     <p>15</p>
                 </td>
+                <td style="border-width: 1px;">
+                    <p>0x0F</p>
+                </td>
             </tr>
             <tr style="height: 21px;">
                 <td style="height: 21px; border-width: 1px;">
@@ -946,12 +964,15 @@
                 <td style="height: 21px; border-width: 1px;">
                     <p>31</p>
                 </td>
+                <td style="border-width: 1px;">
+                    <p>0xF1</p>
+                </td>
             </tr>
         </tbody>
     </table>
     <p style="text-align: justify;">Send Command: SBDRT?\r\n</p>
     <p style="text-align: justify;">Return: SDBRT=[BAUD]\r\n</p>
-    <p style="text-align: justify;">Current Baudrate (CBDRT)</p>
+    <h3 style="text-align: justify;">Current Baudrate (CBDRT)</h3>
     <p style="text-align: justify;">Changing the Baudrate requires a special
         command sequence to confirm the setting of the BaudRate.</p>
     <ol style="text-align: justify;">
@@ -1066,7 +1087,7 @@
             </tr>
         </tbody>
     </table>
-    <p style="text-align: justify;">CL Clock (CLC)</p>
+    <h3 style="text-align: justify;">CL Clock (CLC)</h3>
     <p style="text-align: justify;">Valid Parameters: 0 (85 MHz), 1 (63.75
         MHz), 2 (42.MHz), 3 (31.875 MHz)</p>
     <p style="text-align: justify;"><span
@@ -1077,7 +1098,7 @@
             style="text-decoration: underline;"><strong>Get</strong></span></p>
     <p style="text-align: justify;">Send: CLC?\r\n</p>
     <p style="text-align: justify;">Response: CLC=[PARAM]\r\n</p>
-    <p style="text-align: justify;">Exposure Mode (EM)</p>
+    <h3 style="text-align: justify;">Exposure Mode (EM)</h3>
     <p style="text-align: justify;">Valid Parameters: 0 (Off), 1 (Timed), 2
         (Trigger Width)</p>
     <p style="text-align: justify;"><span
@@ -1088,10 +1109,9 @@
             style="text-decoration: underline;"><strong>Get</strong></span></p>
     <p style="text-align: justify;">Send: EM?\r\n</p>
     <p style="text-align: justify;">Response: EM=[PARAM]\r\n</p>
-    <p style="text-align: justify;">Exposure Time Raw (PE)</p>
-    <p style="text-align: justify;">Valid Parameters:<span
-            style="background-color: rgb(251, 238, 184);"> [NEEDS TO BE
-            DETERMINED]</span></p>
+    <h3 style="text-align: justify;">Exposure Time Raw (PE)</h3>
+    <p style="text-align: justify;">Valid Parameters: 0 to&nbsp; [Line Rate (in
+        microseconds) - 3]</p>
     <p style="text-align: justify;"><span
             style="text-decoration: underline;"><strong>Set</strong></span></p>
     <p style="text-align: justify;">Send: PE=[PARAM]\r\n</p>
@@ -1100,7 +1120,7 @@
             style="text-decoration: underline;"><strong>Get</strong></span></p>
     <p style="text-align: justify;">Send: PE?\r\n</p>
     <p style="text-align: justify;">Response: PE=[PARAM]\r\n</p>
-    <p style="text-align: justify;">Line Rate (LR)</p>
+    <h3 style="text-align: justify;">Line Rate (LR)</h3>
     <p style="text-align: justify;"><em>Trigger Origin (TG) Command must be 0
             (Send: TG=0\r\n)&nbsp;</em></p>
     <p style="text-align: justify;">Valid Parameters:500 to 1515152&nbsp;</p>
@@ -1112,7 +1132,7 @@
             style="text-decoration: underline;"><strong>Get</strong></span></p>
     <p style="text-align: justify;">Send: LR?\r\n</p>
     <p style="text-align: justify;">Response: LR=[PARAM]\r\n</p>
-    <p style="text-align: justify;">Gain Level (GA)</p>
+    <h3 style="text-align: justify;">Gain Level (GA)</h3>
     <p style="text-align: justify;">Valid Parameters: 100 to 1600</p>
     <p style="text-align: justify;"><span
             style="text-decoration: underline;"><strong>Set</strong></span></p>
@@ -1122,7 +1142,7 @@
             style="text-decoration: underline;"><strong>Get</strong></span></p>
     <p style="text-align: justify;">Send: GA?\r\n</p>
     <p style="text-align: justify;">Response: GA=[PARAM]\r\n</p>
-    <p style="text-align: justify;">Analog Base Gain (ABG)</p>
+    <h3 style="text-align: justify;">Analog Base Gain (ABG)</h3>
     <p style="text-align: justify;">Valid Parameters: 0 (0 db), 1 (+6 dB), 2
         (+9.54 dB), 3 (+12 dB)</p>
     <p style="text-align: justify;"><span
@@ -1133,7 +1153,7 @@
             style="text-decoration: underline;"><strong>Get</strong></span></p>
     <p style="text-align: justify;">Send: ABG?\r\n</p>
     <p style="text-align: justify;">Response: ABG=[PARAM]\r\n</p>
-    <p style="text-align: justify;">Tap Geometry (TAGM)</p>
+    <h3 style="text-align: justify;">Tap Geometry (TAGM)</h3>
     <p style="text-align: justify;">Valid Parameters: 0
         (Geometry_1X2_1Y),&nbsp;1 (Geometry_1X3_1Y), 2 (Geometry_1X4_1Y), 3
         (Geometry_1X8_1Y), 4 (Geometry_1X10_1Y)</p>
@@ -1145,97 +1165,6 @@
             style="text-decoration: underline;"><strong>Get</strong></span></p>
     <p style="text-align: justify;">Send: TAGM?\r\n</p>
     <p style="text-align: justify;">Response: TAGM=[PARAM]\r\n</p>
-    <p style="text-align: justify;">Python Libraries</p>
-    <p style="text-align: justify;">&nbsp;<span
-            style="background-color: rgb(251, 238, 184);">[TODO]</span></p>
-    <p style="text-align: justify;">&nbsp;</p>
-    <p style="text-align: justify;">Customer and Technical Advisor Q&amp;A</p>
-    <p style="text-align: justify;">The purpose of this section is to archieve
-        historical technical concerns and the decisions made that was pivotal
-        for the project.</p>
-    <p style="text-align: justify;">03.06.22: What language to develop the
-        program in? C++ -- the demo doesn't seem to compile out of the box
-        (missing MFC classes?). It seems like the most full-featured, and
-        possibly has features that Trey needs. C# -- compiles out of the box,
-        provides a built-in graphical editor for the GUI.&nbsp;Python -- harder
-        to get started, better long-term option.</p>
-    <p style="text-align: justify;"><strong><span
-                style="color: rgb(45, 194, 107);">The programming language is
-                Python and the IDE is Visual Studio (VS) Code.</span></strong>
-    </p>
-    <p><span style="text-decoration: underline;"><strong>Set</strong></span>
-    </p>
-    <p>Send: CLC=[PARAM]\r\n</p>
-    <p>Response: COMPLETE\r\n</p>
-    <p><span style="text-decoration: underline;"><strong>Get</strong></span>
-    </p>
-    <p>Send: CLC?\r\n</p>
-    <p>Response: CLC=[PARAM]\r\n</p>
-    <h4>Exposure Mode (EM)</h4>
-    <p>Valid Parameters: 0 (Off), 1 (Timed), 2 (Trigger Width)</p>
-    <p><span style="text-decoration: underline;"><strong>Set</strong></span>
-    </p>
-    <p>Send: EM=[PARAM]\r\n</p>
-    <p>Response: COMPLETE\r\n</p>
-    <p><span style="text-decoration: underline;"><strong>Get</strong></span>
-    </p>
-    <p>Send: EM?\r\n</p>
-    <p>Response: EM=[PARAM]\r\n</p>
-    <h4>Exposure Time Raw (PE)</h4>
-    <p>Valid Parameters:<span style="background-color: rgb(251, 238, 184);">
-            [NEEDS TO BE DETERMINED]</span></p>
-    <p><span style="text-decoration: underline;"><strong>Set</strong></span>
-    </p>
-    <p>Send: PE=[PARAM]\r\n</p>
-    <p>Response: COMPLETE\r\n</p>
-    <p><span style="text-decoration: underline;"><strong>Get</strong></span>
-    </p>
-    <p>Send: PE?\r\n</p>
-    <p>Response: PE=[PARAM]\r\n</p>
-    <h4>Line Rate (LR)</h4>
-    <p><em>Trigger Origin (TG) Command must be 0 (Send: TG=0\r\n)&nbsp;</em>
-    </p>
-    <p>Valid Parameters:500 to 1515152&nbsp;</p>
-    <p><span style="text-decoration: underline;"><strong>Set</strong></span>
-    </p>
-    <p>Send: LR=[PARAM]\r\n</p>
-    <p>Response: COMPLETE\r\n</p>
-    <p><span style="text-decoration: underline;"><strong>Get</strong></span>
-    </p>
-    <p>Send: LR?\r\n</p>
-    <p>Response: LR=[PARAM]\r\n</p>
-    <h4>Gain Level (GA)</h4>
-    <p>Valid Parameters: 100 to 1600</p>
-    <p><span style="text-decoration: underline;"><strong>Set</strong></span>
-    </p>
-    <p>Send: GA=[PARAM]\r\n</p>
-    <p>Response: COMPLETE\r\n</p>
-    <p><span style="text-decoration: underline;"><strong>Get</strong></span>
-    </p>
-    <p>Send: GA?\r\n</p>
-    <p>Response: GA=[PARAM]\r\n</p>
-    <h4>Analog Base Gain (ABG)</h4>
-    <p>Valid Parameters: 0 (0 db), 1 (+6 dB), 2 (+9.54 dB), 3 (+12 dB)</p>
-    <p><span style="text-decoration: underline;"><strong>Set</strong></span>
-    </p>
-    <p>Send: ABG=[PARAM]\r\n</p>
-    <p>Response: COMPLETE\r\n</p>
-    <p><span style="text-decoration: underline;"><strong>Get</strong></span>
-    </p>
-    <p>Send: ABG?\r\n</p>
-    <p>Response: ABG=[PARAM]\r\n</p>
-    <h4>Tap Geometry (TAGM)</h4>
-    <p>Valid Parameters: 0 (Geometry_1X2_1Y),&nbsp;1 (Geometry_1X3_1Y), 2
-        (Geometry_1X4_1Y), 3 (Geometry_1X8_1Y), 4 (Geometry_1X10_1Y)</p>
-    <p><span style="text-decoration: underline;"><strong>Set</strong></span>
-    </p>
-    <p>Send: TAGM=[PARAM]\r\n</p>
-    <p>Response: COMPLETE\r\n</p>
-    <p><span style="text-decoration: underline;"><strong>Get</strong></span>
-    </p>
-    <p>Send: TAGM?\r\n</p>
-    <p>Response: TAGM=[PARAM]\r\n</p>
-    <p>&nbsp;</p>
     <h2>Customer and Technical Advisor Q&amp;A</h2>
     <p>The purpose of this section is to archieve historical technical concerns
         and the decisions made that was pivotal for the project.</p>
