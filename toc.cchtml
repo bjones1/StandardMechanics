@@ -7,6 +7,10 @@
         <ol>
             <li><a href="Image-acquisition-GUI/Python/sapera_test.py">Python
                     implementation</a></li>
+            <li><a href="Image-acquisition-GUI/Python/grab_demo_testing.py">Grab
+                    Demo Python</a></li>
+            <li><a href="Image-acquisition-GUI/GUIBackend_Prewrite.cchtml">GUI
+                    Backend Prewrite</a></li>
             <li><a href="Image-acquisition-GUI/Serial-Access/README.cchtml">Serial
                     Access</a></li>
         </ol>
