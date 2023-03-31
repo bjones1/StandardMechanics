@@ -21,46 +21,46 @@
 #     </tbody>
 # </table>
 # <p>&nbsp;</p>
-import serial # pip install pyserial 
-from enum import Enum # TODO: Document this
+import serial  # pip install pyserial
+from enum import Enum
+
 
 class JAISerial:
     class CLClockMHz(Enum):
         """
         The CL Clock MHz Enum is an Enum that contains the possible values for the CL Clock MHz setting.
         """
-        MHZ_85 = 0 # 85 (Default)
-        MHZ_63_75 = 1 # 63.75
-        MHZ_42_5 = 2 # 42.5
-        MHZ_31_875 = 3 # 31.875
-    
+        MHZ_85 = 0  # 85 (Default)
+        MHZ_63_75 = 1  # 63.75
+        MHZ_42_5 = 2  # 42.5
+        MHZ_31_875 = 3  # 31.875
+
     class ExposureMode(Enum):
         """
         The Exposure Mode Enum is an Enum that contains the possible values for the Exposure Mode setting.
         """
-        OFF: 0 # Off
-        TIMED: 1 # Timed (Default)
-        TRIGGER_WIDTH: 2 # TriggerWidth
+        OFF = 0  # Off
+        TIMED = 1  # Timed (Default)
+        TRIGGER_WIDTH = 2  # TriggerWidth
 
     class AnalogBaseGainDB(Enum):
         """
         The Analog Base Gain DB Enum is an Enum that contains the possible values for the Analog Base Gain DB setting.
         """
-        DB_0 = 0 # 0dB (Default)
-        DB_6 = 1 # 6dB
-        DB_9_54 = 2 # 9dB
-        DB_12 = 3 # 12dB
+        DB_0 = 0  # 0dB (Default)
+        DB_6 = 1  # 6dB
+        DB_9_54 = 2  # 9dB
+        DB_12 = 3  # 12dB
 
-    class DeviceTapGeometry(Enum):
+    class DeviceTapGeometryEnum(Enum):
         """
         The Tap Geometry Enum is an Enum that contains the possible values for the Tap Geometry setting.
         """
         GEOMETRY_1X2_1Y = 0
         GEOMETRY_1X3_1Y = 1
-        GEOMETRY_1X4_1Y = 2 # Default
+        GEOMETRY_1X4_1Y = 2  # Default
         GEOMETRY_1X8_1Y = 3
         GEOMETRY_1X10_1Y = 4
-        
 
 # <div>The JAISerial Class within Serial Manager is a class that allows for easy
 #     communication with the JAI SW-4000M-PMCL camera via serial communication.
@@ -78,7 +78,7 @@ class JAISerial:
         Initializes a JAI-4000M Serial Manager on the specified serial port.
         :param serialPort: The serial port to use (ex. "COM1")
         :param baudRate: The baud rate to use in decimal (9600, 19200, 38400, 57600, 115200).
-        :param dataLength: The data length to use (serial.EIGHTBITS, serial.SEVENBITS, serial.SIXBITS, serial.FIVEBITS). 
+        :param dataLength: The data length to use (serial.EIGHTBITS, serial.SEVENBITS, serial.SIXBITS, serial.FIVEBITS).
         :param stopBit: The stop bit to use (serial.STOPBITS_ONE, serial.STOPBITS_ONE_POINT_FIVE, serial.STOPBITS_TWO)
         :param parity: The parity to use (serial.PARITY_NONE, serial.PARITY_EVEN, serial.PARITY_ODD, serial.PARITY_MARK, serial.PARITY_SPACE)
         :param XonXoff: The Xon/Xoff to use (True, False). Xon/Xoff is a software flow control protocol that uses the XON and XOFF characters to pause and resume data transmission. The camera does not support this.
@@ -99,30 +99,30 @@ class JAISerial:
         self.parity = parity
         self.timeout = timeout
 
-
         # Non-parameter Camera Variables (with Default Values)
-        self.lineRate = 500 # 500 lines per second (Camera Default)
-        self.CCLK = self.CLClockMHz.MHZ_85 # 85 MHz (Camera Default)
-        self.exposureMode = self.ExposureMode.TIMED # Timed (Camera Default)
-        self.gainLevel = 100 # 100 (Camera Default)
-        self.analogBaseGain = self.AnalogBaseGainDB.DB_0 # 0dB (Camera Default)
-        self.deviceTapGeometry = self.DeviceTapGeometry.GEOMETRY_1X4_1Y # 1x4 (Camera Default)
+        self.lineRate = 500  # 500 lines per second (Camera Default)
+        self.CCLK = self.CLClockMHz.MHZ_85  # 85 MHz (Camera Default)
+        self.exposureMode = self.ExposureMode.TIMED  # Timed (Camera Default)
+        self.gainLevel = 100  # 100 (Camera Default)
+        # 0dB (Camera Default)
+        self.analogBaseGain = self.AnalogBaseGainDB.DB_0
+        # 1x4 (Camera Default)
+        self.deviceTapGeometry = self.DeviceTapGeometryEnum.GEOMETRY_1X4_1Y
 
         # Non-parameter Camera Variables (without Default Values)
-
 
         # Open the serial port
         self.serialHandle = None
         self.__Open()
-        self.__UpdatePEMinMax() # Update the PE Min and Max values
 
     def __Open(self):
         """
         Opens the serial port, this is called when the class is initialized and when the baud rate is changed, it is intended to be used internally and should not be called directly by the user.
         """
 
-        self.serialHandle = serial.Serial(self.serialPort, self.baudRate, self.dataLength, self.parity, self.stopBit, self.timeout, 0)
-    
+        self.serialHandle = serial.Serial(
+            self.serialPort, self.baudRate, self.dataLength, self.parity, self.stopBit, self.timeout, 0)
+
     def __Close(self):
         """
         Closes the serial port, this is called when the baud rate is changed and when the class is destroyed, it is intended to be used internally and should not be called directly by the user.
@@ -149,6 +149,9 @@ class JAISerial:
         :param command: The command to send to the serial port (ex. "CBDRT=1")
         :type command: str
         """
+        # Theoretically, serialHandle should not be None, but just in case it is, this will Raise an Exception
+        if self.serialHandle is None:
+            raise Exception("__Write(self) accessed before __Open(self)")
 
         # The command is encoded to a byte array and then a carriage return and line feed are added in accordance with the JAI Serial Protocol (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=3)
         self.serialHandle.write(command.encode() + b'\r\n')
@@ -157,6 +160,10 @@ class JAISerial:
         """
         Reads a response from the serial port, it is intended to be used internally and should not be called directly by the user. This function will block until a response is received or the timeout (see class constructor) is reached.
         """
+
+        # Theoretically, serialHandle should not be None, but just in case it is, this will Raise an Exception
+        if self.serialHandle is None:
+            raise Exception("__Read(self) accessed before __Open(self)")
 
         response = self.serialHandle.readline()
         return response
@@ -235,8 +242,8 @@ class JAISerial:
         # Note: Need to confirm if baudRate needs to be decimal or hex
         # This only supports decimal values for now (seemed to work in testing session with Trey Leonard)
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=5)
-        encodedBaudRate = 1 # 9600 by default
-        
+        encodedBaudRate = 1  # 9600 by default
+
         if baudRate == 115200:
             encodedBaudRate = 16
         elif baudRate == 57600:
@@ -245,7 +252,7 @@ class JAISerial:
             encodedBaudRate = 4
         elif baudRate == 19200:
             encodedBaudRate = 2
-        
+
         # Send the command
         self.__Write("CBDRT=" + str(encodedBaudRate))
 
@@ -339,22 +346,22 @@ class JAISerial:
         """
 
         # We are being extra cautious here and checking the type of the clock parameter to make sure it is an int or a CLClockEnum
-        # If it is not an int or a CLClockEnum then return "02 Bad Parameters!!" and do not send the command
-        try:
-            if not isinstance(clock, Enum) and isinstance(clock, int):
-                # See if the integer value is a valid CLClockMHz Enum
-                clock = self.CLClockMHz(clock)
-        except ValueError:
-            # The integer value is not a valid CLClockMHz Enum
-            return "02 Bad Parameters!!" # Should this raise an exception instead?
+        # If it is not an int or a CLClockEnum then raise a ValueError exception and do not send the command
+        if not isinstance(clock, self.CLClockMHz) and isinstance(clock, int):
+            # See if the integer value is a valid CLClockMHz Enum
+            # This will throw a ValueError if the value is not a valid CLClockMHz Enum (and is intended to do so)
+            clock = self.CLClockMHz(clock)
+        if not isinstance(clock, self.CLClockMHz) and not isinstance(clock, int):
+            raise ValueError(
+                "The clock parameter must be an int or a CLClockEnum")
 
         # If the clock is already set to the desired clock then return "COMPLETE" and do not send the command
         if self.clock == clock:
             return "COMPLETE"
 
         # Send the command
-        # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=6)
-        self.__Write("CLC=" + str(clock.value))
+        # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=6``)
+        self.__Write("CLC=" + str(clock.value)) # type: ignore
 
         # Read the Response
         response = self.__Read()
@@ -428,14 +435,14 @@ class JAISerial:
         """
 
         # We are being extra cautious here and checking the type of the mode parameter to make sure it is an int or a ExposureMode
-        # If it is not an int or a ExposureMode then return "02 Bad Parameters!!" and do not send the command
-        try:
-            if not isinstance(mode, Enum) and isinstance(mode, int):
-                # See if the integer value is a valid ExposureMode Enum
-                mode = self.ExposureMode(mode)
-        except ValueError:
-            # The integer value is not a valid ExposureMode Enum
-            return "02 Bad Parameters!!"
+        # If it is not an int or a ExposureMode then raise an exception and do not send the command
+        if not isinstance(mode, self.ExposureMode) and isinstance(mode, int):
+            # See if the integer value is a valid ExposureMode Enum
+            # This will throw a ValueError if the integer value is not a valid ExposureMode Enum (and is intended to do so)
+            mode = self.ExposureMode(mode)
+        if not isinstance(mode, self.ExposureMode) and not isinstance(mode, int):
+            raise ValueError(
+                "The mode parameter must be an integer or a ExposureMode Enum")
 
         # If the exposure mode is already set to the desired exposure mode then return "COMPLETE" and do not send the command
         if self.exposureMode == mode:
@@ -443,7 +450,7 @@ class JAISerial:
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=7)
-        self.__Write("EM=" + str(mode.value))
+        self.__Write("EM=" + str(mode.value))  # type: ignore
 
         # Read the Response
         response = self.__Read()
@@ -662,23 +669,22 @@ class JAISerial:
         """
 
         # We are being extra cautious here and checking the type of the mode parameter to make sure it is an int or a AnalogBaseGain
-        # If it is not an int or a AnalogBaseGain then return "02 Bad Parameters!!" and do not send the command
-        try:
-            if not isinstance(mode, Enum) and isinstance(dB, int):
-                # See if the integer value is a valid AnalogBaseGain Enum
-                dB = AnalogBaseGain(dB)
-        except ValueError:
-            # The integer value is not a valid AnalogBaseGain Enum
-            return "02 Bad Parameters!!"
+        # If it is not an int or a AnalogBaseGain then raise a ValueError exception and do not send the command
+        if not isinstance(dB, self.AnalogBaseGainDB) and isinstance(dB, int):
+            # See if the integer value is a valid AnalogBaseGain Enum
+            # This will throw a ValueError if the integer value is not a valid AnalogBaseGain Enum (and is intended to do so)
+            dB = self.AnalogBaseGainDB(dB)
+        if not isinstance(dB, self.AnalogBaseGainDB) and not isinstance(dB, int):
+            raise ValueError(
+                "The dB parameter must be an int or a AnalogBaseGainDB Enum")
 
         # If the AnalogBaseGain dB is already set to the desired gain mode then return "COMPLETE" and do not send the command
         if self.analogBaseGain == dB:
             return "COMPLETE"
 
-
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=9)
-        self.__Write("ABG=" + str(dB.value))
+        self.__Write("ABG=" + str(dB.value))  # type: ignore
 
         # Read the Response
         response = self.__Read()
@@ -740,20 +746,20 @@ class JAISerial:
         """
         Sets the device tap geometry of the camera via (TAGM) command.
         :param geometry: The device tap geometry to change to 0 (Geometry_1X2_1Y), 1 (Geometry_1X3_1Y), 2 (Geometry_1X4_1Y), 3 (Geometry_1X8_1Y), or 4 (Geometry_1X10_1Y)
-        :type geometry: Enum/int (See: DeviceTapGeometry)
+        :type geometry: Enum/int (See: DeviceTapGeometryEnum)
         :return: "COMPLETE" if the Device Tap Geometry was changed successfully or an error message (01 Unknown Command!!, 02 Bad Parameters!!)
         :rtype: str
         """
 
-        # We are being extra cautious here and checking the type of the mode parameter to make sure it is an int or a DeviceTapGeometry
-        # If it is not an int or a DeviceTapGeometry then return "02 Bad Parameters!!" and do not send the command
-        try:
-            if not isinstance(geometry, Enum) and isinstance(geometry, int):
-                # See if the integer value is a valid DeviceTapGeometry Enum
-                geometry = DeviceTapGeometry(geometry)
-        except ValueError:
-            # The integer value is not a valid DeviceTapGeometry Enum
-            return "02 Bad Parameters!!"
+        # We are being extra cautious here and checking the type of the mode parameter to make sure it is an int or a DeviceTapGeometryEnum
+        # If it is not an int or a DeviceTapGeometry then raise a ValueError exception and do not send the command
+        if not isinstance(geometry, self.DeviceTapGeometryEnum) and isinstance(geometry, int):
+            # See if the integer value is a valid DeviceTapGeometry Enum
+            # This will throw a ValueError if the integer value is not a valid DeviceTapGeometryEnum entry (and is intended to do so)
+            geometry = self.DeviceTapGeometryEnum(geometry)
+        if not isinstance(geometry, self.DeviceTapGeometryEnum) and not isinstance(geometry, int):
+            raise ValueError(
+                "The geometry parameter must be an int or a DeviceTapGeometryEnum Enum")
 
         # If the DeviceTapGeometry geometry is already set to the desired geometry then return "COMPLETE" and do not send the command
         if self.deviceTapGeometry == geometry:
@@ -761,7 +767,7 @@ class JAISerial:
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=9)
-        self.__Write("TAGM=" + str(geometry.value))
+        self.__Write("TAGM=" + str(geometry.value))  # type: ignore
 
         # Read the Response
         response = self.__Read()
@@ -817,25 +823,4 @@ class JAISerial:
             response = response.replace("TAGM=", "")
 
             # Convert the response to an integer
-            return DeviceTapGeometry(int(response))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
+            return self.DeviceTapGeometryEnum(int(response))
