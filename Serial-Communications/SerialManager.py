@@ -73,7 +73,7 @@ class JAISerial:
 # <div>Currently a blocker in that CodeChat does not seem to want to parse past
 #     this point, as such please pay attention to inline comments until it is
 #     resolved.</div>
-    def __init__(self, serialPort, baudRate=9600, dataLength=serial.EIGHTBITS, stopBit=serial.STOPBITS_ONE, parity=serial.PARITY_NONE, XonXoff=0, timeout=None):
+    def __init__(self, serialPort, baudRate=9600, dataLength=serial.EIGHTBITS, stopBit=serial.STOPBITS_ONE, parity=serial.PARITY_NONE, XonXoff=False, timeout=None):
         """
         Initializes a JAI-4000M Serial Manager on the specified serial port.
         :param serialPort: The serial port to use (ex. "COM1")
@@ -81,15 +81,15 @@ class JAISerial:
         :param dataLength: The data length to use (serial.EIGHTBITS, serial.SEVENBITS, serial.SIXBITS, serial.FIVEBITS). 
         :param stopBit: The stop bit to use (serial.STOPBITS_ONE, serial.STOPBITS_ONE_POINT_FIVE, serial.STOPBITS_TWO)
         :param parity: The parity to use (serial.PARITY_NONE, serial.PARITY_EVEN, serial.PARITY_ODD, serial.PARITY_MARK, serial.PARITY_SPACE)
-        :param XonXoff: The Xon/Xoff to use (0, 1)
-        :param timeout: The timeout to use in seconds (None, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        :param XonXoff: The Xon/Xoff to use (True, False). Xon/Xoff is a software flow control protocol that uses the XON and XOFF characters to pause and resume data transmission. The camera does not support this.
+        :param timeout: The timeout to use in seconds (float). If None, the read operation will block until at least one byte is received. If 0, the read operation will return immediately in all cases, returning zero or more, up to the requested number of bytes. If timeout is set to a value greater than zero, it may return fewer characters as requested if the timeout expires before the requested number of bytes is received.
         :type serialPort: str
         :type baudRate: int
         :type dataLength: int
         :type stopBit: int
         :type parity: int
-        :type XonXoff: int
-        :type timeout: int
+        :type XonXoff: bool
+        :type timeout: float
         """
 
         self.serialPort = serialPort
