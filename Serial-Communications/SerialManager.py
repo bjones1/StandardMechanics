@@ -98,6 +98,7 @@ class JAISerial:
         self.stopBit = stopBit
         self.parity = parity
         self.timeout = timeout
+        self.XonXoff = XonXoff
 
         # Non-parameter Camera Variables (with Default Values)
         self.lineRate = 500  # 500 lines per second (Camera Default)
@@ -121,12 +122,15 @@ class JAISerial:
         """
 
         self.serialHandle = serial.Serial(
-            self.serialPort, self.baudRate, self.dataLength, self.parity, self.stopBit, self.timeout, 0)
+            self.serialPort, self.baudRate, self.dataLength, self.parity, self.stopBit, self.timeout, self.XonXoff)
 
     def __Close(self):
         """
         Closes the serial port, this is called when the baud rate is changed and when the class is destroyed, it is intended to be used internally and should not be called directly by the user.
         """
+
+        if self.serialHandle is None:
+            raise Exception("__Close(self) accessed before __Open(self)")
 
         self.serialHandle.close()
 
@@ -138,12 +142,16 @@ class JAISerial:
         :type baudRate: int
         """
 
+        if self.serialHandle is None:
+            raise Exception(
+                "__ChangeBaudRate(self, baudRate) accessed before __Open(self)")
+
         self.__Close()
         self.serialHandle.baudrate = baudRate
         self.__Open()
 
     def __Write(self, command):
-        """ 
+        """
         Writes a command to the serial port, it is intended to be used internally and should not be called directly by the user.
 
         :param command: The command to send to the serial port (ex. "CBDRT=1")
@@ -361,7 +369,7 @@ class JAISerial:
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=6``)
-        self.__Write("CLC=" + str(clock.value)) # type: ignore
+        self.__Write("CLC=" + str(clock.value))  # type: ignore
 
         # Read the Response
         response = self.__Read()
@@ -740,7 +748,7 @@ class JAISerial:
             response = response.replace("ABG=", "")
 
             # Convert the response to an integer
-            return AnalogBaseGain(int(response))
+            return self.AnalogBaseGainDB(int(response))
 
     def SetDeviceTapGeometry(self, geometry):
         """
