@@ -26,6 +26,16 @@ from enum import Enum
 
 
 class JAISerial:
+    class CommandResponse(Enum):
+        """
+        The Command Status Enum is an Enum that contains the possible returns for the set command.
+        """
+        SUCCESS = b'COMPLETE\r\n'  # Command was successful
+        # Command was unsuccessful due to an invalid command
+        UNKNOWN_COMMAND = b'01 Unknown Command!!\r\n'
+        # Command was unsuccessful due to an invalid parameter
+        BAD_PARAMETERS = b'02 Bad Parameters!!\r\n'
+
     class CLClockMHz(Enum):
         """
         The CL Clock MHz Enum is an Enum that contains the possible values for the CL Clock MHz setting.
@@ -199,39 +209,44 @@ class JAISerial:
         #     11111 - 0x1F = 115200
 
         # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'SBDRT=<hexBaud>\r\n' then the command was recognized and the response is the supported baud rates
-        elif response[0:6] == b'SBDRT=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                # Check if the response is the expected length
+                if response[0:6] == b'SBDRT=':
+                    # Convert the response to a string
+                    response = response.decode()
 
-            # I cannot confirm that the return includes leading zeros, so instead I will find \r\n and remove it (more reliable)
-            # Alternatively I was going to do something similar to response = response[6:10] but I am not sure if the return will always be 4 characters
-            response = response.replace("\r\n", "")
+                    # I cannot confirm that the return includes leading zeros, so instead I will find \r\n and remove it (more reliable)
+                    # Alternatively I was going to do something similar to response = response[6:10] but I am not sure if the return will always be 4 characters
+                    response = response.replace("\r\n", "")
 
-            # Remove the SBDRT= from the response
-            response = response.replace("SBDRT=", "")
+                    # Remove the SBDRT= from the response
+                    response = response.replace("SBDRT=", "")
 
-            # Convert the response to an integer (base 16, accounts for both 0x01 and 0x1, etc.)
-            response = int(response, 16)
+                    # Convert the response to an integer (base 16, accounts for both 0x01 and 0x1, etc.)
+                    response = int(response, 16)
 
-            availableBaudRates = []
-            if response >= 1:
-                availableBaudRates.append(9600)
-            if response >= 3:
-                availableBaudRates.append(19200)
-            if response >= 7:
-                availableBaudRates.append(38400)
-            if response >= 15:
-                availableBaudRates.append(57600)
-            if response == 31:
-                availableBaudRates.append(115200)
+                    availableBaudRates = []
+                    if response >= 1:
+                        availableBaudRates.append(9600)
+                    if response >= 3:
+                        availableBaudRates.append(19200)
+                    if response >= 7:
+                        availableBaudRates.append(38400)
+                    if response >= 15:
+                        availableBaudRates.append(57600)
+                    if response == 31:
+                        availableBaudRates.append(115200)
 
-            return availableBaudRates
+                    return availableBaudRates
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
 
     def SetBaudRate(self, baudRate):
         """
@@ -245,7 +260,7 @@ class JAISerial:
         # If the baud rate is already set to the desired baud rate then return "COMPLETE", do not send the command again
         # self.baudRate is maintained by the class and is updated when the baud rate is changed
         if baudRate == self.baudRate:
-            return "COMPLETE"
+            return self.CommandResponse.SUCCESS
 
         # Note: Need to confirm if baudRate needs to be decimal or hex
         # This only supports decimal values for now (seemed to work in testing session with Trey Leonard)
@@ -267,27 +282,29 @@ class JAISerial:
         # Read the Response
         response = self.__Read()
 
-        # Expected Response Structure: b'COMPLETE\r\n'
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'COMPLETE\r\n' then the command was recognized and the baud rate was changed
-        elif response == b'COMPLETE\r\n':
-            # We must execute a confirmation command once the baud rate is changed to verify we are still communicating with the camera
-            # This protocol is described in the datasheet (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=4)
-            self.__ChangeBaudRate(baudRate)
-            self.__Write("CBDRT=" + str(encodedBaudRate))
-            response = self.__Read()
-            if response == b'COMPLETE\r\n':
-                # Update the baud rate
-                self.baudRate = baudRate
-                return "COMPLETE"
-            else:
-                self.__ChangeBaudRate(9600)
-                return "FAILED"
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case self.CommandResponse.SUCCESS.value:
+                # If the response is b'COMPLETE\r\n' then the command was recognized and the baud rate was changed
+                # We must execute a confirmation command once the baud rate is changed to verify we are still communicating with the camera
+                # This protocol is described in the datasheet (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=4)
+                self.__ChangeBaudRate(baudRate)
+                self.__Write("CBDRT=" + str(encodedBaudRate))
+                response = self.__Read()
+                if response == self.CommandResponse.SUCCESS.value:
+                    # Update the baud rate
+                    self.baudRate = baudRate
+                    return self.CommandResponse.SUCCESS
+                else:
+                    self.__ChangeBaudRate(9600)
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
+            case _:
+                raise Exception(
+                    "Unexpected response from camera: " + response.decode())
 
     def GetBaudRate(self):
         """
@@ -312,37 +329,40 @@ class JAISerial:
         #     01000 - 8 = 57600
         #     10000 - 16 = 115200
 
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'CBDRT=<encodedBaud>\r\n' then the command was recognized and the response is the current baud rate
-        elif response[0:6] == b'CBDRT=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                if response[0:6] == b'CBDRT=':
+                    # Convert the response to a string
+                    response = response.decode()
 
-            # Remove the \r\n from the response
-            response = response.replace("\r\n", "")
+                    # Remove the \r\n from the response
+                    response = response.replace("\r\n", "")
 
-            # Remove the CBDRT= from the response
-            response = response.replace("CBDRT=", "")
+                    # Remove the CBDRT= from the response
+                    response = response.replace("CBDRT=", "")
 
-            # Convert the response to an integer
-            response = int(response)
+                    # Convert the response to an integer
+                    response = int(response)
 
-            # Convert the response to a decimal value
-            if response == 16:
-                return 115200
-            elif response == 8:
-                return 57600
-            elif response == 4:
-                return 38400
-            elif response == 2:
-                return 19200
-            elif response == 1:
-                return 9600
+                    # Convert the response to a decimal value
+                    if response == 16:
+                        return 115200
+                    elif response == 8:
+                        return 57600
+                    elif response == 4:
+                        return 38400
+                    elif response == 2:
+                        return 19200
+                    elif response == 1:
+                        return 9600
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
 
     def SetCLClock(self, clock):
         """
@@ -365,7 +385,7 @@ class JAISerial:
 
         # If the clock is already set to the desired clock then return "COMPLETE" and do not send the command
         if self.clock == clock:
-            return "COMPLETE"
+            return self.CommandResponse.SUCCESS
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=6``)
@@ -374,18 +394,19 @@ class JAISerial:
         # Read the Response
         response = self.__Read()
 
-        # Expected Response Structure: b'COMPLETE\r\n'
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'COMPLETE\r\n' then the command was recognized and the clock was changed
-        elif response == b'COMPLETE\r\n':
-            # Update internal clock
-            self.clock = clock
-            return "COMPLETE"
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case self.CommandResponse.SUCCESS.value:
+                # If the response is b'COMPLETE\r\n' then the command was recognized and the clock was changed
+                # Update internal clock
+                self.clock = clock
+                return self.CommandResponse.SUCCESS
+            case _:
+                raise Exception(
+                    "Unexpected response from camera: " + response.decode())
 
     def GetCLClock(self):
         """
@@ -410,28 +431,31 @@ class JAISerial:
         #     2 - 42.5 MHz
         #     3 - 31.875 MHz
 
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'CLC=<clock>\r\n' then the command was recognized and the response is the current clock
-        elif response[0:4] == b'CLC=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                if response[0:4] == b'CLC=':
+                    # Convert the response to a string
+                    response = response.decode()
 
-            # Remove the \r\n from the response
-            response = response.replace("\r\n", "")
+                    # Remove the \r\n from the response
+                    response = response.replace("\r\n", "")
 
-            # Remove the CLC= from the response
-            response = response.replace("CLC=", "")
+                    # Remove the CLC= from the response
+                    response = response.replace("CLC=", "")
 
-            # Convert the response to an integer
-            response = int(response)
+                    # Convert the response to an integer
+                    response = int(response)
 
-            # Convert the response to a CLClockMHz Enum
-            return self.CLClockMHz(response)
+                    # Convert the response to a CLClockMHz Enum
+                    return self.CLClockMHz(response)
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
 
     def SetExposureMode(self, mode):
         """
@@ -454,7 +478,7 @@ class JAISerial:
 
         # If the exposure mode is already set to the desired exposure mode then return "COMPLETE" and do not send the command
         if self.exposureMode == mode:
-            return "COMPLETE"
+            return self.CommandResponse.SUCCESS
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=7)
@@ -463,18 +487,19 @@ class JAISerial:
         # Read the Response
         response = self.__Read()
 
-        # Expected Response Structure: b'COMPLETE\r\n'
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'COMPLETE\r\n' then the command was recognized and the exposure mode was changed
-        elif response == b'COMPLETE\r\n':
-            # Update internal exposure mode
-            self.exposureMode = mode
-            return "COMPLETE"
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case self.CommandResponse.SUCCESS.value:
+                # If the response is b'COMPLETE\r\n' then the command was recognized and the exposure mode was changed
+                # Update internal exposure mode
+                self.exposureMode = mode
+                return self.CommandResponse.SUCCESS
+            case _:
+                raise Exception(
+                    "Unexpected response from camera: " + response.decode())
 
     def GetExposureMode(self):
         """
@@ -498,28 +523,31 @@ class JAISerial:
         #     1 - Timed
         #     2 - TriggerWidth
 
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'EM=<mode>\r\n' then the command was recognized and the response is the current exposure mode
-        elif response[0:3] == b'EM=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                if response[0:3] == b'EM=':
+                    # Convert the response to a string
+                    response = response.decode()
 
-            # Remove the \r\n from the response
-            response = response.replace("\r\n", "")
+                    # Remove the \r\n from the response
+                    response = response.replace("\r\n", "")
 
-            # Remove the EM= from the response
-            response = response.replace("EM=", "")
+                    # Remove the EM= from the response
+                    response = response.replace("EM=", "")
 
-            # Convert the response to an integer
-            response = int(response)
+                    # Convert the response to an integer
+                    response = int(response)
 
-            # Convert the response to a ExposureMode Enum
-            return self.ExposureMode(response)
+                    # Convert the response to a ExposureMode Enum
+                    return self.ExposureMode(response)
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
 
     def SetLineRate(self, rate):
         """
@@ -532,7 +560,7 @@ class JAISerial:
 
         # If the line rate is already set to the desired line rate then return "COMPLETE" and do not send the command
         if self.lineRate == rate:
-            return "COMPLETE"
+            return self.CommandResponse.SUCCESS
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=7)
@@ -541,18 +569,19 @@ class JAISerial:
         # Read the Response
         response = self.__Read()
 
-        # Expected Response Structure: b'COMPLETE\r\n'
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'COMPLETE\r\n' then the command was recognized and the line rate was changed
-        elif response == b'COMPLETE\r\n':
-            # Update internal line rate
-            self.lineRate = rate
-            return "COMPLETE"
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case self.CommandResponse.SUCCESS.value:
+                # If the response is b'COMPLETE\r\n' then the command was recognized and the line rate was changed
+                # Update internal line rate
+                self.lineRate = rate
+                return self.CommandResponse.SUCCESS
+            case _:
+                raise Exception(
+                    "Unexpected response from camera: " + response.decode())
 
     def GetLineRate(self):
         """
@@ -574,25 +603,28 @@ class JAISerial:
         # <rate> is a decimal value of the supported line rates:
         #     500 to 1515152
 
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'LR=<rate>\r\n' then the command was recognized and the response is the current line rate
-        elif response[0:3] == b'LR=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                if response[0:3] == b'LR=':
+                    # Convert the response to a string
+                    response = response.decode()
 
-            # Remove the \r\n from the response
-            response = response.replace("\r\n", "")
+                    # Remove the \r\n from the response
+                    response = response.replace("\r\n", "")
 
-            # Remove the LR= from the response
-            response = response.replace("LR=", "")
+                    # Remove the LR= from the response
+                    response = response.replace("LR=", "")
 
-            # Convert the response to an integer
-            return int(response)
+                    # Convert the response to an integer
+                    return int(response)
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
 
     def SetGainLevel(self, gain):
         """
@@ -605,7 +637,7 @@ class JAISerial:
 
         # If the gain level is already set to the desired gain level then return "COMPLETE" and do not send the command
         if self.gainLevel == gain:
-            return "COMPLETE"
+            return self.CommandResponse.SUCCESS
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=9)
@@ -614,18 +646,19 @@ class JAISerial:
         # Read the Response
         response = self.__Read()
 
-        # Expected Response Structure: b'COMPLETE\r\n'
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'COMPLETE\r\n' then the command was recognized and the gain level was changed
-        elif response == b'COMPLETE\r\n':
-            # Update internal gain level
-            self.gainLevel = gain
-            return "COMPLETE"
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case self.CommandResponse.SUCCESS.value:
+                # If the response is b'COMPLETE\r\n' then the command was recognized and the gain level was changed
+                # Update internal gain level
+                self.gainLevel = gain
+                return self.CommandResponse.SUCCESS
+            case _:
+                raise Exception(
+                    "Unexpected response from camera: " + response.decode())
 
     def GetGainLevel(self):
         """
@@ -647,25 +680,27 @@ class JAISerial:
         # <gain> is a decimal value of the supported gain levels:
         #     100 to 6400
 
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'GA=<gain>\r\n' then the command was recognized and the response is the current gain level
-        elif response[0:3] == b'GA=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                if response[0:3] == b'GA=':
+                    response = response.decode()
 
-            # Remove the \r\n from the response
-            response = response.replace("\r\n", "")
+                    # Remove the \r\n from the response
+                    response = response.replace("\r\n", "")
 
-            # Remove the GA= from the response
-            response = response.replace("GA=", "")
+                    # Remove the GA= from the response
+                    response = response.replace("GA=", "")
 
-            # Convert the response to an integer
-            return int(response)
+                    # Convert the response to an integer
+                    return int(response)
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
 
     def SetAnalogBaseGain(self, dB):
         """
@@ -688,7 +723,7 @@ class JAISerial:
 
         # If the AnalogBaseGain dB is already set to the desired gain mode then return "COMPLETE" and do not send the command
         if self.analogBaseGain == dB:
-            return "COMPLETE"
+            return self.CommandResponse.SUCCESS
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=9)
@@ -697,18 +732,19 @@ class JAISerial:
         # Read the Response
         response = self.__Read()
 
-        # Expected Response Structure: b'COMPLETE\r\n'
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'COMPLETE\r\n' then the command was recognized and the analog base gain was changed
-        elif response == b'COMPLETE\r\n':
-            # Update internal analog base gain
-            self.analogBaseGain = dB
-            return "COMPLETE"
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case self.CommandResponse.SUCCESS.value:
+                # If the response is b'COMPLETE\r\n' then the command was recognized and the analog base gain was changed
+                # Update internal analog base gain
+                self.analogBaseGain = dB
+                return self.CommandResponse.SUCCESS
+            case _:
+                raise Exception(
+                    "Unexpected response from camera: " + response.decode())
 
     def GetAnalogBaseGain(self):
         """
@@ -730,25 +766,28 @@ class JAISerial:
         # <dB> is a decimal value of the supported analog base gains:
         #     0 (0dB), 1 (+6dB), 2 (+9.54dB), or 3 (+12dB)
 
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'ABG=<dB>\r\n' then the command was recognized and the response is the current analog base gain
-        elif response[0:4] == b'ABG=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                if response[0:4] == b'ABG=':
+                    # Convert the response to a string
+                    response = response.decode()
 
-            # Remove the \r\n from the response
-            response = response.replace("\r\n", "")
+                    # Remove the \r\n from the response
+                    response = response.replace("\r\n", "")
 
-            # Remove the ABG= from the response
-            response = response.replace("ABG=", "")
+                    # Remove the ABG= from the response
+                    response = response.replace("ABG=", "")
 
-            # Convert the response to an integer
-            return self.AnalogBaseGainDB(int(response))
+                    # Convert the response to an integer
+                    return self.AnalogBaseGainDB(int(response))
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
 
     def SetDeviceTapGeometry(self, geometry):
         """
@@ -771,7 +810,7 @@ class JAISerial:
 
         # If the DeviceTapGeometry geometry is already set to the desired geometry then return "COMPLETE" and do not send the command
         if self.deviceTapGeometry == geometry:
-            return "COMPLETE"
+            return self.CommandResponse.SUCCESS
 
         # Send the command
         # (datasheets\Command-List-SW-4000M8000M-PMCL.pdf#page=9)
@@ -780,18 +819,19 @@ class JAISerial:
         # Read the Response
         response = self.__Read()
 
-        # Expected Response Structure: b'COMPLETE\r\n'
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'COMPLETE\r\n' then the command was recognized and the device tap geometry was changed
-        elif response == b'COMPLETE\r\n':
-            # Update internal device tap geometry
-            self.deviceTapGeometry = geometry
-            return "COMPLETE"
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case self.CommandResponse.SUCCESS.value:
+                # If the response is b'COMPLETE\r\n' then the command was recognized and the device tap geometry was changed
+                # Update internal device tap geometry
+                self.deviceTapGeometry = geometry
+                return self.CommandResponse.SUCCESS
+            case _:
+                raise Exception(
+                    "Unexpected response from camera: " + response.decode())
 
     def GetDeviceTapGeometry(self):
         """
@@ -813,22 +853,25 @@ class JAISerial:
         # <geometry> is a decimal value of the supported device tap geometries:
         #     0 (Geometry_1X2_1Y), 1 (Geometry_1X3_1Y), 2 (Geometry_1X4_1Y), 3 (Geometry_1X8_1Y), or 4 (Geometry_1X10_1Y)
 
-        # If the response is b'01 Unknown Command!!\r\n' then the command was not recognized
-        if response == b'01 Unknown Command!!\r\n':
-            return "01 Unknown Command!!"
-        # If the response is b'02 Bad Parameters!!\r\n' then the parameters were not recognized (this should not happen, if it does it is indicative of bad serial communication)
-        elif response == b'02 Bad Parameters!!\r\n':
-            return "02 Bad Parameters!!"
-        # If the response is b'TAGM=<geometry>\r\n' then the command was recognized and the response is the current device tap geometry
-        elif response[0:5] == b'TAGM=':
-            # Convert the response to a string
-            response = response.decode()
+        match response:
+            case self.CommandResponse.UNKNOWN_COMMAND.value:
+                return self.CommandResponse.UNKNOWN_COMMAND
+            case self.CommandResponse.BAD_PARAMETERS.value:
+                return self.CommandResponse.BAD_PARAMETERS
+            case _:
+                # If the response is not b'01 Unknown Command!!\r\n' then the command was recognized
+                if response[0:5] == b'TAGM=':
+                    # Convert the response to a string
+                    response = response.decode()
 
-            # Remove the \r\n from the response
-            response = response.replace("\r\n", "")
+                    # Remove the \r\n from the response
+                    response = response.replace("\r\n", "")
 
-            # Remove the TAGM= from the response
-            response = response.replace("TAGM=", "")
+                    # Remove the TAGM= from the response
+                    response = response.replace("TAGM=", "")
 
-            # Convert the response to an integer
-            return self.DeviceTapGeometryEnum(int(response))
+                    # Convert the response to an integer
+                    return self.DeviceTapGeometryEnum(int(response))
+                else:
+                    raise Exception(
+                        "Unexpected response from camera: " + response.decode())
