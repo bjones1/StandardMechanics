@@ -6,8 +6,7 @@
     <li><a href="Image-acquisition-GUI/README.cchtml">Image acquisition GUI</a>
         <ol>
             <li><a href="Image-acquisition-GUI/Python/sapera_test.py">Python
-                    implementation</a>
-            </li>
+                    implementation</a></li>
         </ol>
     </li>
     <li><a href="toc.cchtml">Team Projects</a>
@@ -16,8 +15,10 @@
             <li><a href="Serial-Communications/README.cchtml">Initialize/confirm
                     certain camera operating values</a>
                 <ol>
-                    <li><a href="Serial-Communications/CameraCommunications.py">Python
-                            Code</a></li>
+                    <li><a href="Serial-Communications/Main.py">Main -
+                            Main.py</a></li>
+                    <li><a href="Serial-Communications/SerialManager.py">Function
+                            file - Serial Manager.py</a></li>
                 </ol>
             </li>
             <li>Add a menu option to send commands to the camera</li>
