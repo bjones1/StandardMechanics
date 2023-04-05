@@ -1,0 +1,240 @@
+<p><strong>Standard Mechanics "Back End"&nbsp;</strong></p>
+<p>&nbsp;</p>
+<p>I've got a better idea, now, of what we're working with. Going through the
+    documenation in the Sapera LT .NET Programmer's Manual, I think I'm
+    starting to gather what we'll need to do.<br><br>The biggest issue I'm
+    having, right now, is how to correctly call Sapera functions, as they
+    require .NET types that pythonnet does not seem able to automatically
+    convert. I've figured out how to use some Getter methods to check various
+    states, but I can't figure out how to correctly use the corresponding
+    Setter methods.</p>
+<p>&nbsp;</p>
+<p>The current sapera_test.py file on this branch includes some tinkering I've
+    performed that, ultimately, has not been very successful. I'm also still
+    not entirely clear how to translate what is in the Frame Grab demo into
+    these functions, but that seems secondary to getting those functions to
+    work at all in the first place.</p>
+<p>Borrowing form Kenzie's prewriting, These are the functionalities we do and
+    don't need:<br><br></p>
+<blockquote>
+    <p>Buttons
+        needed:&nbsp;<br>Snap&nbsp;<br>Grab&nbsp;<br>Freeze<br>Exit<br>Load
+        config<br>Line scan** &lt;&lt; not included in c#
+        files<br>Save<br>Load<br>New - assuming</p>
+    <p>&nbsp;</p>
+    <p>Don't need:<br>General - under acquisition options<br>Composite<br>Area
+        Scan<br>Image filter<br>All of General Options subsection - buffer
+        &amp; view</p>
+</blockquote>
+<p>I have a general idea of how might start performing some of these if I can
+    successfully call the functions that I think I should be able to call as
+    listed in the manual.</p>
+<p>For a more concrete example of my issue, the Manual lists the following:</p>
+<blockquote>
+    <p><br><span id="page78R_mcid38" class="markedContent"><span dir="ltr"
+                style="left: calc(var(--scale-factor)*54.02px); top: calc(var(--scale-factor)*355.40px); font-size: calc(var(--scale-factor)*11.16px); font-family: serif; transform: scaleX(1.27186);"
+                role="presentation">SapAcquisition.GetParameter,
+                SapAcquisition.SetParameter Methods</span></span><span
+            id="page78R_mcid39" class="markedContent"><br
+                role="presentation"><span dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.24342);"
+                role="presentation">GetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.94px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.78px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*246.02px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16069);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*284.57px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.21517);"
+                role="presentation">, out int</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*320.47px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*323.47px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.13383);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*377.86px); top: calc(var(--scale-factor)*370.98px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.46185);"
+                role="presentation">);</span><br role="presentation"><span
+                dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.24342);"
+                role="presentation">GetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.94px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.78px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*246.02px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16069);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*284.57px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.13796);"
+                role="presentation">, out SapAcquisition.Val</span><span
+                dir="ltr"
+                style="left: calc(var(--scale-factor)*392.04px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*395.52px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12632);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*449.54px); top: calc(var(--scale-factor)*381.80px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.46185);"
+                role="presentation">);</span><br role="presentation"><span
+                dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.24342);"
+                role="presentation">GetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.94px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.78px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*246.02px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16069);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*284.57px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.18471);"
+                role="presentation">, out string</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*334.39px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*337.87px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12632);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*391.92px); top: calc(var(--scale-factor)*392.96px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.46185);"
+                role="presentation">);</span><br role="presentation"><span
+                dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.24342);"
+                role="presentation">GetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.94px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.78px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*246.02px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16069);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*284.57px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.27321);"
+                role="presentation">, out int[]</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*328.56px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*331.75px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.13383);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*386.16px); top: calc(var(--scale-factor)*403.76px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.46185);"
+                role="presentation">);</span></span><span id="page78R_mcid40"
+            class="markedContent"><br role="presentation"><span dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.25268);"
+                role="presentation">SetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.22px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.06px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*244.94px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16097);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*283.49px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.25888);"
+                role="presentation">, int</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*301.77px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*304.75px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.13383);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*359.14px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.14011);"
+                role="presentation">, bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*384.26px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*387.60px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.10939);"
+                role="presentation">updateNow</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*438.02px); top: calc(var(--scale-factor)*418.88px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.46185);"
+                role="presentation">);</span><br role="presentation"><span
+                dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.25268);"
+                role="presentation">SetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.22px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.06px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*244.94px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16097);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*283.49px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.13157);"
+                role="presentation">, SapAcquisition.Val</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*373.35px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*376.42px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.1265);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*430.46px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.15605);"
+                role="presentation">, bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*455.93px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*459.26px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.1171);"
+                role="presentation">updateNow</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*510.07px); top: calc(var(--scale-factor)*429.71px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.46185);"
+                role="presentation">);</span><br role="presentation"><span
+                dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.25268);"
+                role="presentation">SetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.22px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.06px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*244.94px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16097);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*283.49px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.19159);"
+                role="presentation">, string</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*315.70px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*319.15px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12632);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*373.18px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.15605);"
+                role="presentation">, bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*398.65px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*401.64px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.1169);"
+                role="presentation">updateNow</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*452.42px); top: calc(var(--scale-factor)*440.51px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.46185);"
+                role="presentation">);</span><br role="presentation"><span
+                dir="ltr"
+                style="left: calc(var(--scale-factor)*58.34px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.11601);"
+                role="presentation">bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*77.34px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*80.69px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.25268);"
+                role="presentation">SetParameter</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*150.22px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.12599);"
+                role="presentation">(SapAcquisition.Prm</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*242.06px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*244.94px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.16097);"
+                role="presentation">paramId</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*283.49px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.35037);"
+                role="presentation">, int[]</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*309.86px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*313.03px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.13383);"
+                role="presentation">paramValue</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*367.42px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.13971);"
+                role="presentation">, bool</span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*392.53px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif;"
+                role="presentation"> </span><span dir="ltr"
+                style="left: calc(var(--scale-factor)*395.88px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.10939);"
+                role="presentation">updateNow</span></span></p>
+</blockquote>
+<p><span class="markedContent"><span dir="ltr"
+            style="left: calc(var(--scale-factor)*395.88px); top: calc(var(--scale-factor)*451.67px); font-size: calc(var(--scale-factor)*9.00px); font-family: sans-serif; transform: scaleX(1.10939);"
+            role="presentation">Using the SapAcquisition.Prm type, I've been
+            able to determine the datatypes, size in bytes, etc of these
+            parameters (using the related GetParameterSize and GetParameterType
+            methods), but any attempt I've made to use the GetParameter methods
+            has been met with type errors, regardless of trying to pass in
+            python integers and strings, .NET strings, or attempting (and
+            failing) to instantiate SapAcquisition.Val objects.</span></span>
+</p>
