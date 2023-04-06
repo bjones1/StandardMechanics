@@ -2,7 +2,9 @@
 from SerialManager import JAISerial
 
 if __name__ == "__main__":
-    JAICamera = JAISerial("COM1") # Change this to the correct serial port for the camera (likely COM1)
-    JAICamera.GetSupportedBaudRates() # Gets the Supported Baud Rates as an array
-    JAICamera.SetBaudRate(115200) # (We don't really care about Supported Baud Rates, we know the max is 115200)
-    JAICamera.GetSupportedBaudRates() # Verify it changed succesfully by getting the supported baud rates again
+    # Change this to the correct serial port for the camera (likely COM1)
+    JAICamera = JAISerial("/dev/pts/6")
+    test = JAICamera.GetSupportedBaudRates()
+    test2 = JAICamera.SetBaudRate(115200)
+    print(test)
+    print(test2)
