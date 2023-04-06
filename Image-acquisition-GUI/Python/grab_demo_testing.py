@@ -5,6 +5,7 @@ import clr
 sys.path.append("C:/Program Files/Teledyne DALSA/Sapera/Demos/NET/GrabDemo/CSharp/bin/Debug")
 
 clr.AddReference("SapNETCSharpGrabDemo")
+
 from DALSA.SaperaLT.Demos.NET.CSharp.GrabDemo import *
 from DALSA.SaperaLT.SapClassGui import *
 
