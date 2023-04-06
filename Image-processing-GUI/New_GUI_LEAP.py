@@ -3,7 +3,7 @@ import tkinter.messagebox
 import customtkinter
 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
-customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
+customtkinter.set_default_color_theme("Theme.json")  # Themes: can be a color ex: "blue", but also a .json file
 
 
 class App(customtkinter.CTk):
@@ -41,12 +41,16 @@ class App(customtkinter.CTk):
         self.line_rate = customtkinter.CTkEntry(self, placeholder_text='Lines/s')
         self.line_rate.grid(row = 1, column = 6)
      
+
+
         # set default values
         self.select_image.configure(text="Select Image")
         self.reset_tool.configure(text="Reset Tool")
         self.calibrate_dist.configure(text="Calibrate Dist")
         self.make_video.configure(text="Make Video")
+        
 
+    # This section is for functions of the GUI operations above
     def open_input_dialog_event(self):
         dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
         print("CTkInputDialog:", dialog.get_input())
@@ -55,6 +59,7 @@ class App(customtkinter.CTk):
         print("sidebar_button click")
 
 
+# Runs the App, does not need to be changed
 if __name__ == "__main__":
     app = App()
     app.mainloop()
