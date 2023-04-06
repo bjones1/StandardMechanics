@@ -15,6 +15,8 @@
     are to remain at the very top of the list. The logs should be short and
     concise, one sentence summary statements.</p>
 <p>Template: <strong>MM.DD.YY</strong> FirstNameInitialLastName -</p>
+<p><strong>04.05.23&nbsp;</strong>KFarrar - CodeChat Documentation for
+    JAISerial class in Serial Manager.py</p>
 <p><strong>04.01.23&nbsp;</strong>MNguyen - Update pre-writing to include JAI
     references to python code, fix links/directory to images, RS-232 and fix
     hyperlink to code and files.</p>
@@ -1187,7 +1189,7 @@
     <p style="text-align: justify;">&nbsp;</p>
     <p style="text-align: justify;">&nbsp;</p>
     <p style="text-align: justify;">&nbsp;</p>
-    <p><img src="../../../../../../../../Serial-Communications/1-SetBaudRate.jpg"
+    <p><img src="../../../../../../../Serial-Communications/1-SetBaudRate.jpg"
             alt="">2. CL Clock (init to 0: 85 MHz) (pg.6)</p>
     <p><img style="display: block; margin-left: auto; margin-right: auto;"
             src="Images/3-ExposureMode.png" alt="" width="850" height="107">
