@@ -1,0 +1,104 @@
+<h1 style="text-align: center;"><span style="color: rgb(35, 111, 161);">LEAP
+        "Back End" Implementation in Python<br></span></h1>
+<p style="text-align: center;"><span style="color: rgb(35, 111, 161);">Team
+        Collaboration and Partnership with</span></p>
+<h2 style="text-align: center;"><img
+        src="https://www.brand.msstate.edu/assets/materials/msstate_logos/pngs/msstate_vertical_maroon_wwhitebanner.png"
+        alt="" width="232" height="96"> &nbsp; &nbsp; &nbsp;<img
+        src="https://standardmechanics.com/wp-content/uploads/2022/02/Standard_Machanics_Logo_Color.svg"
+        alt="" width="369" height="90"> &nbsp;</h2>
+<h2>With thanks and apologies to Kyler and Michael, whose README I used as a
+    template for this</h2>
+<h3 id="h_260120358401679951307052">Useful Links&nbsp;</h3>
+<p><a href="https://standardmechanics.com/">Standard Mechanics, LLC</a> -
+    Project sponsoring company, own and operated by MSU Alumnus Dr. Trey
+    Leonard</p>
+<p><a tabindex="-1"
+        title="http://secure-web.cisco.com/1mrckxpn1-vdtvmxccio1_t96o-9hnixex9_ebnspl2xtum23jouzmrzeg9sgbg9sf4ho7wi_rmuhjll-v5-uv4rlxry0qpiriwhdyuqwiroeotrdjy6rlneb148hgyaa49nubyixo2limldtvae1juuci_w5yxheq04bgkjck-n418l8ar_rx1x6ziwyoj1uf7yettsuczuopcm1wl8vg-b9bfp-1oebpc1mnhesaey6b380pqjohq__jbaj0ja8zn2i18tajsnhlvkle9z3ony3jpsb2fqmuuumdx1gnxiluwxsrqpzytuv-wdft640/http%3a%2f%2fteledynedalsa.com%2fsapera-lt-dl%2f%3fdl%3d1%26pkg%3dsdk%26key%3dxx4ln5dbkgwlc1l5ehgyia%253d%253d"
+        href="http://secure-web.cisco.com/1MRCkxpN1-vDtVMxCCiO1_T96o-9hNixEX9_ebnspL2Xtum23jOuZMrZEg9sgbG9sf4ho7wi_rMUhJll-v5-UV4RLxry0QpiRiwhdYuQwIroeOtrdjy6rLNeb148hGYaa49NUbyiXO2liMLDtVAe1jUuci_W5YXhEq04BgKJcK-N418l8Ar_Rx1x6ZIwYOj1uF7YetTSuCZUoPCM1Wl8vG-b9bFP-1oEbPc1MnHeSaEY6B380pQjOhq__Jbaj0jA8zN2i18TajSNhLVKlE9z3OnY3jpSb2fqmuUUmDX1GNXilUWXsrqPzyTuV-wdfT640/http%3A%2F%2Fteledynedalsa.com%2Fsapera-lt-dl%2F%3Fdl%3D1%26pkg%3DSDK%26key%3DxX4LN5dBkgWlC1l5ehGyIA%253d%253d"
+        target="_blank" rel="noreferrer noopener">Teledyne Dalsa Sapera LT
+        SDK</a> - Vendor Commerical Off-the-selve COTS software developmental
+    kit (SDK) for high speed camera</p>
+<p><a href="../../datasheets/Sapera.NET.pdf">Sapera SDK Datasheet</a> -
+    Information about the functions provided by the SDK</p>
+<h3>Sprint 1 Developers:</h3>
+<p>Kenzie Ellenberger: <a
+        href="mailto:mde168@msstate.edu">mde168@msstate.edu</a></p>
+<p>Clark Hensley: <a href="mailto:ch3136@msstate.edu">ch3136@msstate.edu</a>
+</p>
+<p>&nbsp;</p>
+<h2>General Overview of the Project</h2>
+<p>Our job during this print was to explore reimplementing the "back-end" of
+    the Sapera Grab Demo into Python 3, in order to interface with the
+    "front-end" team's rewrite of the LEAP program.<br><br>In general, we used
+    <a href="http://pythonnet.github.io/">python.NET</a> Python module to load
+    and the Sapera SDK in order to interface with the Sapera server.</p>
+<p>&nbsp;</p>
+<h2>Our Implementation</h2>
+<p>By instantiating a number of .NET objects within Python, such as the
+    SapAcquisition(), SapBuffer() and SapAcqToBuf() objects, we mimic the
+    functionality found in the <a
+        href="../Sapera-Demos/NET/GrabDemo/CSharp/GrabDemoDlg.cs">GrabDemoDlg.cs
+        file</a>.</p>
+<p>These objects, then, can be used to ensure that the SDK is connected to the
+    Sapera Server and also to provide the functionality of the buttons for the
+    GUI.</p>
+<p>&nbsp;</p>
+<h2>Buttons</h2>
+<p>The requested buttons for the new GUI are as follows:</p>
+<table style="border-collapse: collapse; width: 100.031%; height: 212px;"
+    border="1">
+    <colgroup>
+        <col style="width: 49.9225%;">
+        <col style="width: 49.9225%;">
+    </colgroup>
+    <tbody>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Button</td>
+            <td style="height: 21.2px;">Function Name</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Snap</td>
+            <td style="height: 21.2px;">button_Snap_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Grab</td>
+            <td style="height: 21.2px;">button_Grab_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Freeze</td>
+            <td style="height: 21.2px;">button_Freeze_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Exit</td>
+            <td style="height: 21.2px;">button_Exit_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Load Config</td>
+            <td style="height: 21.2px;">button_LoadConfig_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Line Scan</td>
+            <td style="height: 21.2px;">Not included in C# Project</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Save</td>
+            <td style="height: 21.2px;">button_Save_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Load</td>
+            <td style="height: 21.2px;">button_Load_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">New</td>
+            <td style="height: 21.2px;">button_New_Click</td>
+        </tr>
+    </tbody>
+</table>
+<p>All of these functions can be found in the <a
+        href="../Sapera-Demos/NET/GrabDemo/CSharp/GrabDemoDlg.cs">GrabDemoDlg.cs
+        file</a>, except for the function for the Line Scan button, which
+    exists only in the <a
+        href="../Sapera-Demos/Classes/Vc/GrabDemo/GrabDemoDlg.cpp">C++
+        implementation of the Grab Demo</a>, and does not have a corresponding
+    C#/.NET function.</p>
