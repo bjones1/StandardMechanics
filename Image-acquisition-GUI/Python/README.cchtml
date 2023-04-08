@@ -102,3 +102,7 @@
         href="../Sapera-Demos/Classes/Vc/GrabDemo/GrabDemoDlg.cpp">C++
         implementation of the Grab Demo</a>, and does not have a corresponding
     C#/.NET function.</p>
+
+<p>As of 2023-04-07, we've run the above code on Dr. Leonard's hardware, and
+    confirmed that it all works correctly, and is ready for the next team to
+    continue work with.</p>
