@@ -14,7 +14,7 @@ clr.AddReference("SapNETCSharpGrabDemo")
 from DALSA.SaperaLT.Demos.NET.CSharp.GrabDemo import *
 from DALSA.SaperaLT.SapClassGui import *
 
-grabDemo = GrabDemoDlg()
+#grabDemo = GrabDemoDlg()
 
 # <p>Attempt to call on click button function. This does end in an error, but it
 #     proves that the function can be found &amp; called. To run without error
@@ -172,6 +172,16 @@ def EnableSignalStatus():
 
 EnableSignalStatus()
 
+def DestroyObjects():
+    if (m_Xfer != None and m_Xfer.Initialized):
+        m_Xfer.Destroy()
+    if (m_View != None and m_View.Initialized):
+        m_View.Destroy()
+    if (m_Buffers != None and m_Buffers.Initialized):
+        m_Buffers.Destroy()
+    if (m_Acquisition != None and m_Acquisition.Initialized):
+        m_Acquisition.Destroy()
+DestroyObjects()
 
 # <p>Most buttons in the dialogue operate based on m_Xfer to determine how/when
 #     to use them.</p>
