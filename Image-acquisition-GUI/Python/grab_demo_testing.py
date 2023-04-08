@@ -7,6 +7,7 @@
 import sys
 import clr
 
+# <p>To use this file, you must build the Sapera GrabDemo once </p>
 sys.path.append("C:/Program Files/Teledyne DALSA/Sapera/Demos/NET/GrabDemo/CSharp/bin/Debug")
 
 clr.AddReference("SapNETCSharpGrabDemo")
@@ -182,6 +183,10 @@ def DestroyObjects():
     if (m_Acquisition != None and m_Acquisition.Initialized):
         m_Acquisition.Destroy()
 DestroyObjects()
+
+# <p>As of 2023-04-07, we've run the above code on Dr. Leonard's hardware, and
+#    confirmed that it all works correctly, and is ready for the next team to
+#    continue work with. </p>
 
 # <p>Most buttons in the dialogue operate based on m_Xfer to determine how/when
 #     to use them.</p>
