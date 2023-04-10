@@ -15,6 +15,7 @@
 #     to use SetBaudRate the program becomes stuck. Due to Dr. Leonard having a
 #     meeting, we did not have time to figure out what was causing the program
 #     to lock up.</p>
+# <p> Please see this issue regarding Line Rate and Setting/Getting ExposureTimeRaw: https://github.com/mpn21/StandardMechanics/issues/3 </p>
 # <h2>Important Enumerations</h2>
 # <p>It is the goal of the JAISerial class to provide streamlined access and
 #     conversion of user commands and device responses, as such, a handful of
