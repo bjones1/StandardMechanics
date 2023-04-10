@@ -8,6 +8,13 @@
 #     Commands implemented can be found in the <a
 #         href="../datasheets/Command-List-SW-4000M8000M-PMCL.pdf">Command
 #         List</a> datasheet.</p>
+# <h2>Testing Results</h2>
+# <p>Due to an issue revolving around mismatching Python versions, most of our
+#     testing time was cut short. We only got to test two commands in total. The
+#     GetSupportedBaudRates command works as intended, however, when attempting
+#     to use SetBaudRate the program becomes stuck. Due to Dr. Leonard having a
+#     meeting, we did not have time to figure out what was causing the program
+#     to lock up.</p>
 # <h2>Important Enumerations</h2>
 # <p>It is the goal of the JAISerial class to provide streamlined access and
 #     conversion of user commands and device responses, as such, a handful of
@@ -927,7 +934,7 @@
 #     + response.decode())<br>Internally, this works by using <a
 #         href="#h_115052218953281680747095090">__Write</a> to send "TAGM?" as
 #     specified by the <a
-#         href="../datasheets//Command-List-SW-4000M8000M-PMCL.pdf#page=9">Command
+#         href="../datasheets/Command-List-SW-4000M8000M-PMCL.pdf#page=9">Command
 #         List</a> datasheet. The response of this command is an integer value
 #     that can be converted to a <a
 #         href="#h_536232016660211680745320718">DeviceTapGeometryEnum</a>.</p>
@@ -1053,11 +1060,9 @@ class JAISerial:
         self.CCLK = self.CLClockMHz.MHZ_85  # 85 MHz (Camera Default)
         self.exposureMode = self.ExposureMode.TIMED  # Timed (Camera Default)
         self.gainLevel = 100  # 100 (Camera Default)
-        #
-        # 0dB (Camera Default)
+        # <p>0dB (Camera Default)</p>
         self.analogBaseGain = self.AnalogBaseGainDB.DB_0
-        #
-        # 1x4 (Camera Default)
+        # <p>1x4 (Camera Default)</p>
         self.deviceTapGeometry = self.DeviceTapGeometryEnum.GEOMETRY_1X4_1Y
 
         self.serialHandle = None
