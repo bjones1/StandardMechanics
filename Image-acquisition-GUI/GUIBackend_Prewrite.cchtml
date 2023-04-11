@@ -1,0 +1,66 @@
+<h1>GUI Backend Prewrite</h1>
+<h2>Porting Existing Grab Demo Functions to Python</h2>
+<p>The preexisting Grab Demo functions from the Sapera SDK can be referenced to
+    determine how to implement the new backend.&nbsp;<a
+        href="https://pythonnet.github.io/pythonnet/">Python.NET </a>can be
+    used to access Sapera's classes and functions within a Python script. A
+    table of the needed buttons and their corresponding functions within the
+    grab demo is shown below.&nbsp;</p>
+<table style="border-collapse: collapse; width: 100.031%; height: 212px;"
+    border="1">
+    <colgroup>
+        <col style="width: 49.9225%;">
+        <col style="width: 49.9225%;">
+    </colgroup>
+    <tbody>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Button</td>
+            <td style="height: 21.2px;">Function Name</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Snap</td>
+            <td style="height: 21.2px;">button_Snap_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Grab</td>
+            <td style="height: 21.2px;">button_Grab_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Freeze</td>
+            <td style="height: 21.2px;">button_Freeze_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Exit</td>
+            <td style="height: 21.2px;">button_Exit_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Load Config</td>
+            <td style="height: 21.2px;">button_LoadConfig_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Line Scan</td>
+            <td style="height: 21.2px;">Not included in C# Project</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Save</td>
+            <td style="height: 21.2px;">button_Save_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Load</td>
+            <td style="height: 21.2px;">button_Load_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">New</td>
+            <td style="height: 21.2px;">button_New_Click</td>
+        </tr>
+    </tbody>
+</table>
+<p>These functions can all be found within the <a
+        href="Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs">GrabDemoDlg.cs</a>
+    file. These are the functions that the grab demo GUI calls to perform the
+    actions and can be used for reference to determine how to perform the
+    needed actions within the new GUI. These functions are able to be directly
+    called from within a Python script after changing the functions to be
+    public as well. An example of calling one of these functions from a Python
+    script can be seen in the <a href="Python/grab_demo_testing.py">grab demo
+        Python</a> script.&nbsp;</p>
