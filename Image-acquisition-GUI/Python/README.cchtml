@@ -28,7 +28,7 @@
 </p>
 <p>&nbsp;</p>
 <h2>General Overview of the Project</h2>
-<p>Our job during this print was to explore reimplementing the "back-end" of
+<p>Our job during this sprint was to explore reimplementing the "back-end" of
     the Sapera Grab Demo into Python 3, in order to interface with the
     "front-end" team's rewrite of the LEAP program.<br><br>In general, we used
     <a href="http://pythonnet.github.io/">python.NET</a> Python module to load
@@ -40,10 +40,11 @@
     functionality found in the <a
         href="../Sapera-Demos/NET/GrabDemo/CSharp/GrabDemoDlg.cs">GrabDemoDlg.cs
         file</a>.</p>
-<p>These objects, then, can be used to ensure that the SDK is connected to the
+<p>These objects can then be used to ensure that the SDK is connected to the
     Sapera Server and also to provide the functionality of the buttons for the
     GUI.</p>
-<p>&nbsp;</p>
+<p>Our implementation can be found in the <a
+        href="grab_demo_testing.py">grab_demo_testing.py file</a>.&nbsp;</p>
 <h2>Buttons</h2>
 <p>The requested buttons for the new GUI are as follows:</p>
 <table style="border-collapse: collapse; width: 100.031%; height: 212px;"
@@ -78,7 +79,8 @@
             <td style="height: 21.2px;">button_LoadConfig_Click</td>
         </tr>
         <tr style="height: 21.2px;">
-            <td style="height: 21.2px;">Line Scan</td>
+            <td style="height: 21.2px;">Line Scan - Select/Deselect Trigger is
+                the only button needed within this modal</td>
             <td style="height: 21.2px;">Not included in C# Project</td>
         </tr>
         <tr style="height: 21.2px;">
@@ -101,8 +103,10 @@
     exists only in the <a
         href="../Sapera-Demos/Classes/Vc/GrabDemo/GrabDemoDlg.cpp">C++
         implementation of the Grab Demo</a>, and does not have a corresponding
-    C#/.NET function.</p>
-
-<p>As of 2023-04-07, we've run the above code on Dr. Leonard's hardware, and
-    confirmed that it all works correctly, and is ready for the next team to
-    continue work with.</p>
+    C#/.NET function. These are the functions that the grab demo GUI calls to
+    perform the actions and can be used for reference to determine how to
+    perform the needed actions within the new GUI backend.</p>
+<p><span style="background-color: rgb(251, 238, 184);">As of 2023-04-07, we've
+        run the above code on Dr. Leonard's hardware, and confirmed that it all
+        works correctly, and is ready for the next team to continue work
+        with.</span></p>
