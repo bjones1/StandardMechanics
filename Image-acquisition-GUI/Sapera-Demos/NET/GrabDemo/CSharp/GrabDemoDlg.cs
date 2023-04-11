@@ -256,7 +256,7 @@ namespace DALSA.SaperaLT.Demos.NET.CSharp.GrabDemo
             return true;
         }
 
-        //Call Destroy method
+        // <p><a id="DestroyObjects"></a>Call Destroy method</p>
         private void DestroyObjects()
         {
             if (m_Xfer != null && m_Xfer.Initialized)
@@ -268,7 +268,8 @@ namespace DALSA.SaperaLT.Demos.NET.CSharp.GrabDemo
             if (m_Acquisition != null && m_Acquisition.Initialized)
                 m_Acquisition.Destroy();
         }
-
+   
+        // <p><a id="DisposeObjects"></a>Call Dispose method</p>
         private void DisposeObjects()
         {
             if (m_Xfer != null)
