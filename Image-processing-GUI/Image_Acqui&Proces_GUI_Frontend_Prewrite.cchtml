@@ -125,3 +125,81 @@
     </tbody>
 </table>
 <p>&nbsp;</p>
+<h2>Temporary Section - Transition team response (04.11.23) [K. Farrar and M.
+    Nguyen]</h2>
+<p>Note: This new section has been created to stage notes ready for the
+    transition to new team members, Michael Nguyen and Kyler Farrar. Below are
+    the response for the following sprint required for project 2 task.&nbsp;
+</p>
+<p>&nbsp;</p>
+<p><strong>Project 2 task description, provide a detailed plan and posted as
+        prewriting in a readme.cchtml or similar file of the relevant
+        repository in Github, that:</strong></p>
+<p>1. Describes the feature you will add.&nbsp;We want to add the following
+    features to this project:</p>
+<p>&nbsp; &nbsp;A. Update the ReadMe.cchtml with hyperlinks to include: a
+    section in Table of Content, requirement.txt, Leap.py, New_Leap.py.</p>
+<p>&nbsp; &nbsp;B. We will include a scope of work section in the pre-writing
+    to identify the customer requirements</p>
+<p>&nbsp; &nbsp;C. New_GUI_Leap.py compiles and executes without any errors.
+    Leap.py does not compiles and is missing files. Resolve issues to compile
+    old GUI.</p>
+<p>&nbsp; &nbsp;D. Add header to New_GUI_Leap to address copyright and limited
+    distribution.</p>
+<p>&nbsp;</p>
+<p>2. Defines which repository/repositories your code will be added to.</p>
+<p>We will maintain a similar cadence as done for the Initialize Camera
+    Project. We plan to publish our changes within the mpn21 (Michael Nguyen)
+    GitHub account.&nbsp;</p>
+<p>&nbsp;</p>
+<p>3. Specifies what libraries, languages, and interfaces your code must work
+    with.</p>
+<p>The programming language utilized in this project is Python and possibly C#.
+    Python programming language is used to review the old GUI (Leap.py) and
+    design a new GUI for our customer, Standard Mechanics. Moreover, C#
+    interfaces with Sapera frame grabber SDK to acquire camera imagery function
+    calls. As a result, becoming familiar with C# may be required for this
+    project. The libraries involved in this project are tkinter, CustomTkinter,
+    and possibly Sapera SDK. In addition, Requirements.txt contained a list of
+    libraries identified for this project. &nbsp;</p>
+<p>Libraries identified within requirements.txt:</p>
+<pre>contourpy==1.0.7
+customtkinter==5.1.2
+cycler==0.11.0
+darkdetect==0.8.0
+fonttools==4.38.0
+kiwisolver==1.4.4
+matplotlib==3.7.0
+numpy==1.24.2
+opencv-python==4.7.0.68
+packaging==23.0
+pandas==1.5.3
+Pillow==9.4.0
+pyparsing==3.0.9
+python-dateutil==2.8.2
+pytz==2022.7.1
+scipy==1.10.1
+six==1.16.0<br><br></pre>
+<p>4. Details a series of steps you will follow to complete this feature.</p>
+<p>The steps to complete 1.A requires updating the pre-writing file and table
+    of contents.&nbsp;</p>
+<p>The steps to complete 1.B requires meeting with the previous team/customer
+    identify scope of work</p>
+<p>The steps to complete 1.C requires meeting with the previous team/customer
+    about the importance of each image file, such as logo and dialogue boxes
+    for printout statements.</p>
+<p>The steps to complete 1.D would be to modify the Standard Mechanics header
+    file from LEAP.py</p>
+<p>&nbsp;</p>
+<p>5. Defines tests to show the feature works correctly.</p>
+<p>Tests will not be required to validate features 1.A, 1.B and 1.D because
+    these features can be verified by observation. Moreover, the feature
+    identified in step 1.C would require the Python code to compile if the old
+    GUI is deemed necessary.&nbsp;</p>
+<p>&nbsp;</p>
+<p>6. Outlines goals for the draft pull request and final pull request.</p>
+<p>The goals for the draft pull request and final pull request to update will
+    be provided after the scope of work for this project is defined. &nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
