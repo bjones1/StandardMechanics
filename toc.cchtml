@@ -7,15 +7,37 @@
         <ol>
             <li><a href="Image-acquisition-GUI/Python/sapera_test.py">Python
                     implementation</a></li>
+            <li><a href="Image-acquisition-GUI/Python/README.cchtml">New GUI
+                    Backend</a>
+                <ol>
+                    <li><a
+                            href="Image-acquisition-GUI/Python/grab_demo_testing.py">Python
+                            Implementation</a></li>
+                </ol>
+            </li>
             <li><a href="Image-acquisition-GUI/Serial-Access/README.cchtml">Serial
                     Access</a></li>
         </ol>
     </li>
-    <li><a href="Image-processing-GUI/intro.cchtml">Image processing GUI</a>
+    <li><a href="toc.cchtml">Team Projects</a>
         <ol>
-            <li><a href="Image-processing-GUI/LEAP.py">LEAP</a></li>
+            <li>Facelift to the GUI</li>
+            <li><a href="Serial-Communications/README.cchtml">Initialize/confirm
+                    certain camera operating values</a>
+                <ol>
+                    <li><a
+                            href="Serial-Communications/CameraCommunications.py">Python
+                            Code</a></li>
+                </ol>
+            </li>
+            <li>&nbsp;<a href="Image-acquisition-GUI/Python/README.cchtml">Port
+                    Existing Grab Demo to Python</a>
+                <ol>
+                    <li><a
+                            href="Image-acquisition-GUI/Python/grab_demo_testing.py">Python
+                            Code</a></li>
+                </ol>
+            </li>
         </ol>
     </li>
-    <li><a href="datasheets/">Datasheets</a></li>
-    <li><a href="toc.cchtml">Table of contents</a></li>
 </ol>

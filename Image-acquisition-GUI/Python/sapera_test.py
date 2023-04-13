@@ -52,6 +52,8 @@ clr.AddReference("DALSA.SaperaLT.SapClassBasic")
 #     <code>DALSA.SaperaLT.SapClassBasic</code>.</p>
 from DALSA.SaperaLT.SapClassBasic import SapManager
 
+from DALSA.SaperaLT.SapClassBasic import SapAcquisition
+
 # <p>After the import, simply call functions. The following code would probably
 #     be ported from the existing C#/C++ code. Here, the initialization sequence
 #     in the existing code begins by looking for servers (frame grabbers) to
@@ -59,3 +61,16 @@ from DALSA.SaperaLT.SapClassBasic import SapManager
 #     (much) useful work.</p>
 num_servers = SapManager.GetServerCount(SapManager.ResourceType.Acq)
 print(num_servers)
+
+#print(dir(SapAcquisition.Prm))
+#print(SapAcquisition.Prm.ACQ_DEVICE_INDEX)
+print(SapAcquisition.Val)
+#print(dir(SapAcquisition.Val))
+print(SapAcquisition.Val.ACTIVE_HIGH)
+print(SapAcquisition.Val.INTERFACE_DIGITAL)
+#print(SapAcquisition.Val.DECIMATE_EVEN)
+#val = SapAcquisition.Val()
+#print(SapAcquisition.GetParameterType(SapAcquisition.Prm.ACQ_DEVICE_INDEX))
+#result = SapAcquisition.GetParameter(SapAcquisition.Prm.ACQ_DEVICE_INDEX, id(val))
+#print(result, val)
+print(SapAcquisition.SaveParameters("params.txt"))
