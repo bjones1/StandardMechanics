@@ -3,10 +3,20 @@
 <h2>Contents</h2>
 <ol>
     <li><a href="README.cchtml">Readme</a></li>
-    <li><a href="Image-acquisition-GUI/README.cchtml">Image acquisition GUI</a>
+    <li><a href="Image-acquisition-GUI/intro.cchtml">Image acquisition GUI</a>
         <ol>
             <li><a href="Image-acquisition-GUI/Python/sapera_test.py">Python
                     implementation</a></li>
+            <li><a href="Image-acquisition-GUI/Python/README.cchtml">New GUI
+                    Backend</a>
+                <ol>
+                    <li><a
+                            href="Image-acquisition-GUI/Python/grab_demo_testing.py">Python
+                            Implementation</a></li>
+                </ol>
+            </li>
+            <li><a href="Image-acquisition-GUI/Serial-Access/README.cchtml">Serial
+                    Access</a></li>
         </ol>
     </li>
     <li><a href="toc.cchtml">Team Projects</a>
@@ -19,9 +29,19 @@
                             Main.py</a></li>
                     <li><a href="Serial-Communications/SerialManager.py">Function
                             file - Serial Manager.py</a></li>
+                    <li><a
+                            href="Serial-Communications/CameraCommunications.py">Python
+                            Code</a></li>
                 </ol>
             </li>
-            <li>Add a menu option to send commands to the camera</li>
+            <li>&nbsp;<a href="Image-acquisition-GUI/Python/README.cchtml">Port
+                    Existing Grab Demo to Python</a>
+                <ol>
+                    <li><a
+                            href="Image-acquisition-GUI/Python/grab_demo_testing.py">Python
+                            Code</a></li>
+                </ol>
+            </li>
         </ol>
     </li>
 </ol>

@@ -1,0 +1,127 @@
+<h1 style="text-align: center;">Image Acquisition/Processing GUI Frontend
+    Prewrite</h1>
+<h2 style="text-align: center;">Create New GUI that combines the Image
+    Acquisition and Image Processing GUIs</h2>
+<p>This GUI is made from running Python code. This code requires the python
+    environment&nbsp;<a
+        href="https://github.com/TomSchimansky/CustomTkinter">CustomTkinter</a>
+    to be pip installed. This link is to the creator of CustomTkinter's Github
+    which contains all of the tutorials and examples you need regarding the
+    environment. Here is a direct <a
+        href="https://github.com/TomSchimansky/CustomTkinter/wiki">link</a> to
+    the functions that you may use. Also, the example with the most useful
+    information we found was <a
+        href="https://github.com/TomSchimansky/CustomTkinter/blob/master/examples/complex_example.py">complex_example.py</a>.
+    This has the radio buttons and other widgets that you may need to add as
+    seen in the Image Acquisition GUI Mock-up (Figure 2) below.</p>
+<p>The goal of this project is to create a new GUI for the camera device at <a
+        href="https://standardmechanics.com/">Standard Mechanics</a>. The New
+    GUI will use the Old Image Processing GUI (Figure 1) as the base on
+    startup. The updated functions of the Image Acquisition GUI Mock-up will be
+    accessible from a button click on the New GUI.&nbsp;&nbsp;</p>
+<p>Keep in mind, the code from the old LEAP.py (Figure 1) uses the environments
+    found in requirements.txt, which is found in the Image-processing-GUI
+    folder in the StandardMechanics Github. As of 4/11/2023, the code of
+    New_GUI_LEAP.py only needs the tkinter and customtkinter environments.</p>
+<table
+    style="border-collapse: collapse; width: 100%; height: 367.6px; border-width: 1px;"
+    border="1">
+    <colgroup>
+        <col style="width: 50.0199%;">
+        <col style="width: 50.0199%;">
+    </colgroup>
+    <tbody>
+        <tr style="height: 367.6px;">
+            <td style="height: 367.6px; border-width: 1px;">
+                <p style="text-align: center;"><strong>Old Image Processing
+                        GUI</strong></p>
+                <p style="text-align: center;"><strong><img
+                            title="Old Image Processing GUI" src="LEAP.png"
+                            alt="" width="500" height="300"></strong></p>
+                <p style="text-align: center;">&nbsp;</p>
+                <p style="text-align: center;"><strong>Figure 1</strong></p>
+            </td>
+            <td style="height: 367.6px; border-width: 1px;">
+                <p style="text-align: center;"><strong>Image Acquisition GUI
+                        Mock-up</strong></p>
+                <p style="text-align: center;"><strong><img title="GUI mock-up"
+                            src="GUI_mockup.png" width="500"
+                            height="300"></strong></p>
+                <p style="text-align: center;"><strong>Figure 2</strong></p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p style="text-align: center;"><strong>New Image Acquisition/Processing GUI
+        Prototype</strong></p>
+<p style="text-align: center;"><img title="Image Processing"
+        src="Current_GUI_1.jpg" width="559" height="164"></p>
+<p style="text-align: center;">The GUI above needs an image between the
+    "Calibrate Dist" and "White Level" to push the columns apart.</p>
+<p style="text-align: center;">Both GUIs have yet to add all widgets needed.
+</p>
+<p style="text-align: center;"><img title="Image Acquisition"
+        src="Current_GUI_2.jpg" width="731" height="133"></p>
+<h2>Helpful Tips:</h2>
+<p>GUIs built using tkinter revolves around placing widgets on a grid. Below is
+    an example of a grid with widgets (found in this <a
+        href="https://www.pythonguis.com/tutorials/create-ui-with-tkinter-grid-layout-manager/">link</a>).
+    Let's say a widget is place on column 1 and another widget is placed on
+    column 5, however, there aren't any widgets placed on the columns between.
+    This will cause columns 2, 3, &amp; 4 to collapse and columns 1 &amp; 5
+    will come together. The customtkinter Github has some examples that uses
+    rowspan and columnspan to help fill gaps as you see below for Widget 2, 3,
+    and more.</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;"
+        title="Widget Guide" src="Widget_Guide.png"></p>
+<h2>Notes of New GUI:</h2>
+<p><span style="text-decoration: underline;"><strong>4/5/2023</strong></span>
+</p>
+<p>The new GUI file is called New_GUI_LEAP.py and can be found in the
+    Image-processing folder of the StandardMechanics Github.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt;"><strong>Progress Logs:</strong></span></p>
+<table style="border-collapse: collapse; width: 84.3238%; height: 309px;"
+    border="1">
+    <colgroup>
+        <col style="width: 9.00024%;">
+        <col style="width: 15.4464%;">
+        <col style="width: 17.6356%;">
+        <col style="width: 24.8115%;">
+        <col style="width: 22.1357%;">
+        <col style="width: 10.9462%;">
+    </colgroup>
+    <tbody>
+        <tr style="height: 24.825px;">
+            <td style="text-align: center; height: 24.825px;">
+                <strong>Date</strong></td>
+            <td style="text-align: center; height: 24.825px;">
+                <strong>Developer</strong></td>
+            <td style="text-align: center; height: 24.825px;">
+                <strong>Contact</strong></td>
+            <td style="text-align: center; height: 24.825px;">
+                <strong>Description</strong></td>
+            <td style="text-align: center;"><strong>To Do</strong></td>
+            <td style="text-align: center;"><strong>Notes</strong></td>
+        </tr>
+        <tr style="height: 46.375px;">
+            <td style="text-align: center; height: 46.375px;">4/6/2023</td>
+            <td style="text-align: center; height: 46.375px;">Kaishu Thomas
+            </td>
+            <td style="text-align: center; height: 46.375px;">
+                knt192@msstate.edu</td>
+            <td style="text-align: center; height: 46.375px;">New_GUI has two
+                frames that can be swapped using a button press&nbsp;</td>
+            <td style="text-align: center;">
+                <p>Place an image widget in the GUI</p>
+                <p>Add other buttons and their functions on both Frames</p>
+                <p>General widget placement changes if necessary</p>
+            </td>
+            <td style="text-align: center;">
+                <p>The GUI may appear collapsed, this is due a picture being
+                    needed between certain widgets.&nbsp;</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
