@@ -1,0 +1,177 @@
+<h1 style="text-align: center;"><span style="color: rgb(35, 111, 161);">Project
+        2 Description of the LEAP "Back End" Implementation in Python</span>
+</h1>
+<h3>Sprint 1 Developers:</h3>
+<p>Kenzie Ellenberger: <a
+        href="mailto:mde168@msstate.edu">mde168@msstate.edu</a></p>
+<p>Clark Hensley: <a href="mailto:ch3136@msstate.edu">ch3136@msstate.edu</a>
+</p>
+<p>&nbsp;</p>
+<h2>Features to Add</h2>
+<p><span style="background-color: rgb(251, 238, 184);">"Our job during this
+        sprint was to explore reimplementing the "back-end" of the Sapera Grab
+        Demo into Python 3, in order to interface with the "front-end" team's
+        rewrite of the LEAP program." - Kenzie and Clark's README.cchtml</span>
+</p>
+<p>This is the general idea of what Kenzie and Clark worked on. Also, this
+    describes what we will try add on to.</p>
+<ol class="scrollerInner-2PPAp2" tabindex="0" role="list"
+    aria-label="Messages in " data-list-id="chat-messages">
+    <li id="chat-messages-1088477443871998103-1097721929663774761"
+        class="messageListItem-ZZ7v6g" aria-setsize="-1">
+        <div class="message-2CShn3 cozyMessage-1DWF9U wrapper-30-Nkg cozy-VmLDNB zalgo-26OfGz"
+            tabindex="-1" role="article"
+            data-list-item-id="chat-messages___chat-messages-1088477443871998103-1097721929663774761"
+            aria-setsize="-1" aria-roledescription="Message"
+            aria-labelledby="message-username-1097721858687770664 uid_1 message-content-1097721929663774761 uid_2 message-timestamp-1097721929663774761">
+            <div class="contents-2MsGLg">
+                <div id="message-content-1097721929663774761"
+                    class="markup-eYLPri messageContent-2t3eCI">Look into
+                    porting AcqConfigDlg() into Python with the config file
+                    provided by Dr. Leonard automatically used. Reformat code
+                    to be able to be used by new GUI Follow along the path in
+                    GrabDemoDlg.cs that is called from main() from GrabDemo.cs
+                    as previously described. Currently, this Python script goes
+                    through most of it, but there may be missing sections &amp;
+                    needs to be double-checked to ensure proper functionality.
+                    Some of the functions need to be moved around &amp; called
+                    from different locations such as the EnableSignalStatus()
+                    function should be called from within the
+                    CreateNewObjects() function, but is currently just called
+                    from the main section.</div>
+                <div class="markup-eYLPri messageContent-2t3eCI">&nbsp;</div>
+            </div>
+            <div class="buttonContainer-1502pf">
+                <div class="buttons-3dF5Kd container-2gUZhU" role="group"
+                    aria-label="Message Actions">&nbsp;</div>
+            </div>
+        </div>
+    </li>
+    <li id="chat-messages-1088477443871998103-1097721970738614342"
+        class="messageListItem-ZZ7v6g" aria-setsize="-1">
+        <div class="message-2CShn3 cozyMessage-1DWF9U wrapper-30-Nkg cozy-VmLDNB zalgo-26OfGz"
+            tabindex="-1" role="article"
+            data-list-item-id="chat-messages___chat-messages-1088477443871998103-1097721970738614342"
+            aria-setsize="-1" aria-roledescription="Message"
+            aria-labelledby="message-username-1097721858687770664 uid_1 message-content-1097721970738614342 uid_2 message-timestamp-1097721970738614342">
+            <div class="contents-2MsGLg">
+                <div id="message-content-1097721970738614342"
+                    class="markup-eYLPri messageContent-2t3eCI">Implement error
+                    handling for failures. This should just be simple calls to
+                    DestoryObjects() and DisposeObjects() mostly. The
+                    CreateNewObjects() function should return a boolean value
+                    depending on if the connections are made successfully. Same
+                    for CreateObjects(), it returns a boolean depending on
+                    success/failure. Currently, there are a lot of errors if
+                    you are testing with no hardware.&nbsp; Split the
+                    CreateObjects() function out of CreateNewObjects() function
+                    within this script so that it can properly handle failures
+                    and know when to call DisposeObjects(). This will follow
+                    how it is currently already implemented within the C# grab
+                    demo so we should be able to just follow how it is
+                    implemented there.&nbsp;</div>
+                <div class="markup-eYLPri messageContent-2t3eCI">&nbsp;</div>
+                <div class="markup-eYLPri messageContent-2t3eCI">Implement
+                    functions for button presses, and ensure that these can be
+                    directly called from the new GUI. Look further into how to
+                    implement the select/deselect trigger function within the
+                    Line Scan Modal. As Dr. Leonard said, this is the only
+                    function he uses within this modal. This function is not
+                    within the C# Grab demo implementation and can be found
+                    within the C++ implementation of the Grab Demo.</div>
+            </div>
+        </div>
+    </li>
+</ol>
+<p><br>Our updates will stay in the same folder as Kenzie and Clark's code.
+    These will first get pushed to&nbsp;<a
+        href="https://github.com/Chaosking1623/StandardMechanics"> Kaishu's
+        branch </a>of Dr. Jones's <a
+        href="https://github.com/bjones1/StandardMechanics">Standard Mechanics
+        github repository</a>. Hopefully our changes will meet the requirements
+    to then have a pull request go through to update Dr. Jones's github
+    repository.</p>
+<h2>Libraries and Languages</h2>
+<p>Our coding will be in Python, however, we must be able to read the C# and
+    C++ code that is used for the previous GrabDemos.&nbsp;</p>
+<p>Kenzie and Clark mentioned that they used the <a
+        href="http://pythonnet.github.io/">python.NET</a> Python module to load
+    and the Sapera SDK to interface with the Sapera server. We will make sure
+    to follow suit as we add more functions to the code.</p>
+<p>Instantiating .NET objects within Python will allow us to ensure that the
+    SDK is connected to the Sapera Server and also to provide the functionality
+    of the buttons for the GUI.</p>
+<h2>Buttons and Testing</h2>
+<p>The requested buttons for the new GUI are as follows:</p>
+<table style="border-collapse: collapse; width: 100.031%; height: 212px;"
+    border="1">
+    <colgroup>
+        <col style="width: 49.9225%;">
+        <col style="width: 49.9225%;">
+    </colgroup>
+    <tbody>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Button</td>
+            <td style="height: 21.2px;">Function Name</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Snap</td>
+            <td style="height: 21.2px;">button_Snap_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Grab</td>
+            <td style="height: 21.2px;">button_Grab_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Freeze</td>
+            <td style="height: 21.2px;">button_Freeze_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Exit</td>
+            <td style="height: 21.2px;">button_Exit_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Load Config</td>
+            <td style="height: 21.2px;">button_LoadConfig_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Line Scan - Select/Deselect Trigger is
+                the only button needed within this modal</td>
+            <td style="height: 21.2px;">Not included in C# Project</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Save</td>
+            <td style="height: 21.2px;">button_Save_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">Load</td>
+            <td style="height: 21.2px;">button_Load_Click</td>
+        </tr>
+        <tr style="height: 21.2px;">
+            <td style="height: 21.2px;">New</td>
+            <td style="height: 21.2px;">button_New_Click</td>
+        </tr>
+    </tbody>
+</table>
+<p>Kenzie and Clark listed the buttons that come from the&nbsp; <a
+        href="../Sapera-Demos/NET/GrabDemo/CSharp/GrabDemoDlg.cs">GrabDemoDlg.cs
+        file</a>&nbsp;and&nbsp;<a
+        href="../Sapera-Demos/Classes/Vc/GrabDemo/GrabDemoDlg.cpp">C++
+        implementation of the Grab Demo</a>.</p>
+<p><span style="background-color: rgb(251, 238, 184);">As of 2023-04-07, we've
+        run the above code on Dr. Leonard's hardware, and confirmed that it all
+        works correctly, and is ready for the next team to continue work
+        with.</span></p>
+<p>Our tests will work similarly. We won't change anything that could break the
+    current code and just try to add functions that will work as well.&nbsp;
+</p>
+<h2>Goals</h2>
+<p>Our goal for the draft pull request is to have the EnableSignalStatus()
+    function be called from within the CreateNewObjects(). Also, we will start
+    porting the AcqConfigDlg() into Python. Overall, we should have implemented
+    a few more functions to the Python code.</p>
+<p>Our goal for the final pull request is to have implemented error handling
+    and that this code is very close to completed with minor adjustments. Of
+    course, once everything is put together (the GUI and the backend code) then
+    they should work together, but there is potential for something to not be
+    connected correctly.</p>
