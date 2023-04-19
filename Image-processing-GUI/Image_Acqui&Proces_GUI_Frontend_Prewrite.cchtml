@@ -1,9 +1,169 @@
 <h1 style="text-align: center;">Image Acquisition/Processing GUI Frontend
     Prewrite</h1>
+<h3>Contact Information</h3>
+<p>This project is under the supervision of Dr. Jones and requires interactions
+    with the customer, Dr. Leonard. Furthermore, the interactions among team
+    members are essential to successful collaboration within this project.
+    Below is the contact information for those involved in this project.</p>
+<table
+    style="border-collapse: collapse; width: 84.5007%; height: 220.667px; border-width: 1px; margin-left: auto; margin-right: auto;"
+    border="1">
+    <colgroup>
+        <col style="width: 17.4576%;">
+        <col style="width: 29.0457%;">
+        <col style="width: 53.5782%;">
+    </colgroup>
+    <tbody>
+        <tr style="height: 39px;">
+            <td style="height: 39px; text-align: left; border-width: 1px;">Name
+                (First Last)</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">Role
+            </td>
+            <td style="height: 39px; text-align: left; border-width: 1px;">
+                Perferred Contact&nbsp;&nbsp;</td>
+        </tr>
+        <tr style="height: 39px;">
+            <td style="text-align: left; border-width: 1px; height: 39px;">Dr.
+                Trey Leonard</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                Customer</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                trey@standardmechanics.com</td>
+        </tr>
+        <tr style="height: 39px;">
+            <td style="text-align: left; border-width: 1px; height: 39px;">Dr.
+                Bryan Jones</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                Professor and Technical Advisor</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                bjones@ece.msstate.edu</td>
+        </tr>
+        <tr style="height: 21.5556px;">
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Kaishu</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Developer</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                &nbsp;</td>
+        </tr>
+        <tr style="height: 21.5556px;">
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Cooper</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Developer</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                &nbsp;</td>
+        </tr>
+        <tr style="height: 39px;">
+            <td style="height: 39px; text-align: left; border-width: 1px;">
+                Michael Nguyen</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                Developer</td>
+            <td style="height: 39px; text-align: left; border-width: 1px;">
+                mpn21msstate@gmail.com</td>
+        </tr>
+        <tr style="height: 21.5556px;">
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Kyler Farrar</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Developer</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                kaf386@msstate.edu</td>
+        </tr>
+    </tbody>
+</table>
+<p style="text-align: center;">Table 1.0 - Main Point of Contacts (POC) listing
+</p>
+<h2 style="text-align: left;">Scope of Work</h2>
+<p>This section aims to itemize the effort to complete this project. Below is a
+    list of&nbsp; task organized as adminstrative and technical efforts for the
+    purpose of improving the current workflow employed by Standard Mechanics.
+</p>
+<p><strong>1.1 Adminstrative Tasks</strong></p>
+<p>1.1.A. Update the ReadMe.cchtml to include: Table of Content hyperlinks,
+    requirement.txt hyperlinks, Leap.py hyperlinks, New_Leap.py hyperlinks, and
+    Workflow statement</p>
+<p>1.1.B. We will include a scope of work section in the pre-writing to
+    identify the customer requirements</p>
+<p>1.1.B.1. Discuss about the task concentrated on the Goal to implement the
+    Image Acquistion feature</p>
+<p>1.1.B.2. Discuss about the task to integrate Camera Init features in the GUI
+</p>
+<p>1.1.C. Modify code to show coorespondance between New GUI (LEAP.py) and Old
+    GUI ( New_GUI_Leap.py)</p>
+<p>1.1.C.1. New GUI compiles and executes without any errors. Old GUI - Leap.py
+    does not compiles and is missing files</p>
+<p>1.1.C.2. Include a copywrite or limited distribution in the comment header
+</p>
+<p><strong>1.2. Technical Tasks</strong></p>
+<p>The technical tasks for this section are categorized as Image <em>Acquistion
+    </em>and Image <em>Processing</em>.&nbsp;</p>
+<p>1.2.A. Image&nbsp;<em>Acquistion</em> Collaboration</p>
+<p>1.2.A.1. Complete remaining tasks identified by previvous team members, "The
+    GUI above needs an image between the "Calibrate Dist" and "White Level" to
+    push the columns apart."&nbsp;</p>
+<p>1.2.A.2 Integrate our code for Camera Init with COM PORT dialogue box.&nbsp;
+</p>
+<p>1.2.B. Image <em>Processing </em>Collaboration</p>
+<p>1.2.B.1. Make ready widgets/functions from Old GUI</p>
+<p>1.2.B.2. Collaborate with the Image Processing test to incorporate their
+    tested features</p>
+<p>&nbsp;</p>
 <h2 style="text-align: center;">Create New GUI that combines the Image
     Acquisition and Image Processing GUIs</h2>
-<p>This GUI is made from running Python code. This code requires the python
-    environment&nbsp;<a
+<p>This project aims to improve the current workflow employed by Standard
+    Mechanics when conducting experimentation on their Hopkin's Bar Measurement
+    test bench. Currently, Standard Mechanic's test bench requires interfacing
+    with several software suites, such as the control tool, Sapera, xyz, and
+    Leap. Their workflow is constantly interrupted by having to move from one
+    software to another, utilizing a particular function from a software suite
+    and then relying on the next toolset for a specific feature, and so on.
+    Below is a list of software one may interface with during the
+    testing.&nbsp;</p>
+<table
+    style="border-collapse: collapse; width: 67.153%; border-width: 1px; margin-left: auto; margin-right: auto;"
+    border="1">
+    <colgroup>
+        <col style="width: 24.2971%;">
+        <col style="width: 75.7123%;">
+    </colgroup>
+    <tbody>
+        <tr>
+            <td style="border-width: 1px;"><strong>Software&nbsp;</strong></td>
+            <td style="text-align: left; border-width: 1px;">
+                <strong>Purpose</strong></td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">Control Tool</td>
+            <td style="border-width: 1px;">Manufacture software to control JAI
+                Camera</td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">Sapera</td>
+            <td style="border-width: 1px;">Manufacture software used to obtain
+                Camera Imagery</td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">Leap</td>
+            <td style="border-width: 1px;">Custom software developed by
+                Standard Mechanics for custom image processing algorithm</td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<p>A custom GUI containing specific features will be necessary to improve the
+    workflow to minimize interruptions and allow for a one-stop shop interface
+    for the test bench. This GUI is made from running Python code. This code
+    requires the python environment&nbsp;<a
         href="https://github.com/TomSchimansky/CustomTkinter">CustomTkinter</a>
     to be pip installed. This link is to the creator of CustomTkinter's Github
     which contains all of the tutorials and examples you need regarding the
@@ -62,6 +222,82 @@
 </p>
 <p style="text-align: center;"><img title="Image Acquisition"
         src="Current_GUI_2.jpg" width="731" height="133"></p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;">&nbsp;</p>
+<table
+    style="border-collapse: collapse; width: 56.2977%; border-width: 1px; margin-left: auto; margin-right: auto;"
+    border="1">
+    <colgroup>
+        <col style="width: 41.9271%;">
+        <col style="width: 58.1095%;">
+    </colgroup>
+    <tbody>
+        <tr>
+            <td style="text-align: center; border-width: 1px;">Current Camera
+                Configuration workflow</td>
+            <td style="text-align: center; border-width: 1px;">Improved
+                workflow interface</td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">
+                <p style="text-align: center;">Control Tool Software&nbsp;</p>
+                <p>1. Configure High Speed Camera COM Port:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="ControlTool_1.png" alt="" width="346"
+                        height="376"></p>
+                <p>&nbsp;</p>
+                <p>2. Configure High Speed Camera COM Specs:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="ControlTool_3.PNG" alt="" width="615"
+                        height="397"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>3. Configure High Speed Camera Settings:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="ControlTool_2.png" alt="" width="624"
+                        height="388"></p>
+            </td>
+            <td style="border-width: 1px; text-align: left;">
+                <p>1. Select COM Port:&nbsp;</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="Example_1.png" alt="" width="821" height="164">
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;2. Select Baudrate:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="Example_2.png" alt="" width="820" height="218">
+                </p>
+                <p>&nbsp;</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="Example_3.PNG" alt="" width="940" height="155">
+                </p>
+                <p>&nbsp;<a
+                        href="https://pythonassets.com/posts/drop-down-list-combobox-in-tk-tkinter/">TKinter
+                        combo box</a> was used to create the drop down
+                    selection menu.</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>3. Configure High Speed Camera Settings:</p>
+                <p><span style="background-color: rgb(45, 194, 107);">(In
+                        working progress)</span></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>&nbsp;</h2>
 <h2>Helpful Tips:</h2>
 <p>GUIs built using tkinter revolves around placing widgets on a grid. Below is
     an example of a grid with widgets (found in this <a
