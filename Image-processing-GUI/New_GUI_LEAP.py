@@ -110,6 +110,22 @@ class App(customtkinter.CTk):
         self.pix2dist = customtkinter.CTkEntry(self.img_proc_frame, placeholder_text='Run Calibration')
         self.pix2dist.grid(row = 7, column = 6)
     
+        #create ComPort dropdown
+        self.ComPort_label = customtkinter.CTkLabel(self.img_proc_frame, text = "  COM PORT: ", font=('Arial Black', 14))
+        self.ComPort_label.grid(row=1, column = 7)
+        self.ComPort_combo = customtkinter.CTkComboBox(self.img_proc_frame, state="readonly", values=["COM 1", "COM 2", "COM 3", "COM 4", "COM 5"])
+        self.ComPort_combo.grid(row=1, column = 8)
+
+        #create Baudrate dropdown
+        self.baudrate_label = customtkinter.CTkLabel(self.img_proc_frame, text = "  Baud Rate (bps): ", font=('Arial Black',14))
+        self.baudrate_label.grid(row=2, column = 7)
+        self.baudrate_combo = customtkinter.CTkComboBox(self.img_proc_frame, state="readonly", values=["9600", "19200", "38400", "57600", "115200"])
+        self.baudrate_combo.grid(row=2, column = 8)
+
+        self.config_camera_com = customtkinter.CTkButton(self.img_proc_frame, command=self.sidebar_button_event)
+        self.config_camera_com.grid(row=3, column=8, padx=10, pady=10)
+        self.config_camera_com.configure(text="Set Camera COM & Baud Rate")
+
         ################################################################################################
         # Create Image Acquisition frame, buttons created below should be attached to this frame
         self.img_acq_frame = customtkinter.CTkFrame(self, corner_radius=0, fg_color="transparent")
