@@ -125,3 +125,105 @@
     </tbody>
 </table>
 <p>&nbsp;</p>
+<h2>Temporary Section - Transition team response (04.11.23) [K. Farrar and M.
+    Nguyen]</h2>
+<p>Note: This new section has been created to stage notes ready for the
+    transition to new team members, Michael Nguyen and Kyler Farrar. Below are
+    the response for the following sprint required for project 2 task.&nbsp;
+</p>
+<p>&nbsp;</p>
+<p><strong>Project 2 task description, provide a detailed plan and posted as
+        prewriting in a readme.cchtml or similar file of the relevant
+        repository in Github, that:</strong></p>
+<p>1. Describes the feature you will add.&nbsp;</p>
+<p>We want to add the following features to this project, categorized and
+    placed two separate bins, Adminstrative and Technical Tasks:</p>
+<p><strong>1.1 Adminstrative Tasks</strong></p>
+<p>1.1.A. Update the ReadMe.cchtml to include: Table of Content hyperlinks,
+    requirement.txt hyperlinks, Leap.py hyperlinks, New_Leap.py hyperlinks, and
+    Workflow statement</p>
+<p>1.1.B. We will include a scope of work section in the pre-writing to
+    identify the customer requirements</p>
+<p>1.1.B.1. Discuss about the task concentrated on the Goal to implement the
+    Image Acquistion feature</p>
+<p>1.1.B.2. Discuss about the task to integrate Camera Init features in the GUI
+</p>
+<p>1.1.C. Modify code to show coorespondance between New GUI (LEAP.py) and Old
+    GUI ( New_GUI_Leap.py)</p>
+<p>1.1.C.1. New GUI compiles and executes without any errors. Old GUI - Leap.py
+    does not compiles and is missing files</p>
+<p>1.1.C.2. Include a copywrite or limited distribution in the comment header
+</p>
+<p><strong>1.2. Technical Tasks</strong></p>
+<p>The technical tasks for this section are categorized as Image <em>Acquistion
+    </em>and Image <em>Processing</em>.&nbsp;</p>
+<p>1.2.A. Image&nbsp;<em>Acquistion</em> Collaboration</p>
+<p>1.2.A.1. Complete remaining tasks identified by previvous team members, "The
+    GUI above needs an image between the "Calibrate Dist" and "White Level" to
+    push the columns apart."&nbsp;</p>
+<p>1.2.A.2 Integrate our code for Camera Init with COM PORT dialogue box.&nbsp;
+</p>
+<p>1.2.B. Image <em>Processing </em>Collaboration</p>
+<p>1.2.B.1. Make ready widgets/functions from Old GUI</p>
+<p>1.2.B.2. Collaborate with the Image Processing test to incorporate their
+    tested features</p>
+<p>&nbsp;</p>
+<p>2. Defines which repository/repositories your code will be added to.</p>
+<p>We will maintain a similar cadence as done for the Initialize Camera
+    Project. We plan to publish our changes within the mpn21 (Michael Nguyen)
+    GitHub account.&nbsp;</p>
+<p>&nbsp;</p>
+<p>3. Specifies what libraries, languages, and interfaces your code must work
+    with.</p>
+<p>The programming language utilized in this project is Python and possibly C#.
+    Python programming language is used to review the old GUI (Leap.py) and
+    design a new GUI for our customer, Standard Mechanics. Moreover, C#
+    interfaces with Sapera frame grabber SDK to acquire camera imagery function
+    calls. As a result, becoming familiar with C# may be required for this
+    project. The libraries involved in this project are tkinter, CustomTkinter,
+    and possibly Sapera SDK. In addition, Requirements.txt contained a list of
+    libraries identified for this project. &nbsp;</p>
+<p>Libraries identified within requirements.txt:</p>
+<pre>contourpy==1.0.7
+customtkinter==5.1.2
+cycler==0.11.0
+darkdetect==0.8.0
+fonttools==4.38.0
+kiwisolver==1.4.4
+matplotlib==3.7.0
+numpy==1.24.2
+opencv-python==4.7.0.68
+packaging==23.0
+pandas==1.5.3
+Pillow==9.4.0
+pyparsing==3.0.9
+python-dateutil==2.8.2
+pytz==2022.7.1
+scipy==1.10.1
+six==1.16.0<br><br></pre>
+<p>4. Details a series of steps you will follow to complete this feature.</p>
+<p>Adminstrative Tasks: For 1.1.A and 1.1.B tasks, the steps to complete are to
+    update the pre-writing file and table of contents hyperlinks. Moreover,
+    task 1.1.C will require meeting with the previous team/customer to
+    understand about image file, such as logo and dialogue boxes for printout
+    statements and function call outlined in the Leap.py/Old GUI.&nbsp;</p>
+<p>Technical Tasks:<strong>&nbsp;</strong>For the 1.2.A task, code must be
+    modified to incorporate the image widget and com port print dialogue box.
+    Moreover, tasks 1.2.B would require updates from the impage processing team
+    via sprint or separate meeting to discuss the inclusion of their
+    features.&nbsp;</p>
+<p>5. Defines tests to show the feature works correctly.</p>
+<p>Adminstrative Tasks: Besides the 1.C.1. task, tests will not be required to
+    verify the features identified in tasks 1.A, 1.B and 1.C because these
+    features can be validated by inspection.&nbsp;&nbsp;</p>
+<p>Technical Tasks: Tasks in 1.2 will require both integration and testing
+    events to ensure that the functionality of the equal or enhance capability
+    as of old GUI features. Scheduling with our customer is a must to ensure
+    that we can deliver/sell off features or release a software.&nbsp;</p>
+<p>6. Outlines goals for the draft pull request and final pull request.</p>
+<p>The goals for the draft pull request is to complete tasks identified in
+    section 1.1 and final pull request is to include work accomplished for
+    section 1.2. &nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
