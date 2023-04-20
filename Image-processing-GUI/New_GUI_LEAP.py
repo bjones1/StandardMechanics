@@ -135,7 +135,7 @@ class App(customtkinter.CTk):
 
         # Create Baudrate dropdown
         self.baudrate_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Baud Rate (bps): ", font=('Arial Black', 14))
+            self.img_proc_frame, text="Baud Rate (bps): ", font=('Arial Black', 14), anchor="e")
         self.baudrate_label.grid(row=1, column=7)
         self.baudrate_combo = customtkinter.CTkComboBox(self.img_proc_frame, state="readonly", values=[
                                                         "9600", "19200", "38400", "57600", "115200"])
