@@ -4,6 +4,7 @@ import tkinter.filedialog
 import customtkinter
 from SerialManager import JAISerial
 import cv2
+from PIL import Image, ImageTk
 
 # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_appearance_mode("Dark")
@@ -29,158 +30,38 @@ class App(customtkinter.CTk):
 
         # configure grid layout (weight = 0, the default, means the row/column only be as big to fit the widget inside.
         #  weight = 1 will have the row/column expand
-        self.grid_columnconfigure((1, 2, 3, 4, 5), weight=1)
-
+        self.grid_columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8), weight=1)
 
         # create sidebar frame; 'sticky = "nsew"' makes it so the sidebar sticks to the specified edges of the cell it's in
         # n = north, s = south, e = east, w = west
-        self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
-        self.sidebar_frame.grid(row=0, column=0, sticky="new")
-        self.sidebar_frame.grid_rowconfigure(4, weight=1)
+        self.topbar_frame = customtkinter.CTkFrame(self, corner_radius=0)
+        self.topbar_frame.grid(row=0, column=0, columnspan=6, sticky="new")
+        self.topbar_frame.grid_rowconfigure(4, weight=1)
+        self.topbar_frame.configure(bg_color="black")
 
         # Place the label Standard Mechanics
         # padx and pady creates space between the widget and the wall of the cell it occupies
-        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="Standard Mechanics", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logo_label = customtkinter.CTkLabel(self.topbar_frame, text="Standard Mechanics", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
         # The buttons that allows switching frames between Image Acquisition and Image Processing
-        self.swap_frame_buttons = customtkinter.CTkSegmentedButton(self.sidebar_frame)
-        self.swap_frame_buttons.configure(values=["Image Processing", "Image Acquisition"], command=self.swap_frame_button_callback)
-        self.swap_frame_buttons.grid(
-            row=1, column=0, padx=(10, 10), pady=(10, 10))
+        self.swap_frame_buttons = customtkinter.CTkSegmentedButton(self.topbar_frame)
+        self.swap_frame_buttons.configure(values=["Image Processing", "Image Acquisition", "Serial Configuration"], command=self.select_frame_by_name)
+
+        # Swap Frame Buttons Should be on the far right of the sidebar
+        self.swap_frame_buttons.grid(row=0, column=1, padx=20, pady=(20, 10), sticky="e")
         self.swap_frame_buttons.set("Image Processing")
 
-        ################################################################################################
-        # Create Image Processing frame, buttons created below should be attached to this frame
-        self.img_proc_frame = customtkinter.CTkFrame(
-            self, corner_radius=0, fg_color="transparent")
-        # Brings up the frame on startup (This GUI frame is starts on 1 column over from the sidebar
+        # Setup Image Processing Frame
+        self.image_processing_frame = ImageProcessingFrame(self, corner_radius=0)
+
+        # Setup Image Acquisition Frame
+        self.image_acquisition_frame = ImageAcquistionFrame(self, corner_radius=0)
+
+        # Brings up the Image Processing Frame on startup (This GUI frame is starts on 1 row below the top bar)
         # So buttons placed on this specific frame may start on column 0 to start at the beginning of this frame)
-        self.img_proc_frame.grid(row=0, column=1, sticky="nsew")
-
-        # create select image button. Placeholder command is set to sidebar_button_event
-        self.select_image = customtkinter.CTkButton(
-            self.img_proc_frame, command=self.image_processing_select_image)
-        self.select_image.grid(row=1, column=0, padx=10, pady=10)
-        self.select_image.configure(text="Select Image")
-
-        # create reset tool button
-        self.reset_tool = customtkinter.CTkButton(
-            self.img_proc_frame, command=self.image_processing_reset_tool, state="disabled")
-        self.reset_tool.grid(row=2, column=0, padx=10, pady=10)
-        self.reset_tool.configure(text="Reset Tool")
-
-        # create calibrate distance button
-        self.calibrate_dist = customtkinter.CTkButton(
-            self.img_proc_frame, command=self.sidebar_button_event, state="disabled")
-        self.calibrate_dist.grid(row=3, column=0, padx=10, pady=10)
-        self.calibrate_dist.configure(text="Calibrate Dist")
-
-        # create make video button
-        self.make_video = customtkinter.CTkButton(
-            self.img_proc_frame, command=self.sidebar_button_event, state="disabled")
-        self.make_video.grid(row=4, column=0, padx=10, pady=10)
-        self.make_video.configure(text="Make Video")
-
-        # Set entry labels
-        self.linerate_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Line Rate (/s)", font=('Arial Black', 14))
-        self.linerate_label.grid(row=1, column=5)
-        self.line_rate = customtkinter.CTkEntry(
-            self.img_proc_frame, placeholder_text='Lines/s')
-        self.line_rate.grid(row=1, column=6)
-        self.line_rate.bind("<Return>", self.serial_configuration_set_linerate)
-
-        self.black_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Black Level", font=('Arial Black', 14))
-        self.black_label.grid(row=2, column=5)
-        self.black_level = customtkinter.CTkEntry(self.img_proc_frame)
-        self.black_level.insert(0, '50')  # Places initial value
-        self.black_level.grid(row=2, column=6)
-
-        self.white_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="White Level", font=('Arial Black', 14))
-        self.white_label.grid(row=3, column=5)
-        self.white_level = customtkinter.CTkEntry(self.img_proc_frame)
-        self.white_level.insert(0, '200')
-        self.white_level.grid(row=3, column=6)
-
-        self.threshold_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Threshold", font=('Arial Black', 14), anchor='e')
-        self.threshold_label.grid(row=4, column=5)
-        self.threshold = customtkinter.CTkEntry(self.img_proc_frame)
-        self.threshold.insert(0, '125')
-        self.threshold.grid(row=4, column=6)
-
-        self.lineLimit_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Line Limit", font=('Arial Black', 14))
-        self.lineLimit_label.grid(row=5, column=5)
-        self.line_limit = customtkinter.CTkEntry(self.img_proc_frame)
-        self.line_limit.grid(row=5, column=6)
-
-        self.blurradius_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Blur Radius (pix)", font=('Arial Black', 14))
-        self.blurradius_label.grid(row=6, column=5)
-        self.blur_radius = customtkinter.CTkEntry(self.img_proc_frame)
-        self.blur_radius.insert(0, '5')
-        self.blur_radius.grid(row=6, column=6)
-
-        self.pix2dist_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Distance/Pix (um)", font=('Arial Black', 14))
-        self.pix2dist_label.grid(row=7, column=5)
-        self.pix2dist = customtkinter.CTkEntry(
-            self.img_proc_frame, placeholder_text='Run Calibration')
-        self.pix2dist.grid(row=7, column=6)
-
-        # Create Baudrate dropdown
-        self.baudrate_label = customtkinter.CTkLabel(
-            self.img_proc_frame, text="Baud Rate (bps): ", font=('Arial Black', 14))
-        self.baudrate_label.grid(row=1, column=7)
-        self.baudrate_combo = customtkinter.CTkComboBox(self.img_proc_frame, state="readonly", values=[
-                                                        "9600", "19200", "38400", "57600", "115200"])
-        self.baudrate_combo.grid(row=1, column=8)
-        self.baudrate_combo.set("115200")
-
-        self.set_buad_button = customtkinter.CTkButton(
-            self.img_proc_frame, command=self.serial_configuration_set_baud)
-        self.set_buad_button.grid(row=2, column=8, padx=10, pady=10)
-        self.set_buad_button.configure(text="Set Baud Rate")
-
-        ################################################################################################
-        # Create Image Acquisition frame, buttons created below should be attached to this frame
-        self.img_acq_frame = customtkinter.CTkFrame(
-            self, corner_radius=0, fg_color="transparent")
-
-        # Creates the Freeze button
-        self.Freeze = customtkinter.CTkButton(
-            self.img_acq_frame, command=self.sidebar_button_event)
-        self.Freeze.grid(row=0, column=4, padx=20, pady=10)
-        self.Freeze.configure(text="Freeze")
-
-        # Creates the Live Button
-        self.Live = customtkinter.CTkButton(
-            self.img_acq_frame, command=self.sidebar_button_event)
-        self.Live.grid(row=0, column=5, padx=20, pady=10)
-        self.Live.configure(text="Live")
-
-        # Creates the Arm button
-        self.Arm = customtkinter.CTkButton(
-            self.img_acq_frame, command=self.sidebar_button_event)
-        self.Arm.grid(row=0, column=6, padx=20, pady=10)
-        self.Arm.configure(text="Arm")
-
-        # Creates the Load button
-        self.Load = customtkinter.CTkButton(
-            self.img_acq_frame, command=self.sidebar_button_event)
-        self.Load.grid(row=0, column=7, padx=20, pady=10)
-        self.Load.configure(text="Load")
-
-        # Creates the save button
-        self.Save = customtkinter.CTkButton(
-            self.img_acq_frame, command=self.sidebar_button_event)
-        self.Save.grid(row=0, column=8, padx=20, pady=10)
-        self.Save.configure(text="Save")
+        self.image_processing_frame.grid(row=1, column=0, columnspan=6, rowspan=9, sticky="nsew")
 
         ################################################################################################
         # Default Initialization Values                                                                #
@@ -200,35 +81,173 @@ class App(customtkinter.CTk):
             # Popup warning message if no JAI camera is detected or if initialization fails. Show specific exception message
             tkinter.messagebox.showwarning(
                 "Warning", "No JAI Camera Detected. Please check connection and try again. \n\n" + repr(e))
+            
+        self.image_processing_frame.image_processing_reset_image_canvas()
 
     # This section is for command functions of the GUI operations above
 
     # Function that changes the frame based on the name clicked
     def select_frame_by_name(self, name):
-        # set button color for selected button
-        self.img_proc_frame.configure(
-            fg_color=("gray75", "gray25") if name == "Image Processing" else "transparent")
-        self.img_acq_frame.configure(fg_color=(
-            "gray75", "gray25") if name == "Image Acquisition" else "transparent")
-
-        # show selected frame, starts at column=1 so it doesn't overlap with the sidebar
-        if name == "Image Processing":
-            self.img_proc_frame.grid(row=0, column=1, sticky="nsew")
-        else:
-            self.img_proc_frame.grid_forget()
-        if name == "Image Acquisition":
-            self.img_acq_frame.grid(row=0, column=1, sticky="nsew")
-        else:
-            self.img_acq_frame.grid_forget()
-
-    # Function that connects button press to changing the frame
-    def swap_frame_button_callback(self, value):
-        self.select_frame_by_name(value)
+        if (name == "Image Processing"):
+            self.image_processing_frame.grid(row=1, column=1, sticky="nsew")
+            self.image_acquisition_frame.grid_forget()
+        elif (name == "Image Acquisition"):
+            self.image_acquisition_frame.grid(row=1, column=1, sticky="nsew")
+            self.image_processing_frame.grid_forget()
 
     def open_input_dialog_event(self):
         dialog = customtkinter.CTkInputDialog(
             text="Type in a number:", title="CTkInputDialog")
         print("CTkInputDialog:", dialog.get_input())
+
+    def sidebar_button_event(self):
+        print("sidebar_button click")
+
+
+class ImageProcessingFrame(customtkinter.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+        # create select image button. Placeholder command is set to sidebar_button_event
+        self.select_image = customtkinter.CTkButton(
+            self, command=self.image_processing_select_image)
+        self.select_image.grid(row=0, column=0, padx=10, pady=10)
+        self.select_image.configure(text="Select Image")
+
+        # create reset tool button
+        self.reset_tool = customtkinter.CTkButton(
+            self, command=self.image_processing_reset_tool, state="disabled")
+        self.reset_tool.grid(row=1, column=0, padx=10, pady=10)
+        self.reset_tool.configure(text="Reset Tool")
+
+        # create calibrate distance button
+        self.calibrate_dist = customtkinter.CTkButton(
+            self, command=self.sidebar_button_event, state="disabled")
+        self.calibrate_dist.grid(row=2, column=0, padx=10, pady=10)
+        self.calibrate_dist.configure(text="Calibrate Dist")
+
+        # create make video button
+        self.make_video = customtkinter.CTkButton(
+            self, command=self.sidebar_button_event, state="disabled")
+        self.make_video.grid(row=3, column=0, padx=10, pady=10)
+        self.make_video.configure(text="Make Video")
+
+        # Image Canvas
+        self.ImageCanvas = tkinter.Canvas(self)
+        self.ImageCanvas.grid(row=0, column=1, columnspan=3, rowspan=6, sticky="nsew")
+
+        # Set entry labels
+        self.linerate_label = customtkinter.CTkLabel(
+            self, text="Line Rate (/s)", font=('Arial Black', 14))
+        self.linerate_label.grid(row=0, column=5)
+        self.line_rate = customtkinter.CTkEntry(
+            self, placeholder_text='Lines/s')
+        self.line_rate.grid(row=0, column=6)
+        self.line_rate.bind("<Return>", self.serial_configuration_set_linerate)
+
+        self.black_label = customtkinter.CTkLabel(
+            self, text="Black Level", font=('Arial Black', 14))
+        self.black_label.grid(row=1, column=5)
+        self.black_level = customtkinter.CTkEntry(self)
+        self.black_level.insert(0, '50')  # Places initial value
+        self.black_level.grid(row=1, column=6)
+
+        self.white_label = customtkinter.CTkLabel(
+            self, text="White Level", font=('Arial Black', 14))
+        self.white_label.grid(row=2, column=5)
+        self.white_level = customtkinter.CTkEntry(self)
+        self.white_level.insert(0, '200')
+        self.white_level.grid(row=2, column=6)
+
+        self.threshold_label = customtkinter.CTkLabel(
+            self, text="Threshold", font=('Arial Black', 14), anchor='e')
+        self.threshold_label.grid(row=3, column=5)
+        self.threshold = customtkinter.CTkEntry(self)
+        self.threshold.insert(0, '125')
+        self.threshold.grid(row=3, column=6)
+
+        self.lineLimit_label = customtkinter.CTkLabel(
+            self, text="Line Limit", font=('Arial Black', 14))
+        self.lineLimit_label.grid(row=4, column=5)
+        self.line_limit = customtkinter.CTkEntry(self)
+        self.line_limit.grid(row=4, column=6)
+
+        self.blurradius_label = customtkinter.CTkLabel(
+            self, text="Blur Radius (pix)", font=('Arial Black', 14))
+        self.blurradius_label.grid(row=5, column=5)
+        self.blur_radius = customtkinter.CTkEntry(self)
+        self.blur_radius.insert(0, '5')
+        self.blur_radius.grid(row=5, column=6)
+
+        self.pix2dist_label = customtkinter.CTkLabel(
+            self, text="Distance/Pix (um)", font=('Arial Black', 14))
+        self.pix2dist_label.grid(row=6, column=5)
+        self.pix2dist = customtkinter.CTkEntry(
+            self, placeholder_text='Run Calibration')
+        self.pix2dist.grid(row=6, column=6)
+
+        # Create Baudrate dropdown
+        self.baudrate_label = customtkinter.CTkLabel(
+            self, text="Baud Rate (bps): ", font=('Arial Black', 14))
+        self.baudrate_label.grid(row=0, column=7)
+        self.baudrate_combo = customtkinter.CTkComboBox(self, state="readonly", values=[
+                                                        "9600", "19200", "38400", "57600", "115200"])
+        self.baudrate_combo.grid(row=0, column=8)
+        self.baudrate_combo.set("115200")
+
+        self.set_buad_button = customtkinter.CTkButton(
+            self, command=self.serial_configuration_set_baud)
+        self.set_buad_button.grid(row=1, column=8)
+        self.set_buad_button.configure(text="Set Baud Rate")
+
+    def image_processing_select_image(self):
+        file = tkinter.filedialog.askopenfilename(
+            filetypes=[("Images (.bmp)", "*.bmp")])
+
+        # If no file is selected, return
+        if file == "" or file is None or file == ():
+            print("No file selected")
+            return
+
+        # Load the image
+        self.ImageProcessingImage = cv2.imread(file, 0)
+
+    def image_processing_reset_image_canvas(self):
+         # Load the NoImage.png Image as a placeholder
+        self.no_image = Image.open("NoImage.png")
+
+        # Resize the image to fit the canvas
+        self.no_image = self.no_image.resize((self.ImageCanvas.winfo_width(), self.ImageCanvas.winfo_height()), Image.ANTIALIAS)
+
+        self.no_image = ImageTk.PhotoImage(self.no_image)
+
+        self.ImageCanvas.create_image(0, 0, image=self.no_image, anchor="nw")
+
+
+    def image_processing_reset_tool(self):
+        self.line_rate.delete(0, tkinter.END)
+        self.black_level.delete(0, tkinter.END)
+        self.white_level.delete(0, tkinter.END)
+        self.threshold.delete(0, tkinter.END)
+        self.line_limit.delete(0, tkinter.END)
+        self.blur_radius.delete(0, tkinter.END)
+        self.pix2dist.delete(0, tkinter.END)
+
+        # All values are reset to 0, so now set them to their default values
+        self.black_level.insert(0, "50")
+        self.white_level.insert(0, "200")
+        self.threshold.insert(0, "125")
+        self.blur_radius.insert(0, "5")
+
+        # Set the placeholder text for the line limit and pix2dist
+        # These are internal calls that probably shouldn't be used, but it works
+        self.line_rate._activate_placeholder()
+        self.pix2dist._activate_placeholder()
+
+        # Disable all the buttons
+        self.reset_tool.configure(state="disabled")
+        self.calibrate_dist.configure(state="disabled")
+        self.make_video.configure(state="disabled")
 
     def sidebar_button_event(self):
         print("sidebar_button click")
@@ -265,45 +284,43 @@ class App(customtkinter.CTk):
             tkinter.messagebox.showwarning(
                 "Warning", "Error setting line rate. Please try again. \n\n" + repr(e))
 
-    def image_processing_select_image(self):
-        file = tkinter.filedialog.askopenfilename(
-            filetypes=[("Images (.bmp)", "*.bmp")])
 
-        # If no file is selected, return
-        if file == "" or file is None or file == ():
-            print("No file selected")
-            return
+class ImageAcquistionFrame(customtkinter.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
 
-        # Load the image
-        self.ImageProcessingImage = cv2.imread(file, 0)
+        # Creates the Freeze button
+        self.Freeze = customtkinter.CTkButton(
+            self, command=self.sidebar_button_event)
+        self.Freeze.grid(row=0, column=4, padx=20, pady=10)
+        self.Freeze.configure(text="Freeze")
 
-    def image_processing_reset_tool(self):
-        self.line_rate.delete(0, tkinter.END)
-        self.black_level.delete(0, tkinter.END)
-        self.white_level.delete(0, tkinter.END)
-        self.threshold.delete(0, tkinter.END)
-        self.line_limit.delete(0, tkinter.END)
-        self.blur_radius.delete(0, tkinter.END)
-        self.pix2dist.delete(0, tkinter.END)
+        # Creates the Live Button
+        self.Live = customtkinter.CTkButton(
+            self, command=self.sidebar_button_event)
+        self.Live.grid(row=0, column=5, padx=20, pady=10)
+        self.Live.configure(text="Live")
 
-        # All values are reset to 0, so now set them to their default values
-        self.black_level.insert(0, "50")
-        self.white_level.insert(0, "200")
-        self.threshold.insert(0, "125")
-        self.blur_radius.insert(0, "5")
+        # Creates the Arm button
+        self.Arm = customtkinter.CTkButton(
+            self, command=self.sidebar_button_event)
+        self.Arm.grid(row=0, column=6, padx=20, pady=10)
+        self.Arm.configure(text="Arm")
 
-        # Set the placeholder text for the line limit and pix2dist 
-        # These are internal calls that probably shouldn't be used, but it works
-        self.line_rate._activate_placeholder()
-        self.pix2dist._activate_placeholder()
+        # Creates the Load button
+        self.Load = customtkinter.CTkButton(
+            self, command=self.sidebar_button_event)
+        self.Load.grid(row=0, column=7, padx=20, pady=10)
+        self.Load.configure(text="Load")
 
-        # Disable all the buttons
-        self.reset_tool.configure(state="disabled")
-        self.calibrate_dist.configure(state="disabled")
-        self.make_video.configure(state="disabled")
+        # Creates the save button
+        self.Save = customtkinter.CTkButton(
+            self, command=self.sidebar_button_event)
+        self.Save.grid(row=0, column=8, padx=20, pady=10)
+        self.Save.configure(text="Save")
 
-
-
+    def sidebar_button_event(self):
+        print("sidebar_button click")
 
 # Runs the App, does not need to be changed
 if __name__ == "__main__":
