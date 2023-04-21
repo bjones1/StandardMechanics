@@ -19,7 +19,7 @@ namespace DALSA.SaperaLT.Demos.NET.CSharp.GrabDemo
     {
 
        // <p>Delegate to display number of frame acquired Delegate is needed
-       //     because .NEt framework does not support cross thread control
+       //     because .NET framework does not support cross thread control
        //     modification</p>
        private delegate void DisplayFrameAcquired(int number, bool trash);
 
