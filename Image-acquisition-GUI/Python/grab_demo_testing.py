@@ -1,11 +1,32 @@
 # <h1>Python implementation for Grab Demo</h1>
 # <h2>How to Run:&nbsp;</h2>
-# <p>Follow the steps within the <a href="sapera_test.py">Python Implementation
-#         file</a> for the Sapera LT.&nbsp; Ensure that you have run the C# Grab
-#     Demo at least once to generate the DLL file needed for this. Check to make
-#     sure that your files are located within the same directories that are used
-#     within this script. If not, change them accordingly. Once everything is
-#     installed, activate your Python environment, and run this script.</p>
+# <p><span style="font-size: 12pt;">Follow the steps within the <a
+#             href="sapera_test.py">Python Implementation file</a> for the
+#         Sapera LT.&nbsp; '</span></p>
+# <p><span style="font-size: 12pt;">Ensure that you have run the C# Grab Demo at
+#         least once to generate the DLL file needed for this.&nbsp;</span><span
+#         style="font-size: 11.0pt; font-family: 'Calibri',sans-serif; mso-fareast-font-family: 'Yu Gothic'; mso-fareast-theme-font: minor-fareast; mso-ligatures: standardcontextual; mso-ansi-language: EN-US; mso-fareast-language: JA; mso-bidi-language: AR-SA;"><span
+#             style="font-size: 12pt;">To run the C# version of the Grab Demo, I
+#             used Visual Studio (both 2022 and 2019 versions worked for me)
+#             &amp; the GrabDemo_2019.csproj project. For Visual Studio, you
+#             will need to make sure that you have the &lsquo;ASP.NET and web
+#             development&rsquo; workload installed. You will also need to
+#             ensure you have a <a
+#                 href="https://dotnet.microsoft.com/en-us/download/dotnet-framework">.NET
+#                 framework</a> installed as well. Download the <span
+#                 style="font-family: Calibri, sans-serif;">recommended version
+#                 and when running the code, it may ask to retarget the project
+#                 to the recommended .NET framework, say
+#                 "Yes".</span></span></span></p>
+# <p>Check to make sure that your files are located within the same directories
+#     that are used within this script. If not, change them accordingly. Once
+#     everything is installed, activate your Python environment, and run this
+#     script.</p>
+# <p><span style="font-size: 12pt; font-family: Calibri, sans-serif;">For the
+#         line images, only use .bmp images. The .jpeg images are simply for the
+#         GUI (Standard Mechanics Logo).</span></p>
+# <p>&nbsp;</p>
+# <p>&nbsp;</p>
 # <h2>Current Implementation:</h2>
 # <p>The code within this file contains an attempt at initializing the needed
 #     classes to perform the functions from the Sapera SDK. This file is
@@ -98,6 +119,12 @@ print(m_online)
 
 num_servers = SapManager.GetServerCount(SapManager.ResourceType.Acq)
 print(num_servers)
+
+###################################################################################################
+        ##
+        ##					Create and Destroy Object
+        ##
+###################################################################################################
 
 
 # <p>GrabDemoDlg() calls a function named <a
@@ -302,3 +329,34 @@ DestroyObjects()
 #         the C# Grab demo implementation and can be found within the C++
 #         implementation of the Grab Demo.&nbsp;</li>
 # </ul>
+
+
+###################################################################################
+###
+###                             File Control
+###
+####################################################################################
+
+# We had looked at both the Grabdemo dialog file and the loadsave dialog file and 
+# We have understood that we need to look and filter out certain functions within the loadsave dialog to make the file controls for the gui
+# Also the loadsave dialog will allow us to use various format files of pictures and will make sure to only use the necessary ones
+# But we need to Look further into the SAP buffer grasp our understanding of how we can port over these certain functions to python
+def button_New_Click(sender, e):
+    m_Buffers.Clear
+
+
+
+def button_Load_Click(sender, e):
+    newDialogLoad = LoadSaveDlg(m_Buffers, True, False)
+    newDialogLoad.ShowDialog()
+
+
+
+#def button_Save_Click(sender, EventArgs e):
+        
+#   LoadSaveDlg.newDialogSave = new LoadSaveDlg(m_Buffers, false, false)
+#   # <p>Show the dialog and process the result</p>
+#    newDialogSave.ShowDialog()
+#    newDialogSave.Dispose()
+
+    

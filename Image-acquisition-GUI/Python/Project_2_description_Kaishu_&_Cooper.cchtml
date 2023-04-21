@@ -6,6 +6,17 @@
         href="mailto:mde168@msstate.edu">mde168@msstate.edu</a></p>
 <p>Clark Hensley: <a href="mailto:ch3136@msstate.edu">ch3136@msstate.edu</a>
 </p>
+<h3>Sprint 2 Developers:</h3>
+<p>Kaishu Thomas: <a href="mailto:knt192@msstate.edu">knt192@msstate.edu</a>
+</p>
+<p>Cooper Medved: <a href="mailto:crm932@msstate.edu">crm932@msstate.edu</a>
+</p>
+<h2>Important Notes</h2>
+<p>The&nbsp;<a href="grab_demo_testing.py">grab_demo_testing.py file</a>&nbsp;
+    contains the steps needed to operate the GUI.</p>
+<p><span style="font-size: 12pt; font-family: Calibri, sans-serif;">For the
+        line images, only use .bmp images. The .jpeg images are simply for the
+        GUI (Standard Mechanics Logo).</span></p>
 <p>&nbsp;</p>
 <h2>Features to Add</h2>
 <p><span style="background-color: rgb(251, 238, 184);">"Our job during this
@@ -103,7 +114,7 @@
     of the buttons for the GUI.</p>
 <h2>Buttons and Testing</h2>
 <p>The requested buttons for the new GUI are as follows:</p>
-<table style="border-collapse: collapse; width: 100.031%; height: 212px;"
+<table style="border-collapse: collapse; width: 100.031%; height: 230.4px;"
     border="1">
     <colgroup>
         <col style="width: 49.9225%;">
@@ -134,10 +145,10 @@
             <td style="height: 21.2px;">Load Config</td>
             <td style="height: 21.2px;">button_LoadConfig_Click</td>
         </tr>
-        <tr style="height: 21.2px;">
-            <td style="height: 21.2px;">Line Scan - Select/Deselect Trigger is
+        <tr style="height: 39.6px;">
+            <td style="height: 39.6px;">Line Scan - Select/Deselect Trigger is
                 the only button needed within this modal</td>
-            <td style="height: 21.2px;">Not included in C# Project</td>
+            <td style="height: 39.6px;">Not included in C# Project</td>
         </tr>
         <tr style="height: 21.2px;">
             <td style="height: 21.2px;">Save</td>
