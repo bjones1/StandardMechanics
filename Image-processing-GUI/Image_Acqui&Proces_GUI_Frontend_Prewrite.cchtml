@@ -83,6 +83,49 @@
 </table>
 <p style="text-align: center;">Table 1.0 - Main Point of Contacts (POC) listing
 </p>
+<h2 style="text-align: left;">Software Version Control</h2>
+<p>The IDE and programming language chosen for this project are VS Code IDE and
+    Python. The developers utilize specific functions such as switch-case,
+    referred to as match-response in Python. This function statement is
+    explicitly used within the SerialManager.py file. The match response
+    function is only available in <a
+        href="https://www.python.org/downloads/release/python-3113/">Python
+        versions 3.11</a> or higher. Therefore updating Python is a must to
+    compile and run the code successfully.&nbsp;</p>
+<p>There are many methods to upgrade Python. Most beginners and novice
+    programmers choose Anaconda for their ease of use for managing their
+    environments and launching specific Python developmental tools.
+    Unfortunately, convenience may come with several drawbacks, as Anaconda can
+    be slow to update its platform to support Windows upgrades. After much
+    research and several attempts, the developers were able to locate several
+    functions to upgrade Anaconda and update Python to version 3.11. Below are
+    the steps and commands to complete the upgrade:</p>
+<p>1. &nbsp; &nbsp;Update ANACONDA<br>a. Open Anaconda<br>b. Launch the command
+    prompt<br>Note: verify environments such as the default environment,
+    (base).<br>c. Check Python version using the command:&nbsp;<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">python
+        -v</span><br>Note: If the Python version is greater than 3.11, then
+    stop. Otherwise, continue to step d.<br>d. close Anaconda<br>e. Update all
+    the packages within the environment using the command:&nbsp;<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        update --all</span><br>f. Update Anaconda navigator using the
+    commands:<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        deactivate</span><br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        update anaconda-navigator</span></p>
+<p>2. Update Python version<br>a. Open Anaconda<br>b. Launch the command prompt
+    application<br>c. Install Python using the command:<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        install python==3.11.2</span><br>Note: verify environment such as the
+    default environment, base. This procedure will attempt to resolve
+    environment version conflict and may up to 30 or hours to complete,
+    dependent on the libraries installed. Trust the process.&nbsp;</p>
+<p>Alternatively, installing another instance or virtual environment is a
+    faster Python upgrade method. To install a virtual environment, please see
+    the instruction set published from <a
+        href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda</a>.
+</p>
 <h2 style="text-align: left;">Scope of Work</h2>
 <p>This section aims to itemize the effort to complete this project. Below is a
     list of&nbsp; task organized as adminstrative and technical efforts for the
