@@ -88,7 +88,7 @@ class App(customtkinter.CTk):
             # Popup warning message if no JAI camera is detected or if initialization fails. Show specific exception message
             tkinter.messagebox.showwarning(
                 "Warning", "No JAI Camera Detected. Please check connection and try again. \n\n %s" % (repr(e)))
-            
+
         self.image_processing_frame.image_processing_reset_image_canvas()
 
     # This section is for command functions of the GUI operations above
@@ -227,7 +227,7 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
 
         # Resize the image to fit the canvas
         self.no_image = self.no_image.resize(
-            (self.ImageCanvas.winfo_width(), self.ImageCanvas.winfo_height()), Image.ANTIALIAS)
+            (self.ImageCanvas.winfo_width(), self.ImageCanvas.winfo_height()), Image.LANCZOS)
 
         self.no_image = ImageTk.PhotoImage(self.no_image)
 
@@ -257,6 +257,9 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         self.reset_tool.configure(state="disabled")
         self.calibrate_dist.configure(state="disabled")
         self.make_video.configure(state="disabled")
+
+        # Reset the image canvas
+        self.image_processing_reset_image_canvas()
 
     def sidebar_button_event(self):
         print("sidebar_button click")
