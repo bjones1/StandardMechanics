@@ -21,7 +21,7 @@ class App(customtkinter.CTk):
 
         # Data Members
         self.JAIConnection = None
-        self.COMPort = "COM0"
+        self.COMPort = "COM1"
         self.ImageProcessingImage = None
 
         # Configure window
@@ -42,26 +42,33 @@ class App(customtkinter.CTk):
 
         # Place the label Standard Mechanics
         # padx and pady creates space between the widget and the wall of the cell it occupies
-        self.logo_label = customtkinter.CTkLabel(self.topbar_frame, text="Standard Mechanics", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logo_label = customtkinter.CTkLabel(
+            self.topbar_frame, text="Standard Mechanics", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
         # The buttons that allows switching frames between Image Acquisition and Image Processing
-        self.swap_frame_buttons = customtkinter.CTkSegmentedButton(self.topbar_frame)
-        self.swap_frame_buttons.configure(values=["Image Processing", "Image Acquisition", "Serial Configuration"], command=self.select_frame_by_name)
+        self.swap_frame_buttons = customtkinter.CTkSegmentedButton(
+            self.topbar_frame)
+        self.swap_frame_buttons.configure(
+            values=["Image Processing", "Image Acquisition", "Serial Configuration"], command=self.select_frame_by_name)
 
         # Swap Frame Buttons Should be on the far right of the sidebar
-        self.swap_frame_buttons.grid(row=0, column=1, padx=20, pady=(20, 10), sticky="e")
+        self.swap_frame_buttons.grid(
+            row=0, column=1, padx=20, pady=(20, 10), sticky="e")
         self.swap_frame_buttons.set("Image Processing")
 
         # Setup Image Processing Frame
-        self.image_processing_frame = ImageProcessingFrame(self, corner_radius=0)
+        self.image_processing_frame = ImageProcessingFrame(
+            self, corner_radius=0)
 
         # Setup Image Acquisition Frame
-        self.image_acquisition_frame = ImageAcquistionFrame(self, corner_radius=0)
+        self.image_acquisition_frame = ImageAcquistionFrame(
+            self, corner_radius=0)
 
         # Brings up the Image Processing Frame on startup (This GUI frame is starts on 1 row below the top bar)
         # So buttons placed on this specific frame may start on column 0 to start at the beginning of this frame)
-        self.image_processing_frame.grid(row=1, column=0, columnspan=6, rowspan=9, sticky="nsew")
+        self.image_processing_frame.grid(
+            row=1, column=0, columnspan=6, rowspan=9, sticky="nsew")
 
         ################################################################################################
         # Default Initialization Values                                                                #
@@ -72,7 +79,7 @@ class App(customtkinter.CTk):
                 title="COM Port", text="Enter COM Port of JAI Camera:")
             COMPortInput = self.COMPortDialog.get_input()
 
-            # If no COM port is entered, default to COM0
+            # If no COM port is entered, default to COM1
             if COMPortInput != "":
                 self.COMPort = COMPortInput
 
@@ -80,13 +87,14 @@ class App(customtkinter.CTk):
         except Exception as e:
             # Popup warning message if no JAI camera is detected or if initialization fails. Show specific exception message
             tkinter.messagebox.showwarning(
-                "Warning", "No JAI Camera Detected. Please check connection and try again. \n\n" + repr(e))
-            
+                "Warning", "No JAI Camera Detected. Please check connection and try again. \n\n %s" % (repr(e)))
+
         self.image_processing_frame.image_processing_reset_image_canvas()
 
     # This section is for command functions of the GUI operations above
 
     # Function that changes the frame based on the name clicked
+
     def select_frame_by_name(self, name):
         if (name == "Image Processing"):
             self.image_processing_frame.grid(row=1, column=1, sticky="nsew")
@@ -134,7 +142,8 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
 
         # Image Canvas
         self.ImageCanvas = tkinter.Canvas(self)
-        self.ImageCanvas.grid(row=0, column=1, columnspan=3, rowspan=6, sticky="nsew")
+        self.ImageCanvas.grid(row=0, column=1, columnspan=3,
+                              rowspan=6, sticky="nsew")
 
         # Set entry labels
         self.linerate_label = customtkinter.CTkLabel(
@@ -213,16 +222,16 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         self.ImageProcessingImage = cv2.imread(file, 0)
 
     def image_processing_reset_image_canvas(self):
-         # Load the NoImage.png Image as a placeholder
+        # Load the NoImage.png Image as a placeholder
         self.no_image = Image.open("NoImage.png")
 
         # Resize the image to fit the canvas
-        self.no_image = self.no_image.resize((self.ImageCanvas.winfo_width(), self.ImageCanvas.winfo_height()), Image.ANTIALIAS)
+        self.no_image = self.no_image.resize(
+            (self.ImageCanvas.winfo_width(), self.ImageCanvas.winfo_height()), Image.LANCZOS)
 
         self.no_image = ImageTk.PhotoImage(self.no_image)
 
         self.ImageCanvas.create_image(0, 0, image=self.no_image, anchor="nw")
-
 
     def image_processing_reset_tool(self):
         self.line_rate.delete(0, tkinter.END)
@@ -248,6 +257,9 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         self.reset_tool.configure(state="disabled")
         self.calibrate_dist.configure(state="disabled")
         self.make_video.configure(state="disabled")
+
+        # Reset the image canvas
+        self.image_processing_reset_image_canvas()
 
     def sidebar_button_event(self):
         print("sidebar_button click")
@@ -321,6 +333,7 @@ class ImageAcquistionFrame(customtkinter.CTkFrame):
 
     def sidebar_button_event(self):
         print("sidebar_button click")
+
 
 # Runs the App, does not need to be changed
 if __name__ == "__main__":
