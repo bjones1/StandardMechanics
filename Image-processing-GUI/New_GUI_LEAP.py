@@ -113,30 +113,7 @@ class App(customtkinter.CTk):
         self.Save.grid(row=7, column=2)
         self.Save.configure(text="Save")
 
-        ################################################################################################
-        # <p>Default Initialization Values #</p>
-        ################################################################################################
-
-        try:
-            # <p>Show a Popup Dialog asking for the COM port of the JAI camera
-            # </p>
-            self.COMPortDialog = customtkinter.CTkInputDialog(
-                title="COM Port", text="Enter COM Port of JAI Camera:")
-            COMPortInput = self.COMPortDialog.get_input()
-
-            # <p>If no COM port is entered, default to COM1</p>
-            if COMPortInput != "":
-                self.COMPort = COMPortInput
-
-            # <p>JAISerialHandle is not a local variable, it is a global
-            #     variable that is used in other classes and functions</p>
-            JAISerialHandle = JAISerial(self.COMPort, 115200)
-        except Exception as e:
-            # <p>Popup warning message if no JAI camera is detected or if
-            #     initialization fails. Show specific exception message</p>
-            tkinter.messagebox.showwarning(
-                "Warning", "No JAI Camera Detected. Please check connection and try again. \n\n %s" % (repr(e)))
-
+        
     def sidebar_button_event(self):
         print("sidebar_button click")
 
@@ -270,16 +247,8 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         self.pix2dist.grid(row=6, column=2)
 
     def image_processing_reset_image_canvas(self):
-        # <p>Load the NoImage.png Image as a placeholder</p>
-        self.no_image = Image.open("NoImage.png")
-
-        # <p>Resize the image to fit the canvas</p>
-        self.no_image = self.no_image.resize(
-            (self.ImageCanvas.winfo_width(), self.ImageCanvas.winfo_height()), Image.LANCZOS)
-
-        self.no_image = ImageTk.PhotoImage(self.no_image)
-
-        self.ImageCanvas.create_image(0, 0, image=self.no_image, anchor="nw")
+        # TODO: Reset the image canvas to the default image (not within this team's scope)
+        print("Resetting Image Canvas")
 
     def image_processing_reset_tool(self):
         self.line_rate.delete(0, tkinter.END)
@@ -312,21 +281,6 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
 
     def sidebar_button_event(self):
         print("sidebar_button click")
-
-    def serial_configuration_set_baud(self):
-        if (JAISerialHandle is None):
-            tkinter.messagebox.showwarning(
-                "Warning", "No JAI camera detected. Please check connection and try again.")
-            return
-
-        try:
-            # <p>Convert ComboBox value to int</p>
-            numericalBaud = int(self.baudrate_combo.get())
-
-            JAISerialHandle.SetBaudRate(numericalBaud)
-        except Exception as e:
-            tkinter.messagebox.showwarning(
-                "Warning", "Error setting baud rate. Please try again. \n\n" + repr(e))
 
 
 class AdvancedConfigurationFrame(customtkinter.CTkFrame):
