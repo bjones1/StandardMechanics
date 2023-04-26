@@ -12,7 +12,7 @@ from DALSA.SaperaLT.SapClassBasic import SapManager, SapAcquisition, SapBuffer, 
 from DALSA.SaperaLT.SapClassGui import *
 
 class ImageAcquisitionManager:
-    # Device Configuration
+    # <p>Device Configuration</p>
     m_ServerName = None
     m_ConfigFile = os.getcwd() + "/JAI_SW-4000M.ccf"
     m_ServerIndex = 0
@@ -25,15 +25,20 @@ class ImageAcquisitionManager:
     m_View = SapView(m_Buffers)
     m_IsSignalDetected = True
 
-    # Init Replaces the "CreateObjects" function in the original: grab_demo_testing.py
+    # <p>Init Replaces the "CreateObjects" function in the original:
+    #     grab_demo_testing.py</p>
     def __init__(self, image_handler):
-        # Image Handler is a function that takes in the image buffer and works on it.
-        # This is handled in New_GUI_LEAP.py
+        # <p>Image Handler is a function that takes in the image buffer and
+        #     works on it. This is handled in New_GUI_LEAP.py</p>
         self.image_handler = image_handler
 
-        # Dr. Leonard specified we could assume configuration file defaults.
-        # We know we are interfacing with a Frame-Grabber, this replaces the functionality of the previous AcqConfigDlg
-        # The default server location is 0, this may need to be changed after testing to whatever the Frame Grabber reports as
+        # <p>Dr. Leonard specified we could assume configuration file defaults.
+        #     We know we are interfacing with a Frame-Grabber, this replaces the
+        #     functionality of the previous AcqConfigDlg The default server
+        #     location is 0, this may need to be changed after testing to
+        #     whatever the Frame Grabber reports as</p>
+
+        # This entire block is a replacement for the AcqConfigDlg function and is source from the C# GrabDemo project provided by Teledyne
         didAcquireServer = SapManager.GetResourceCount(
             self.m_ServerIndex, SapManager.ResourceType.Acq) > 0
         if (didAcquireServer):
@@ -53,17 +58,27 @@ class ImageAcquisitionManager:
             self.m_Xfer = SapAcqDeviceToBuf(self.m_Acquisition, self.m_Buffers)
             self.m_View = SapView(self.m_Buffers)
 
-            # Event Handler for when an image is received from the camera
+            # <p>Event Handler for when an image is received from the camera</p>
             self.m_Xfer.pairs[0].EventType = SapXferPair.XferEventType.EndOfFrame
             self.m_Xfer.XferNotify += SapXferNotifyHandler(self.BufferHandler)
             self.m_Xfer.XferNotifyContext = self
 
-            # Event Handler for when a signal is received from the camera
-            self.m_Acquisition.SignalNotify += SapSignalNotifyHandler(
-                self.EnableSignalStatus)
+            # <p>Event Handler for when a signal is received from the camera</p>
+            self.m_Acquisition.SignalNotify += SapSignalNotifyHandler(self.EnableSignalStatus)
             self.m_Acquisition.SignalNotifyContext = self
 
         else:
+            # <p>Within the first CreateNewObjects() function it calls a <a
+            #         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#CreateNewObjects2">CreateObjects()</a>
+            #     function. There are a couple of CreateNewObjects() functions within
+            #     the grab demo due to function overloading. This is the start of the
+            #     next function and where the errors occur.</p>
+            # <p>This section may need to be split into a separate function similar to
+            #     how it is within the grab demo to handle failure returns and so
+            #     DisposeObjects() can be called at the proper time on failure.&nbsp;
+            # </p>
+
+            # <p> DestoryDisposeObjects() now handles destorying and disposal of objects</p>
             if (self.m_Acquisition is not None and not self.m_Acquisition.Initialized and self.m_Acquisition.Create() is False):
                 print("Unable to create acquisition object. (m_Acquisition)")
                 self.DestroyDisposeObjects()
@@ -78,6 +93,7 @@ class ImageAcquisitionManager:
             if (self.m_View is not None and not self.m_View.Initialized and self.m_View.Create() is False):
                 self.DestroyDisposeObjects()
 
+    # This may or may not be desired. It repesents an event handler that can be used to determine camera (server) connection status
     def EnableSignalStatus(self, sender, eventArgs):
         SapAcquisition.AcqSignalStatus = eventArgs.SignalStatus
         sender.m_IsSignalDetected = (SapAcquisition.AcqSignalStatus != 0)
@@ -86,6 +102,8 @@ class ImageAcquisitionManager:
         else:
             print("Signal detected")
 
+
+    # This cleanup process follows the cleanup process used in the C# GrabDemo project provided by Teledyne
     def DestroyDisposeObjects(self):
         didDestroy = False
         if (self.m_View is not None and self.m_View.Initialized):
@@ -111,37 +129,39 @@ class ImageAcquisitionManager:
             self.m_Buffers = None
             self.m_Acquisition = None
 
-    # Begin "recording" from the camera, this is a continuous stream of images
+    # <p>Continuously grabs frames from the Transfer Buffer</p>
     def Grab(self):
         if (self.m_Xfer is not None):
             self.m_Xfer.Grab()
             return self.m_Xfer
 
-    # Gets a singular frame from the camera
+    # <p>Gets a singular frame from the Transfer Buffer</p>
     def Snap(self):
         if (self.m_Xfer is not None):
             self.m_Xfer.Snap()
             return self.m_Xfer
 
-    # This pretty much just stops the camera from grabbing images, works on both Grab and Snap
+    # <p>Disables Grabbing of Transfer Buffer Frames</p>
     def Freeze(self):
         if (self.m_Xfer is not None):
             self.m_Xfer.Freeze()
             return self.m_Xfer
 
-    # This may not be necessary, but it is here for now
+    # <p>This may not be necessary, but it is here for now</p>
     def ShowView(self):
         if (self.m_View is not None):
             self.m_View.Show()
 
-    # Called when an image is (theoretically) ready to be processed, this is where we will pass the image data to the GUI
-    # ImageHandler is passed in by New_GUI_Leap when the class is instantiated
+    # <p>Called when an image is (theoretically) ready to be processed, this is
+    #     where we will pass the image data to the GUI ImageHandler is passed in
+    #     by New_GUI_Leap when the class is instantiated</p>
     def BufferHandler(self, sender, eventArgs):
-        # We are leveraging the SapView object to handle the image data, but a future implementation should rely on the buffer object not the view object as we have our own "view" object in the GUI
+        # <p>We are leveraging the SapView object to handle the image data, but
+        #     a future implementation should rely on the buffer object not the
+        #     view object as we have our own "view" object in the GUI</p>
         self.image_handler(self.m_View)
 
     def SetExternalLineTrigger(self, state):
-        # This likely won't work but I couldn't find the correct val to set
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_ENABLE, state)
 
@@ -154,7 +174,8 @@ class ImageAcquisitionManager:
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_LEVEL, SapAcquisition.Val.LEVEL_TTL if state else SapAcquisition.Val.LEVEL_422)
 
     def SetExternalFrameTrigger(self, state):
-        # This likely won't work but I couldn't find the correct val to set
+        # <p>This likely won't work but I couldn't find the correct val to set
+        # </p>
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_FRAME_TRIGGER_ENABLE, state)
 
