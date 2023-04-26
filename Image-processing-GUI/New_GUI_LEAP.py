@@ -207,17 +207,56 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
 
         # Create Baudrate dropdown
         self.baudrate_label = customtkinter.CTkLabel(
-            self, text="Baud Rate (bps): ", font=('Arial Black', 14))
+            self, text=" Baud Rate (bps): ", font=('Arial Black', 14))
         self.baudrate_label.grid(row=0, column=7)
         self.baudrate_combo = customtkinter.CTkComboBox(self, state="readonly", values=[
                                                         "9600", "19200", "38400", "57600", "115200"])
         self.baudrate_combo.grid(row=0, column=8)
         self.baudrate_combo.set("115200")
 
-        self.set_buad_button = customtkinter.CTkButton(
+        self.set_baud_button = customtkinter.CTkButton(
             self, command=self.serial_configuration_set_baud)
-        self.set_buad_button.grid(row=1, column=8)
-        self.set_buad_button.configure(text="Set Baud Rate")
+        self.set_baud_button.grid(row=0, column=9)
+        self.set_baud_button.configure(text="Set Baud Rate")
+
+        # Create CL_Clock dropdown
+        self.CL_Clock_label = customtkinter.CTkLabel(
+            self, text=" CL Clock: ", font=('Arial Black', 14))
+        self.CL_Clock_label.grid(row=1, column=7)
+        self.CL_Clock_combo = customtkinter.CTkComboBox(self, state="readonly", values=[
+                                                        "0: 85 MHz", "1: 63.75 MHz", "3: 31.875 MHz"])
+        self.CL_Clock_combo.grid(row=1, column=8)
+        self.CL_Clock_combo.set("0: 85MHz")
+
+        # Create ExposureMode dropdown
+        self.ExposureMode_label = customtkinter.CTkLabel(
+            self, text=" Exposure Mode: ", font=('Arial Black', 14))
+        self.ExposureMode_label.grid(row=2, column=7)
+        self.ExposureMode_combo = customtkinter.CTkComboBox(self, state="readonly", values=[
+                                                        "0: Off", "1: Timed", "2: TriggerWidth"])
+        self.ExposureMode_combo.grid(row=2, column=8)
+        self.ExposureMode_combo.set("0: Off")
+
+        # Create Gain Level
+        self.Gain_Level_label = customtkinter.CTkLabel(
+            self, text=" Gain Level (100-1600):", font=('Arial Black', 14))
+        self.Gain_Level_label.grid(row=3, column=7)
+        self.Gain_Level_level = customtkinter.CTkEntry(
+            self, placeholder_text='100-1600')
+        self.Gain_Level_level.grid(row=3, column=8)
+        self.Gain_Level_level.bind("<Return>", self.serial_configuration_set_linerate)
+
+
+        # Create AnalogBaseGain dropdown
+        self.AnalogBaseGain_label = customtkinter.CTkLabel(
+            self, text=" Analog Base Gain: ", font=('Arial Black', 14))
+        self.AnalogBaseGain_label.grid(row=4, column=7)
+        self.AnalogBaseGain_combo = customtkinter.CTkComboBox(self, state="readonly", values=[
+                                                        "0: 0dB", "1: +6dB", "2: +9.54dB", "3: +12 dB"])
+        self.AnalogBaseGain_combo.grid(row=4, column=8)
+        self.AnalogBaseGain_combo.set("0: 0dB")
+
+
 
     def image_processing_select_image(self):
         file = tkinter.filedialog.askopenfilename(
