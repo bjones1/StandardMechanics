@@ -113,7 +113,7 @@ class App(customtkinter.CTk):
         self.Save.grid(row=7, column=2)
         self.Save.configure(text="Save")
 
-        
+
     def sidebar_button_event(self):
         print("sidebar_button click")
 
@@ -128,6 +128,8 @@ class App(customtkinter.CTk):
                 tkinter.messagebox.showwarning(
                     "Warning", "Frame Grabber did not respond. Please check connection and try again.")
 
+    # Calls the Grab function from the ImageAcquisitionHandle class
+    # Additionally disables the Snap and Grab buttons and enables the Freeze button to allow the user to freeze the image
     def Grab(self):
         if (ImageAcquisitionHandle is not None):
             xfer = ImageAcquisitionHandle.Grab()
@@ -141,16 +143,19 @@ class App(customtkinter.CTk):
                 tkinter.messagebox.showwarning(
                     "Warning", "Frame Grabber did not respond. Please check connection and try again.")
 
+    # This function Loads an imafe from the computer and displays it on the screen
     def Load(self):
         # <p>TODO: Add code to load an image (not within scope of this team's
         #     work)</p>
         print("Load")
 
+    # This function saves the image to the computer
     def Save(self):
         # <p>TODO: Add code to save the image (not within scope of this team's
         #     work)</p>
         print("Save")
 
+    # This function is called "auto-magically" by the ImageAcquisitionHandle class whenever a new image is received in the camera buffer
     def ImageHandler(self, m_View):
         # <p>Image Handle should be called whenever a new image is received
         #     (theoretically)</p>
@@ -173,6 +178,7 @@ class App(customtkinter.CTk):
         # <p>Attach the image to the Frame in Image Acquisition</p>
         self.ImageCanvas.configure(image=tk_Img)
 
+    # Creates the popup window for the arm settings (I believe this is the intended button to setup the trigger settings)
     def Arm(self):
         if self.arm_settings_window is None or not self.arm_settings_window.winfo_exists():
             # <p>If the window doesn't exist, we need to create it</p>
@@ -250,6 +256,7 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         # TODO: Reset the image canvas to the default image (not within this team's scope)
         print("Resetting Image Canvas")
 
+    # I implmented reset tool, I hope I didn't step on anyone's toes [I think I did :(]
     def image_processing_reset_tool(self):
         self.line_rate.delete(0, tkinter.END)
         self.black_level.delete(0, tkinter.END)
@@ -281,7 +288,6 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
 
     def sidebar_button_event(self):
         print("sidebar_button click")
-
 
 class AdvancedConfigurationFrame(customtkinter.CTkFrame):
     # <p>TODO: Attach these to Serial Configuration Tool</p>
@@ -334,7 +340,7 @@ class AdvancedConfigurationFrame(customtkinter.CTkFrame):
         self.AnalogBaseGain_combo.grid(row=4, column=2)
         self.AnalogBaseGain_combo.set("0: 0dB")
 
-
+# Arm Popup is a modal window that is used to configure the line scan camera's trigger
 class ArmPopup(customtkinter.CTkToplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -456,6 +462,7 @@ class ArmPopup(customtkinter.CTkToplevel):
             self.master.ImageAcquisitionHandle.SetExternalFrameTrigger(0)
     
     # <p>Handle External Line Trigger Detection Edge</p>
+    # This is handled by the ImageAcquisition class and is mostly self explanatory
     def external_linetrigger_detection_edge_handler(self, choice):
         if self.external_linetrigger_detection_edge_combo.get() == "0: Rising Edge":
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerDetection(1)
@@ -463,6 +470,7 @@ class ArmPopup(customtkinter.CTkToplevel):
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerDetection(0)
 
     # <p>Handle External Line Trigger Level</p>
+    # This is handled by the ImageAcquisition class and is mostly self explanatory
     def external_linetrigger_level_handler(self, choice):
         if self.external_linetrigger_level_combo.get() == "0: TTL":
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerLevel(1)
@@ -470,6 +478,7 @@ class ArmPopup(customtkinter.CTkToplevel):
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerLevel(0)
 
     # <p>Handle External Frame Trigger Detection Edge</p>
+    # This is handled by the ImageAcquisition class and is mostly self explanatory
     def external_frametrigger_detection_edge_handler(self, choice):
         if self.external_frametrigger_detection_edge_combo.get() == "0: Rising Edge":
             self.master.ImageAcquisitionHandle.SetExternalFrameTriggerDetection(1)
@@ -477,6 +486,7 @@ class ArmPopup(customtkinter.CTkToplevel):
             self.master.ImageAcquisitionHandle.SetExternalFrameTriggerDetection(0)
 
     # <p>Handle External Frame Trigger Level</p>
+    # This is handled by the ImageAcquisition class and is mostly self explanatory
     def external_frametrigger_level_handler(self, choice):
         if self.external_frametrigger_level_combo.get() == "0: TTL":
             self.master.ImageAcquisitionHandle.SetExternalFrameTriggerLevel(1)
