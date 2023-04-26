@@ -120,12 +120,7 @@ print(m_online)
 num_servers = SapManager.GetServerCount(SapManager.ResourceType.Acq)
 print(num_servers)
 
-###################################################################################################
-        ##
-        ##					Create and Destroy Object
-        ##
-###################################################################################################
-
+# <p>Create and Destroy Object -----------------------------</p>
 
 # <p>GrabDemoDlg() calls a function named <a
 #         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#CreateNewObjects1">CreateNewObjects()</a>.
@@ -331,32 +326,50 @@ DestroyObjects()
 # </ul>
 
 
-###################################################################################
-###
-###                             File Control
-###
-####################################################################################
+# <p>File Control -----------------------------</p>
 
-# We had looked at both the Grabdemo dialog file and the loadsave dialog file and 
-# We have understood that we need to look and filter out certain functions within the loadsave dialog to make the file controls for the gui
-# Also the loadsave dialog will allow us to use various format files of pictures and will make sure to only use the necessary ones
-# But we need to Look further into the SAP buffer grasp our understanding of how we can port over these certain functions to python
+# <p>We had looked at both the Grabdemo dialog file and the loadsave dialog file
+#     and We have understood that we need to look and filter out certain
+#     functions within the loadsave dialog to make the file controls for the gui
+#     Also the loadsave dialog will allow us to use various format files of
+#     pictures and will make sure to only use the necessary ones But we need to
+#     Look further into the SAP buffer grasp our understanding of how we can
+#     port over these certain functions to python</p>
+# <p>We learned that it is best to look at the Sapera.NET.pdf document to find
+#     the Sapera functions that you need to call directly in the python code. As
+#     said above, some functions need to be updated this way so that errors are
+#     fixed, and parts of the C# GUI do not appear when the code is run. When
+#     looking through the C# GrabDemo code, it is probably best to open the
+#     GrabDemoDlg.cs code in the project so that you can easily follow the
+#     functions called from separate files, like LoadSaveDlg.cs.&nbsp;</p>
+# <p>&nbsp;</p>
 def button_New_Click(sender, e):
-    m_Buffers.Clear
-
+    m_Buffers.Clear()
 
 
 def button_Load_Click(sender, e):
-    newDialogLoad = LoadSaveDlg(m_Buffers, True, False)
-    newDialogLoad.ShowDialog()
+    #newDialogLoad = LoadSaveDlg(m_Buffers, True, False)
+    #newDialogLoad.ShowDialog()
+    m_Buffers.Load(m_FileDialog.FileName, 0)
 
 
+def button_Save_Click(sender, e):
+     #newDialogSave = LoadSaveDlg(m_Buffers, False, False)
+     #newDialogSave.ShowDialog()
+    m_Buffers.Save(m_FileDialog.FileName, "-format .bmp")
 
-#def button_Save_Click(sender, EventArgs e):
-        
-#   LoadSaveDlg.newDialogSave = new LoadSaveDlg(m_Buffers, false, false)
-#   # <p>Show the dialog and process the result</p>
-#    newDialogSave.ShowDialog()
-#    newDialogSave.Dispose()
+# <p>Acquisition Control -----------------------------</p>
+def button_Grab_Click(sender, e):
 
+    StatusLabelInfoTrash.Text = ""
+    if (m_Xfer.Grab()):
+        UpdateControls()
+
+def button_Freeze_Click(sender,e):
+    abort = AbortDlg(m_Xfer)
+    if (m_Xfer.Freeze()):
+        if (abort.ShowDialog() != DialogResult.OK):
+            m_Xfer.Abort()
+        UpdateControls()
+     
     
