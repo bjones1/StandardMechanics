@@ -3,7 +3,9 @@ import tkinter.messagebox
 import tkinter.filedialog
 import customtkinter
 from SerialManager import JAISerial
+from ImageAcquisition import ImageAcquisitionManager
 import cv2
+import numpy as np
 from PIL import Image, ImageTk
 
 # Modes: "System" (standard), "Dark", "Light"
@@ -11,16 +13,19 @@ customtkinter.set_appearance_mode("Dark")
 # Themes: can be a color ex: "blue", but also a .json file if available in the same folder as the program
 customtkinter.set_default_color_theme("Theme.json")
 
+JAISerialHandle = None
+ImageAcquisitionHandle = None
 
 class App(customtkinter.CTk):
     # Code that affects the GUI's design are put under def __init__(self)
     # functions for the widgets are defined under the class, but outside of def __init__(self)
-
     def __init__(self):
         super().__init__()
 
+        global JAISerialHandle
+        global ImageAcquisitionHandle
+
         # Data Members
-        self.JAIConnection = None
         self.COMPort = "COM1"
         self.ImageProcessingImage = None
 
@@ -42,15 +47,12 @@ class App(customtkinter.CTk):
 
         # Place the label Standard Mechanics
         # padx and pady creates space between the widget and the wall of the cell it occupies
-        self.logo_label = customtkinter.CTkLabel(
-            self.topbar_frame, text="Standard Mechanics", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.logo_label = customtkinter.CTkLabel(self.topbar_frame, text="Standard Mechanics", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
 
         # The buttons that allows switching frames between Image Acquisition and Image Processing
-        self.swap_frame_buttons = customtkinter.CTkSegmentedButton(
-            self.topbar_frame)
-        self.swap_frame_buttons.configure(
-            values=["Image Processing", "Image Acquisition", "Serial Configuration"], command=self.select_frame_by_name)
+        self.swap_frame_buttons = customtkinter.CTkSegmentedButton(self.topbar_frame)
+        self.swap_frame_buttons.configure(values=["Image Processing", "Image Acquisition", "Serial Configuration"], command=self.select_frame_by_name)
 
         # Swap Frame Buttons Should be on the far right of the sidebar
         self.swap_frame_buttons.grid(
@@ -73,6 +75,7 @@ class App(customtkinter.CTk):
         ################################################################################################
         # Default Initialization Values                                                                #
         ################################################################################################
+
         try:
             # Show a Popup Dialog asking for the COM port of the JAI camera
             self.COMPortDialog = customtkinter.CTkInputDialog(
@@ -83,11 +86,15 @@ class App(customtkinter.CTk):
             if COMPortInput != "":
                 self.COMPort = COMPortInput
 
-            self.JAIConnection = JAISerial(self.COMPort, 115200)
+            # JAISerialHandle is not a local variable, it is a global variable that is used in other classes and functions
+            JAISerialHandle = JAISerial(self.COMPort, 115200)
         except Exception as e:
             # Popup warning message if no JAI camera is detected or if initialization fails. Show specific exception message
             tkinter.messagebox.showwarning(
                 "Warning", "No JAI Camera Detected. Please check connection and try again. \n\n %s" % (repr(e)))
+
+        # Create the ImageAcquisitionManager
+        # ImageAcquisitionHandle = ImageAcquisitionManager()
 
         self.image_processing_frame.image_processing_reset_image_canvas()
 
@@ -115,6 +122,9 @@ class App(customtkinter.CTk):
 class ImageProcessingFrame(customtkinter.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+
+        global JAISerialHandle
+        global ImageAcquisitionHandle
 
         # create select image button. Placeholder command is set to sidebar_button_event
         self.select_image = customtkinter.CTkButton(
@@ -152,7 +162,7 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         self.line_rate = customtkinter.CTkEntry(
             self, placeholder_text='Lines/s')
         self.line_rate.grid(row=0, column=6)
-        self.line_rate.bind("<Return>", self.serial_configuration_set_linerate)
+        self.line_rate.bind("<Return>", self.set_linerate)
 
         self.black_label = customtkinter.CTkLabel(
             self, text="Black Level", font=('Arial Black', 14))
@@ -265,7 +275,7 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         print("sidebar_button click")
 
     def serial_configuration_set_baud(self):
-        if (self.JAIConnection is None):
+        if (JAISerialHandle is None):
             tkinter.messagebox.showwarning(
                 "Warning", "No JAI camera detected. Please check connection and try again.")
             return
@@ -274,50 +284,42 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
             # Convert ComboBox value to int
             numericalBaud = int(self.baudrate_combo.get())
 
-            self.JAIConnection.SetBaudRate(numericalBaud)
+            JAISerialHandle.SetBaudRate(numericalBaud)
         except Exception as e:
             tkinter.messagebox.showwarning(
                 "Warning", "Error setting baud rate. Please try again. \n\n" + repr(e))
 
-    def serial_configuration_set_linerate(self, event):
-        if (self.JAIConnection is None):
-            tkinter.messagebox.showwarning(
-                "Warning", "No JAI camera detected. Please check connection and try again.")
-            return
-
-        try:
-            # Convert ComboBox value to int
-            numericalLineRate = int(self.line_rate.get())
-
-            # TODO: Do something with the line rate value, it needs to be converted from /s to the JAI camera's format
-
-            self.JAIConnection.SetLineRate(numericalLineRate)
-        except Exception as e:
-            tkinter.messagebox.showwarning(
-                "Warning", "Error setting line rate. Please try again. \n\n" + repr(e))
+    def set_linerate(self, event):
+        # TODO: This is a placeholder function, it needs to be implemented
+        print("set_linerate")
 
 
 class ImageAcquistionFrame(customtkinter.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
+        global JAISerialHandle
+        global ImageAcquisitionHandle
+
+        ImageAcquisitionHandle = ImageAcquisitionManager(self.ImageHandler)
+
         # Creates the Freeze button
-        self.Freeze = customtkinter.CTkButton(
-            self, command=self.sidebar_button_event)
-        self.Freeze.grid(row=0, column=4, padx=20, pady=10)
-        self.Freeze.configure(text="Freeze")
+        self.FreezeButton = customtkinter.CTkButton(
+            self, command=self.Freeze)
+        self.FreezeButton.grid(row=0, column=4, padx=20, pady=10)
+        self.FreezeButton.configure(text="Freeze")
 
-        # Creates the Live Button
-        self.Live = customtkinter.CTkButton(
-            self, command=self.sidebar_button_event)
-        self.Live.grid(row=0, column=5, padx=20, pady=10)
-        self.Live.configure(text="Live")
+        # Creates the Grab Button
+        self.GrabButton = customtkinter.CTkButton(
+            self, command=self.Grab)
+        self.GrabButton.grid(row=0, column=5, padx=20, pady=10)
+        self.GrabButton.configure(text="Grab")
 
-        # Creates the Arm button
-        self.Arm = customtkinter.CTkButton(
-            self, command=self.sidebar_button_event)
-        self.Arm.grid(row=0, column=6, padx=20, pady=10)
-        self.Arm.configure(text="Arm")
+        # Creates the Snap Button
+        self.SnapButton = customtkinter.CTkButton(
+            self, command=self.Snap)
+        self.SnapButton.grid(row=0, column=6, padx=20, pady=10)
+        self.SnapButton.configure(text="Snap")
 
         # Creates the Load button
         self.Load = customtkinter.CTkButton(
@@ -334,6 +336,54 @@ class ImageAcquistionFrame(customtkinter.CTkFrame):
     def sidebar_button_event(self):
         print("sidebar_button click")
 
+    def Freeze(self):
+        if (ImageAcquisitionHandle is not None):
+            xfer = ImageAcquisitionHandle.Freeze()
+            if (xfer is not None and xfer.Grabbing is False):
+                self.SnapButton.configure(state="enabled")
+                self.GrabButton.configure(state="enabled")
+                self.FreezeButton.configure(state="disabled")
+            else:
+                tkinter.messagebox.showwarning(
+                    "Warning", "Frame Grabber did not respond. Please check connection and try again.")
+
+    def Grab(self):
+        if (ImageAcquisitionHandle is not None):
+            xfer = ImageAcquisitionHandle.Grab()
+            if (xfer is not None and xfer.Grabbing is True):
+                self.SnapButton.configure(state="disabled")
+                self.GrabButton.configure(state="disabled")
+                self.FreezeButton.configure(state="enabled")
+            else:
+                # Display warning message saying that the Frame Grabber is not grabbing
+                tkinter.messagebox.showwarning(
+                    "Warning", "Frame Grabber did not respond. Please check connection and try again.")
+
+    def Snap(self):
+        if (ImageAcquisitionHandle is not None):
+            xfer = ImageAcquisitionHandle.Snap()
+            if (xfer is not None and xfer.Grabbing is True):
+                self.SnapButton.configure(state="disabled")
+                self.GrabButton.configure(state="disabled")
+                self.FreezeButton.configure(state="enabled")
+            else:
+                tkinter.messagebox.showwarning(
+                    "Warning", "Frame Grabber did not respond. Please check connection and try again.")
+       
+    def ImageHandler(self, m_View):
+        # Image Handle should be called whenever a new image is received (theoretically)
+        
+        # Get the image out of the m_View buffer
+        m_Buffer = m_View.GetBuffer()
+        np_Array = np.asarray(m_Buffer.GetRow(0), dtype=np.uint8)
+        np_Img = np_Array.reshape(m_Buffer.GetHeight(), m_Buffer.GetWidth())
+
+        # Apply appropriate color space conversion to place formatting in the correct format for OpenCV
+        cv_Img = cv2.cvtColor(np_Img, cv2.COLOR_GRAY2BGR)
+
+        # TODO - Attach the image to the Frame in Image Processing
+        print("Image Acquistion Frame - Image Handler")
+        print(cv_Img)
 
 # Runs the App, does not need to be changed
 if __name__ == "__main__":
