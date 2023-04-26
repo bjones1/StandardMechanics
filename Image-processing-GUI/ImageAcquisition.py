@@ -25,12 +25,15 @@ class ImageAcquisitionManager:
     m_View = SapView(m_Buffers)
     m_IsSignalDetected = True
 
+    # Init Replaces the "CreateObjects" function in the original: grab_demo_testing.py
     def __init__(self, image_handler):
+        # Image Handler is a function that takes in the image buffer and works on it.
+        # This is handled in New_GUI_LEAP.py
+        self.image_handler = image_handler
+
         # Dr. Leonard specified we could assume configuration file defaults.
         # We know we are interfacing with a Frame-Grabber, this replaces the functionality of the previous AcqConfigDlg
         # The default server location is 0, this may need to be changed after testing to whatever the Frame Grabber reports as
-        self.image_handler = image_handler
-
         didAcquireServer = SapManager.GetResourceCount(
             self.m_ServerIndex, SapManager.ResourceType.Acq) > 0
         if (didAcquireServer):
@@ -50,12 +53,12 @@ class ImageAcquisitionManager:
             self.m_Xfer = SapAcqDeviceToBuf(self.m_Acquisition, self.m_Buffers)
             self.m_View = SapView(self.m_Buffers)
 
-            # TODO: Event Handler for Xfer
+            # Event Handler for when an image is received from the camera
             self.m_Xfer.pairs[0].EventType = SapXferPair.XferEventType.EndOfFrame
             self.m_Xfer.XferNotify += SapXferNotifyHandler(self.BufferHandler)
             self.m_Xfer.XferNotifyContext = self
 
-            # TODO: Event Handler for Signal Status
+            # Event Handler for when a signal is received from the camera
             self.m_Acquisition.SignalNotify += SapSignalNotifyHandler(
                 self.EnableSignalStatus)
             self.m_Acquisition.SignalNotifyContext = self
@@ -64,20 +67,16 @@ class ImageAcquisitionManager:
             if (self.m_Acquisition is not None and not self.m_Acquisition.Initialized and self.m_Acquisition.Create() is False):
                 print("Unable to create acquisition object. (m_Acquisition)")
                 self.DestroyDisposeObjects()
-                # raise Exception("Unable to create acquisition object. (m_Acquisition)")
 
             if (self.m_Buffers is not None and not self.m_Buffers.Initialized and self.m_Buffers.Create() is False):
                 print("Unable to create buffer object. (m_Buffers)")
                 self.DestroyDisposeObjects()
-                # raise Exception("Unable to create acquisition object. (m_Buffers)")
 
             if (self.m_Xfer is not None and not self.m_Xfer.Initialized and self.m_Xfer.Create() is False):
                 self.DestroyDisposeObjects()
-                # raise Exception("Unable to create acquisition object. (m_XFer)")
 
             if (self.m_View is not None and not self.m_View.Initialized and self.m_View.Create() is False):
                 self.DestroyDisposeObjects()
-                # raise Exception("Unable to create acquisition object. (m_View)")
 
     def EnableSignalStatus(self, sender, eventArgs):
         SapAcquisition.AcqSignalStatus = eventArgs.SignalStatus
@@ -112,27 +111,57 @@ class ImageAcquisitionManager:
             self.m_Buffers = None
             self.m_Acquisition = None
 
+    # Begin "recording" from the camera, this is a continuous stream of images
     def Grab(self):
         if (self.m_Xfer is not None):
             self.m_Xfer.Grab()
             return self.m_Xfer
 
+    # Gets a singular frame from the camera
     def Snap(self):
         if (self.m_Xfer is not None):
             self.m_Xfer.Snap()
             return self.m_Xfer
 
+    # This pretty much just stops the camera from grabbing images, works on both Grab and Snap
     def Freeze(self):
         if (self.m_Xfer is not None):
             self.m_Xfer.Freeze()
             return self.m_Xfer
 
+    # This may not be necessary, but it is here for now
     def ShowView(self):
         if (self.m_View is not None):
             self.m_View.Show()
 
+    # Called when an image is (theoretically) ready to be processed, this is where we will pass the image data to the GUI
+    # ImageHandler is passed in by New_GUI_Leap when the class is instantiated
     def BufferHandler(self, sender, eventArgs):
-        print(repr(sender))
-        print(repr(eventArgs))
+        # We are leveraging the SapView object to handle the image data, but a future implementation should rely on the buffer object not the view object as we have our own "view" object in the GUI
         self.image_handler(self.m_View)
-        
+
+    def SetExternalLineTrigger(self, state):
+        # This likely won't work but I couldn't find the correct val to set
+        if (self.m_Acquisition is not None):
+            self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_ENABLE, state)
+
+    def SetExternalLineTriggerDetection(self, state):
+        if (self.m_Acquisition is not None):
+            self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_DETECTION, SapAcquisition.Val.RISING_EDGE if state else SapAcquisition.Val.FALLING_EDGE)
+
+    def SetExternalLineTriggerLevel(self, state):
+        if (self.m_Acquisition is not None):
+            self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_LEVEL, SapAcquisition.Val.LEVEL_TTL if state else SapAcquisition.Val.LEVEL_422)
+
+    def SetExternalFrameTrigger(self, state):
+        # This likely won't work but I couldn't find the correct val to set
+        if (self.m_Acquisition is not None):
+            self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_FRAME_TRIGGER_ENABLE, state)
+
+    def SetExternalFrameTriggerDetection(self, state):
+        if (self.m_Acquisition is not None):
+            self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_FRAME_TRIGGER_DETECTION, SapAcquisition.Val.RISING_EDGE if state else SapAcquisition.Val.FALLING_EDGE)
+
+    def SetExternalFrameTriggerLevel(self, state):
+        if (self.m_Acquisition is not None):
+            self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_FRAME_TRIGGER_LEVEL, SapAcquisition.Val.LEVEL_TTL if state else SapAcquisition.Val.LEVEL_422)
