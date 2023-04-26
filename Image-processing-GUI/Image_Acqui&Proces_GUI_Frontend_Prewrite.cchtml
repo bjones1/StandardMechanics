@@ -283,11 +283,13 @@
         </tr>
         <tr>
             <td style="border-width: 1px;">
-                <p style="text-align: center;">Control Tool Software&nbsp;</p>
+                <p style="text-align: center;">Control Tool Softare&nbsp;</p>
                 <p>1. Configure High Speed Camera COM Port:</p>
                 <p><img style="display: block; margin-left: auto; margin-right: auto;"
                         src="ControlTool_1.png" alt="" width="346"
                         height="376"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <p>2. Configure High Speed Camera COM Specs:</p>
                 <p><img style="display: block; margin-left: auto; margin-right: auto;"
@@ -295,16 +297,24 @@
                         height="397"></p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
                 <p>3. Configure High Speed Camera Settings:</p>
                 <p><img style="display: block; margin-left: auto; margin-right: auto;"
                         src="ControlTool_2.PNG" alt="" width="624"
                         height="388"></p>
+                <p>&nbsp;</p>
             </td>
             <td style="border-width: 1px; text-align: left;">
                 <p>1. Select COM Port:&nbsp;</p>
                 <p><img style="display: block; margin-left: auto; margin-right: auto;"
                         src="Example_1.PNG" alt="" width="821" height="164">
                 </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
@@ -329,13 +339,8 @@
                 <p>&nbsp;</p>
                 <p>&nbsp;</p>
                 <p>3. Configure High Speed Camera Settings:</p>
-                <p><span style="background-color: rgb(45, 194, 107);">(In
-                        working progress)</span></p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
-                <p>&nbsp;</p>
+                <p><img src="Example_4.png" alt="" width="942" height="373">
+                </p>
             </td>
         </tr>
     </tbody>
