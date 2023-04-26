@@ -1,3 +1,6 @@
+# This file is a modified version of the grab_demo_testing.py file provided by the previous team. It should be (mostly) the same as the original file, but with some modifications to make it work with the new GUI. The original file can be found in the following directory: Image-acquisition-GUI\Python\grab_demo_testing.py
+# This file is used to handle image acquisition from the camera. It is called by the New_GUI_LEAP.py file and is used to create the image acquisition objects and handle the image acquisition process. It is also used to substantiate event handlers to copy image data to the GUI and to handle signals from the camera.
+
 import sys
 import os
 import clr
@@ -147,7 +150,8 @@ class ImageAcquisitionManager:
             self.m_Xfer.Freeze()
             return self.m_Xfer
 
-    # <p>This may not be necessary, but it is here for now</p>
+    # ShowView was included in the previous work, but it really shouldn't be used. Preferablly, the GUI should handle the image data
+    # We just use it for it's buffer in this case
     def ShowView(self):
         if (self.m_View is not None):
             self.m_View.Show()
@@ -161,28 +165,40 @@ class ImageAcquisitionManager:
         #     view object as we have our own "view" object in the GUI</p>
         self.image_handler(self.m_View)
 
+    # I derived this function from sapera_test.py and by looking at the enum values for SapAcquisition.Prm and SapAcquisition.Val
+    # There is a 50/50 chance that this will work, but I don't have a camera to test it with
     def SetExternalLineTrigger(self, state):
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_ENABLE, state)
 
+    # I derived this function from sapera_test.py and by looking at the enum values for SapAcquisition.Prm and SapAcquisition.Val
+    # There is a 50/50 chance that this will work, but I don't have a camera to test it with
     def SetExternalLineTriggerDetection(self, state):
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_DETECTION, SapAcquisition.Val.RISING_EDGE if state else SapAcquisition.Val.FALLING_EDGE)
 
+    # I derived this function from sapera_test.py and by looking at the enum values for SapAcquisition.Prm and SapAcquisition.Val
+    # There is a 50/50 chance that this will work, but I don't have a camera to test it with
     def SetExternalLineTriggerLevel(self, state):
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_LINE_TRIGGER_LEVEL, SapAcquisition.Val.LEVEL_TTL if state else SapAcquisition.Val.LEVEL_422)
 
+    # I derived this function from sapera_test.py and by looking at the enum values for SapAcquisition.Prm and SapAcquisition.Val
+    # There is a 50/50 chance that this will work, but I don't have a camera to test it with
     def SetExternalFrameTrigger(self, state):
         # <p>This likely won't work but I couldn't find the correct val to set
         # </p>
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_FRAME_TRIGGER_ENABLE, state)
 
+    # I derived this function from sapera_test.py and by looking at the enum values for SapAcquisition.Prm and SapAcquisition.Val
+    # There is a 50/50 chance that this will work, but I don't have a camera to test it with
     def SetExternalFrameTriggerDetection(self, state):
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_FRAME_TRIGGER_DETECTION, SapAcquisition.Val.RISING_EDGE if state else SapAcquisition.Val.FALLING_EDGE)
 
+    # I derived this function from sapera_test.py and by looking at the enum values for SapAcquisition.Prm and SapAcquisition.Val
+    # There is a 50/50 chance that this will work, but I don't have a camera to test it with
     def SetExternalFrameTriggerLevel(self, state):
         if (self.m_Acquisition is not None):
             self.m_Acquisition.SetParameter(SapAcquisition.Prm.EXT_FRAME_TRIGGER_LEVEL, SapAcquisition.Val.LEVEL_TTL if state else SapAcquisition.Val.LEVEL_422)
