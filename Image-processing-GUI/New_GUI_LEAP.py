@@ -9,9 +9,10 @@ import numpy as np
 from PIL import Image, ImageTk
 import cairo
 
-# Modes: "System" (standard), "Dark", "Light"
+# <p>Modes: "System" (standard), "Dark", "Light"</p>
 customtkinter.set_appearance_mode("Dark")
-# Themes: can be a color ex: "blue", but also a .json file if available in the same folder as the program
+# <p>Themes: can be a color ex: "blue", but also a .json file if available in
+#     the same folder as the program</p>
 customtkinter.set_default_color_theme("Theme.json")
 
 JAISerialHandle = None
@@ -19,44 +20,47 @@ ImageAcquisitionHandle = None
 
 
 class App(customtkinter.CTk):
-    # Code that affects the GUI's design are put under def __init__(self)
-    # functions for the widgets are defined under the class, but outside of def __init__(self)
+    # <p>Code that affects the GUI's design are put under def __init__(self)
+    #     functions for the widgets are defined under the class, but outside of
+    #     def __init__(self)</p>
     def __init__(self):
         super().__init__()
         self.ImageAcquisitionHandle = ImageAcquisitionManager(self.ImageHandler)
-        # Data Members
+        # <p>Data Members</p>
         self.COMPort = "COM1"
 
-        # Top-Level Window
+        # <p>Top-Level Window</p>
         self.arm_settings_window = None
 
-        # Configure window
+        # <p>Configure window</p>
         self.title("Standard Mechanics LEAP Tool")
         self.geometry(f"{1280}x{720}")
         self.minsize(1280, 720)
 
-        # configure grid layout (weight = 0, the default, means the row/column only be as big to fit the widget inside.
-        #  weight = 1 will have the row/column expand
+        # <p>configure grid layout (weight = 0, the default, means the
+        #     row/column only be as big to fit the widget inside. weight = 1
+        #     will have the row/column expand</p>
         self.grid_columnconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8), weight=1)
 
-        # create sidebar frame; 'sticky = "nsew"' makes it so the sidebar sticks to the specified edges of the cell it's in
-        # n = north, s = south, e = east, w = west
+        # <p>create sidebar frame; 'sticky = "nsew"' makes it so the sidebar
+        #     sticks to the specified edges of the cell it's in n = north, s =
+        #     south, e = east, w = west</p>
         self.topbar_frame = customtkinter.CTkFrame(self, corner_radius=0)
         self.topbar_frame.grid(row=0, column=0, columnspan=9, sticky="new")
         self.topbar_frame.grid_rowconfigure(4, weight=1)
         self.topbar_frame.configure(bg_color="black")
 
-        # Place the label Standard Mechanics
-        # padx and pady creates space between the widget and the wall of the cell it occupies
+        # <p>Place the label Standard Mechanics padx and pady creates space
+        #     between the widget and the wall of the cell it occupies</p>
         self.logo_label = customtkinter.CTkLabel(
             self.topbar_frame, text="Standard Mechanics", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=2, column=0, padx=10, pady=(10, 10))
 
-        # Setup Image Canvas (it will use NoImage.png as a placeholder image)
-        # Load the image
+        # <p>Setup Image Canvas (it will use NoImage.png as a placeholder image)
+        #     Load the image</p>
         image = Image.open("NoImage.png")
-        # Resize the image to 300x300 pixels
+        # <p>Resize the image to 300x300 pixels</p>
         resized_image = image.resize((800, 400))
         photo = ImageTk.PhotoImage(resized_image)
 
@@ -64,7 +68,8 @@ class App(customtkinter.CTk):
         self.ImageCanvas.grid(row=2, column=0, columnspan=4,
                               rowspan=4, padx=10, sticky="nsew")
 
-        # Instead of having entire frames, we can use the TabView widget to show the different controls to the right of the image
+        # <p>Instead of having entire frames, we can use the TabView widget to
+        #     show the different controls to the right of the image</p>
         self.tab_view = customtkinter.CTkTabview(self)
         self.tab_view.grid(row=2, column=4, columnspan=5,
                            rowspan=4, padx=10, sticky="nsew")
@@ -72,60 +77,63 @@ class App(customtkinter.CTk):
         self.serial_configuration_tab = self.tab_view.add(
             "Advanced Configuration")
 
-        # Setup Image Processing Tab
+        # <p>Setup Image Processing Tab</p>
         self.image_processing_frame = ImageProcessingFrame(
             self.image_processing_tab, corner_radius=0)
 
-        # Setup Advanced Configuration Tab
+        # <p>Setup Advanced Configuration Tab</p>
         self.serial_configuration_frame = AdvancedConfigurationFrame(
             self.serial_configuration_tab, corner_radius=0)
 
-        # Only show the Image Processing Tab on startup
+        # <p>Only show the Image Processing Tab on startup</p>
         self.tab_view.set("Image Processing")
 
-        # Creates the Freeze button
+        # <p>Creates the Freeze button</p>
         self.FreezeButton = customtkinter.CTkButton(self, command=self.Freeze)
         self.FreezeButton.grid(row=6, column=0)
         self.FreezeButton.configure(text="Freeze")
 
-        # Creates the Grab Button
+        # <p>Creates the Grab Button</p>
         self.GrabButton = customtkinter.CTkButton(self, command=self.Grab)
         self.GrabButton.grid(row=6, column=1)
         self.GrabButton.configure(text="Live")
 
-        # Creates the Snap Button
+        # <p>Creates the Snap Button</p>
         self.SnapButton = customtkinter.CTkButton(self, command=self.Arm)
         self.SnapButton.grid(row=6, column=2)
         self.SnapButton.configure(text="Arm")
 
-        # Creates the Load button
+        # <p>Creates the Load button</p>
         self.Load = customtkinter.CTkButton(self, command=self.Load)
         self.Load.grid(row=7, column=0)
         self.Load.configure(text="Load")
 
-        # Creates the save button
+        # <p>Creates the save button</p>
         self.Save = customtkinter.CTkButton(self, command=self.Save)
         self.Save.grid(row=7, column=2)
         self.Save.configure(text="Save")
 
         ################################################################################################
-        # Default Initialization Values                                                                #
+        # <p>Default Initialization Values #</p>
         ################################################################################################
 
         try:
-            # Show a Popup Dialog asking for the COM port of the JAI camera
+            # <p>Show a Popup Dialog asking for the COM port of the JAI camera
+            # </p>
             self.COMPortDialog = customtkinter.CTkInputDialog(
                 title="COM Port", text="Enter COM Port of JAI Camera:")
             COMPortInput = self.COMPortDialog.get_input()
 
-            # If no COM port is entered, default to COM1
+            # <p>If no COM port is entered, default to COM1</p>
             if COMPortInput != "":
                 self.COMPort = COMPortInput
 
-            # JAISerialHandle is not a local variable, it is a global variable that is used in other classes and functions
+            # <p>JAISerialHandle is not a local variable, it is a global
+            #     variable that is used in other classes and functions</p>
             JAISerialHandle = JAISerial(self.COMPort, 115200)
         except Exception as e:
-            # Popup warning message if no JAI camera is detected or if initialization fails. Show specific exception message
+            # <p>Popup warning message if no JAI camera is detected or if
+            #     initialization fails. Show specific exception message</p>
             tkinter.messagebox.showwarning(
                 "Warning", "No JAI Camera Detected. Please check connection and try again. \n\n %s" % (repr(e)))
 
@@ -151,41 +159,46 @@ class App(customtkinter.CTk):
                 self.GrabButton.configure(state="disabled")
                 self.FreezeButton.configure(state="enabled")
             else:
-                # Display warning message saying that the Frame Grabber is not grabbing
+                # <p>Display warning message saying that the Frame Grabber is
+                #     not grabbing</p>
                 tkinter.messagebox.showwarning(
                     "Warning", "Frame Grabber did not respond. Please check connection and try again.")
 
     def Load(self):
-        # TODO: Add code to load an image (not within scope of this team's work)
+        # <p>TODO: Add code to load an image (not within scope of this team's
+        #     work)</p>
         print("Load")
 
     def Save(self):
-        # TODO: Add code to save the image (not within scope of this team's work)
+        # <p>TODO: Add code to save the image (not within scope of this team's
+        #     work)</p>
         print("Save")
 
     def ImageHandler(self, m_View):
-        # Image Handle should be called whenever a new image is received (theoretically)
+        # <p>Image Handle should be called whenever a new image is received
+        #     (theoretically)</p>
 
-        # Get the image out of the m_View buffer
+        # <p>Get the image out of the m_View buffer</p>
         m_Buffer = m_View.GetBuffer()
         np_Array = np.asarray(m_Buffer.GetRow(0), dtype=np.uint8)
         np_Img = np_Array.reshape(m_Buffer.GetHeight(), m_Buffer.GetWidth())
 
-        # PIL Library is used to convert the image from a numpy array to a PIL Image
+        # <p>PIL Library is used to convert the image from a numpy array to a
+        #     PIL Image</p>
         pil_Img = Image.fromarray(np_Img)
 
-        # Convert the PIL Image to a Tkinter Image
+        # <p>Convert the PIL Image to a Tkinter Image</p>
         tk_Img = ImageTk.PhotoImage(pil_Img)
 
-        # Resize the image to fit the
+        # <p>Resize the image to fit the</p>
         tk_Img = tk_Img.resize((800, 400))
 
-        # Attach the image to the Frame in Image Acquisition
+        # <p>Attach the image to the Frame in Image Acquisition</p>
         self.ImageCanvas.configure(image=tk_Img)
 
     def Arm(self):
         if self.arm_settings_window is None or not self.arm_settings_window.winfo_exists():
-            # create window if its None or destroyed
+            # <p>If the window doesn't exist, we need to create it</p>
             self.arm_settings_window = ArmPopup(self)
         else:
             self.arm_settings_window.focus()  # if window exists focus it
@@ -195,19 +208,19 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        # create reset tool button
+        # <p>create reset tool button</p>
         self.reset_tool = customtkinter.CTkButton(
             master, command=self.image_processing_reset_tool, state="disabled")
         self.reset_tool.grid(row=7, column=1, padx=10, pady=10)
         self.reset_tool.configure(text="Reset Tool")
 
-        # create calibrate distance button
+        # <p>create calibrate distance button</p>
         self.calibrate_dist = customtkinter.CTkButton(
             master, command=self.sidebar_button_event, state="disabled")
         self.calibrate_dist.grid(row=7, column=2, padx=10, pady=10)
         self.calibrate_dist.configure(text="Calibrate Dist")
 
-        # Set entry labels
+        # <p>Set entry labels</p>
         self.linerate_label = customtkinter.CTkLabel(
             master, text="Line Rate (/s)", font=('Arial Black', 14))
         self.linerate_label.grid(row=0, column=1)
@@ -257,10 +270,10 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         self.pix2dist.grid(row=6, column=2)
 
     def image_processing_reset_image_canvas(self):
-        # Load the NoImage.png Image as a placeholder
+        # <p>Load the NoImage.png Image as a placeholder</p>
         self.no_image = Image.open("NoImage.png")
 
-        # Resize the image to fit the canvas
+        # <p>Resize the image to fit the canvas</p>
         self.no_image = self.no_image.resize(
             (self.ImageCanvas.winfo_width(), self.ImageCanvas.winfo_height()), Image.LANCZOS)
 
@@ -277,23 +290,24 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
         self.blur_radius.delete(0, tkinter.END)
         self.pix2dist.delete(0, tkinter.END)
 
-        # All values are reset to 0, so now set them to their default values
+        # <p>All values are reset to 0, so now set them to their default values
+        # </p>
         self.black_level.insert(0, "50")
         self.white_level.insert(0, "200")
         self.threshold.insert(0, "125")
         self.blur_radius.insert(0, "5")
 
-        # Set the placeholder text for the line limit and pix2dist
-        # These are internal calls that probably shouldn't be used, but it works
+        # <p>Set the placeholder text for the line limit and pix2dist These are
+        #     internal calls that probably shouldn't be used, but it works</p>
         self.line_rate._activate_placeholder()
         self.pix2dist._activate_placeholder()
 
-        # Disable all the buttons
+        # <p>Disable all the buttons</p>
         self.reset_tool.configure(state="disabled")
         self.calibrate_dist.configure(state="disabled")
         self.make_video.configure(state="disabled")
 
-        # Reset the image canvas
+        # <p>Reset the image canvas</p>
         self.image_processing_reset_image_canvas()
 
     def sidebar_button_event(self):
@@ -306,7 +320,7 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
             return
 
         try:
-            # Convert ComboBox value to int
+            # <p>Convert ComboBox value to int</p>
             numericalBaud = int(self.baudrate_combo.get())
 
             JAISerialHandle.SetBaudRate(numericalBaud)
@@ -316,11 +330,11 @@ class ImageProcessingFrame(customtkinter.CTkFrame):
 
 
 class AdvancedConfigurationFrame(customtkinter.CTkFrame):
-    # TODO: Attach these to Serial Configuration Tool
+    # <p>TODO: Attach these to Serial Configuration Tool</p>
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        # Create Baudrate dropdown
+        # <p>Create Baudrate dropdown</p>
         self.baudrate_label = customtkinter.CTkLabel(
             master, text=" Baud Rate (bps): ", font=('Arial Black', 14))
         self.baudrate_label.grid(row=0, column=1)
@@ -329,7 +343,7 @@ class AdvancedConfigurationFrame(customtkinter.CTkFrame):
         self.baudrate_combo.grid(row=0, column=2)
         self.baudrate_combo.set("115200")
 
-        # Create CL_Clock dropdown
+        # <p>Create CL_Clock dropdown</p>
         self.CL_Clock_label = customtkinter.CTkLabel(
             master, text=" CL Clock: ", font=('Arial Black', 14))
         self.CL_Clock_label.grid(row=1, column=1)
@@ -338,7 +352,7 @@ class AdvancedConfigurationFrame(customtkinter.CTkFrame):
         self.CL_Clock_combo.grid(row=1, column=2)
         self.CL_Clock_combo.set("0: 85MHz")
 
-        # Create ExposureMode dropdown
+        # <p>Create ExposureMode dropdown</p>
         self.ExposureMode_label = customtkinter.CTkLabel(
             master, text=" Exposure Mode: ", font=('Arial Black', 14))
         self.ExposureMode_label.grid(row=2, column=1)
@@ -347,16 +361,17 @@ class AdvancedConfigurationFrame(customtkinter.CTkFrame):
         self.ExposureMode_combo.grid(row=2, column=2)
         self.ExposureMode_combo.set("0: Off")
 
-        # Create Gain Level
+        # <p>Create Gain Level</p>
         self.Gain_Level_label = customtkinter.CTkLabel(
             master, text=" Gain Level (100-1600):", font=('Arial Black', 14))
         self.Gain_Level_label.grid(row=3, column=1)
         self.Gain_Level_level = customtkinter.CTkEntry(
             master, placeholder_text='100-1600')
         self.Gain_Level_level.grid(row=3, column=2)
-        # self.Gain_Level_level.bind("<Return>", self.serial_configuration_set_linerate)
+        # <p>self.Gain_Level_level.bind("",
+        #     self.serial_configuration_set_linerate)</p>
 
-        # Create AnalogBaseGain dropdown
+        # <p>Create AnalogBaseGain dropdown</p>
         self.AnalogBaseGain_label = customtkinter.CTkLabel(
             master, text=" Analog Base Gain: ", font=('Arial Black', 14))
         self.AnalogBaseGain_label.grid(row=4, column=1)
@@ -373,7 +388,7 @@ class ArmPopup(customtkinter.CTkToplevel):
         self.title("Line Scan Camera Control")
         self.resizable(False, False)
         self.master = args[0]
-        # Setup Grids and Rows for the window
+        # <p>Setup Grids and Rows for the window</p>
         self.grid_columnconfigure((0, 1, 2, 3), weight=1)
         self.grid_rowconfigure(
             (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), weight=1)
@@ -382,12 +397,12 @@ class ArmPopup(customtkinter.CTkToplevel):
             self, text="External Line Trigger", font=('Arial Black', 14))
         self.external_linetrigger_label.grid(row=1, column=0, sticky="w")
 
-        # Add CTK Switch for Line Trigger Enable
+        # <p>Add CTK Switch for Line Trigger Enable</p>
         self.external_linetrigger_enable = customtkinter.CTkSwitch(
             self, text="Enable", font=('Arial Black', 14), command=self.external_linetrigger_enable_handler)
         self.external_linetrigger_enable.grid(row=2, column=0, sticky="w")
 
-        # Add Option Box for Detection Edge
+        # <p>Add Option Box for Detection Edge</p>
         self.external_linetrigger_detection_edge_label = customtkinter.CTkLabel(
             self, text="Detection Edge", font=('Arial Black', 14))
         self.external_linetrigger_detection_edge_label.grid(
@@ -400,7 +415,7 @@ class ArmPopup(customtkinter.CTkToplevel):
         self.external_linetrigger_detection_edge_combo.configure(
             state="disabled")
 
-        # Add Option Box for Level (TTL or RS422)
+        # <p>Add Option Box for Level (TTL or RS422)</p>
         self.external_linetrigger_level_label = customtkinter.CTkLabel(
             self, text="Level", font=('Arial Black', 14))
         self.external_linetrigger_level_label.grid(row=3, column=1, sticky="w")
@@ -410,17 +425,17 @@ class ArmPopup(customtkinter.CTkToplevel):
         self.external_linetrigger_level_combo.set("1: RS422")
         self.external_linetrigger_level_combo.configure(state="disabled")
 
-        # Add External Frame Trigger Label
+        # <p>Add External Frame Trigger Label</p>
         self.external_frametrigger_label = customtkinter.CTkLabel(
             self, text="External Frame Trigger", font=('Arial Black', 14))
         self.external_frametrigger_label.grid(row=4, column=0, sticky="w")
 
-        # Add CTK Switch for External Frame Trigger Enable
+        # <p>Add CTK Switch for External Frame Trigger Enable</p>
         self.external_frametrigger_enable = customtkinter.CTkSwitch(
             self, text="Enable", font=('Arial Black', 14), command=self.external_frametrigger_enable_handler)
         self.external_frametrigger_enable.grid(row=5, column=0, sticky="w")
 
-        # Add Option Box for Detection Edge
+        # <p>Add Option Box for Detection Edge</p>
         self.external_frametrigger_detection_edge_label = customtkinter.CTkLabel(
             self, text="Detection Edge", font=('Arial Black', 14))
         self.external_frametrigger_detection_edge_label.grid(
@@ -433,7 +448,7 @@ class ArmPopup(customtkinter.CTkToplevel):
         self.external_frametrigger_detection_edge_combo.configure(
             state="disabled")
 
-        # Add Option Box for Level (TTL or RS422)
+        # <p>Add Option Box for Level (TTL or RS422)</p>
         self.external_frametrigger_level_label = customtkinter.CTkLabel(
             self, text="Level", font=('Arial Black', 14))
         self.external_frametrigger_level_label.grid(
@@ -445,67 +460,69 @@ class ArmPopup(customtkinter.CTkToplevel):
         self.external_frametrigger_level_combo.set("0: TTL")
         self.external_frametrigger_level_combo.configure(state="disabled")
 
-    # Handle External Line Trigger Enable
+    # <p>Handle External Line Trigger Enable</p>
     def external_linetrigger_enable_handler(self):
         if self.external_linetrigger_enable.get() == 1:
             self.external_linetrigger_detection_edge_combo.configure(
                 state="normal")
             self.external_linetrigger_level_combo.configure(state="normal")
 
-            # Disable External Frame Trigger Options and Enable Switch
+            # <p>Disable External Frame Trigger Options and Enable Switch</p>
             self.external_frametrigger_enable.deselect()
             self.external_frametrigger_enable.configure(state="disabled")
             self.external_frametrigger_detection_edge_combo.configure(state="disabled")
             self.external_frametrigger_level_combo.configure(state="disabled")
             self.master.ImageAcquisitionHandle.SetExternalLineTrigger(1)
         else:
-            # Disable External Line Trigger Options and Enable Both Switches
+            # <p>Disable External Line Trigger Options and Enable Both Switches
+            # </p>
             self.external_linetrigger_detection_edge_combo.configure(state="disabled")
             self.external_linetrigger_level_combo.configure(state="disabled")
             self.external_frametrigger_enable.configure(state="normal")
             self.master.ImageAcquisitionHandle.SetExternalLineTrigger(0)
 
-    # Handle External Frame Trigger Enable
+    # <p>Handle External Frame Trigger Enable</p>
     def external_frametrigger_enable_handler(self):
         if self.external_frametrigger_enable.get() == 1:
             self.external_frametrigger_detection_edge_combo.configure(state="normal")
             self.external_frametrigger_level_combo.configure(state="normal")
 
-            # Disable External Line Trigger Options and Enable Switch
+            # <p>Disable External Line Trigger Options and Enable Switch</p>
             self.external_linetrigger_enable.deselect()
             self.external_linetrigger_enable.configure(state="disabled")
             self.external_linetrigger_detection_edge_combo.configure(state="disabled")
             self.external_linetrigger_level_combo.configure(state="disabled")
             self.master.ImageAcquisitionHandle.SetExternalFrameTrigger(1)
         else:
-            # Disable External Frame Trigger Options and Enable Both Switches
+            # <p>Disable External Frame Trigger Options and Enable Both Switches
+            # </p>
             self.external_frametrigger_detection_edge_combo.configure(state="disabled")
             self.external_frametrigger_level_combo.configure(state="disabled")
             self.external_linetrigger_enable.configure(state="normal")
             self.master.ImageAcquisitionHandle.SetExternalFrameTrigger(0)
     
-    # Handle External Line Trigger Detection Edge
+    # <p>Handle External Line Trigger Detection Edge</p>
     def external_linetrigger_detection_edge_handler(self, choice):
         if self.external_linetrigger_detection_edge_combo.get() == "0: Rising Edge":
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerDetection(1)
         else:
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerDetection(0)
 
-    # Handle External Line Trigger Level
+    # <p>Handle External Line Trigger Level</p>
     def external_linetrigger_level_handler(self, choice):
         if self.external_linetrigger_level_combo.get() == "0: TTL":
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerLevel(1)
         else:
             self.master.ImageAcquisitionHandle.SetExternalLineTriggerLevel(0)
 
-    # Handle External Frame Trigger Detection Edge
+    # <p>Handle External Frame Trigger Detection Edge</p>
     def external_frametrigger_detection_edge_handler(self, choice):
         if self.external_frametrigger_detection_edge_combo.get() == "0: Rising Edge":
             self.master.ImageAcquisitionHandle.SetExternalFrameTriggerDetection(1)
         else:
             self.master.ImageAcquisitionHandle.SetExternalFrameTriggerDetection(0)
 
-    # Handle External Frame Trigger Level
+    # <p>Handle External Frame Trigger Level</p>
     def external_frametrigger_level_handler(self, choice):
         if self.external_frametrigger_level_combo.get() == "0: TTL":
             self.master.ImageAcquisitionHandle.SetExternalFrameTriggerLevel(1)
@@ -513,7 +530,7 @@ class ArmPopup(customtkinter.CTkToplevel):
             self.master.ImageAcquisitionHandle.SetExternalFrameTriggerLevel(0)
 
 
-# Runs the App, does not need to be changed
+# <p>Runs the App, does not need to be changed</p>
 if __name__ == "__main__":
     app = App()
     app.mainloop()
