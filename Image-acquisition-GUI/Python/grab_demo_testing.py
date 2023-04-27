@@ -122,7 +122,7 @@ print(m_online)
 num_servers = SapManager.GetServerCount(SapManager.ResourceType.Acq)
 print(num_servers)
 
-   
+
 # <p>Create and Destroy Object</p>
 # <p>&nbsp;-----------------------------</p>
 
@@ -441,4 +441,3 @@ def button_Freeze_Click(sender,e):
 #         the C# Grab demo implementation and can be found within the C++
 #         implementation of the Grab Demo.&nbsp;</li>
 # </ul>
-

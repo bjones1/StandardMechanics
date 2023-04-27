@@ -1,9 +1,212 @@
 <h1 style="text-align: center;">Image Acquisition/Processing GUI Frontend
     Prewrite</h1>
+<h3>Contact Information</h3>
+<p>This project is under the supervision of Dr. Jones and requires interactions
+    with the customer, Dr. Leonard. Furthermore, the interactions among team
+    members are essential to successful collaboration within this project.
+    Below is the contact information for those involved in this project.</p>
+<table
+    style="border-collapse: collapse; width: 84.5007%; height: 220.667px; border-width: 1px; margin-left: auto; margin-right: auto;"
+    border="1">
+    <colgroup>
+        <col style="width: 17.4576%;">
+        <col style="width: 29.0457%;">
+        <col style="width: 53.5782%;">
+    </colgroup>
+    <tbody>
+        <tr style="height: 39px;">
+            <td style="height: 39px; text-align: left; border-width: 1px;">Name
+                (First Last)</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">Role
+            </td>
+            <td style="height: 39px; text-align: left; border-width: 1px;">
+                Perferred Contact&nbsp;&nbsp;</td>
+        </tr>
+        <tr style="height: 39px;">
+            <td style="text-align: left; border-width: 1px; height: 39px;">Dr.
+                Trey Leonard</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                Customer</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                trey@standardmechanics.com</td>
+        </tr>
+        <tr style="height: 39px;">
+            <td style="text-align: left; border-width: 1px; height: 39px;">Dr.
+                Bryan Jones</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                Professor and Technical Advisor</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                bjones@ece.msstate.edu</td>
+        </tr>
+        <tr style="height: 21.5556px;">
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Kaishu</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Developer</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                &nbsp;</td>
+        </tr>
+        <tr style="height: 21.5556px;">
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Cooper</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Developer</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                &nbsp;</td>
+        </tr>
+        <tr style="height: 39px;">
+            <td style="height: 39px; text-align: left; border-width: 1px;">
+                Michael Nguyen</td>
+            <td style="text-align: left; border-width: 1px; height: 39px;">
+                Developer</td>
+            <td style="height: 39px; text-align: left; border-width: 1px;">
+                mpn21msstate@gmail.com</td>
+        </tr>
+        <tr style="height: 21.5556px;">
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Kyler Farrar</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                Developer</td>
+            <td
+                style="text-align: left; border-width: 1px; height: 21.5556px;">
+                kaf386@msstate.edu</td>
+        </tr>
+    </tbody>
+</table>
+<p style="text-align: center;">Table 1.0 - Main Point of Contacts (POC) listing
+</p>
+<h2 style="text-align: left;">Software Version Control</h2>
+<p>The IDE and programming language chosen for this project are VS Code IDE and
+    Python. The developers utilize specific functions such as switch-case,
+    referred to as match-response in Python. This function statement is
+    explicitly used within the SerialManager.py file. The match response
+    function is only available in <a
+        href="https://www.python.org/downloads/release/python-3113/">Python
+        versions 3.11</a> or higher. Therefore updating Python is a must to
+    compile and run the code successfully.&nbsp;</p>
+<p>There are many methods to upgrade Python. Most beginners and novice
+    programmers choose Anaconda for their ease of use for managing their
+    environments and launching specific Python developmental tools.
+    Unfortunately, convenience may come with several drawbacks, as Anaconda can
+    be slow to update its platform to support Windows upgrades. After much
+    research and several attempts, the developers were able to locate several
+    functions to upgrade Anaconda and update Python to version 3.11. Below are
+    the steps and commands to complete the upgrade:</p>
+<p>1. &nbsp; &nbsp;Update ANACONDA<br>a. Open Anaconda<br>b. Launch the command
+    prompt<br>Note: verify environments such as the default environment,
+    (base).<br>c. Check Python version using the command:&nbsp;<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">python
+        -v</span><br>Note: If the Python version is greater than 3.11, then
+    stop. Otherwise, continue to step d.<br>d. close Anaconda<br>e. Update all
+    the packages within the environment using the command:&nbsp;<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        update --all</span><br>f. Update Anaconda navigator using the
+    commands:<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        deactivate</span><br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        update anaconda-navigator</span></p>
+<p>2. Update Python version<br>a. Open Anaconda<br>b. Launch the command prompt
+    application<br>c. Install Python using the command:<br><span
+        style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">conda
+        install python==3.11.2</span><br>Note: verify environment such as the
+    default environment, base. This procedure will attempt to resolve
+    environment version conflict and may up to 30 or hours to complete,
+    dependent on the libraries installed. Trust the process.&nbsp;</p>
+<p>Alternatively, installing another instance or virtual environment is a
+    faster Python upgrade method. To install a virtual environment, please see
+    the instruction set published from <a
+        href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda</a>.
+</p>
+<h2 style="text-align: left;">Scope of Work</h2>
+<p>This section aims to itemize the effort to complete this project. Below is a
+    list of&nbsp; task organized as adminstrative and technical efforts for the
+    purpose of improving the current workflow employed by Standard Mechanics.
+</p>
+<p><strong>1.1 Adminstrative Tasks</strong></p>
+<p>1.1.A. Update the ReadMe.cchtml to include: Table of Content hyperlinks,
+    requirement.txt hyperlinks, Leap.py hyperlinks, New_Leap.py hyperlinks, and
+    Workflow statement</p>
+<p>1.1.B. We will include a scope of work section in the pre-writing to
+    identify the customer requirements</p>
+<p>1.1.B.1. Discuss about the task concentrated on the Goal to implement the
+    Image Acquistion feature</p>
+<p>1.1.B.2. Discuss about the task to integrate Camera Init features in the GUI
+</p>
+<p>1.1.C. Modify code to show coorespondance between New GUI (LEAP.py) and Old
+    GUI ( New_GUI_Leap.py)</p>
+<p>1.1.C.1. New GUI compiles and executes without any errors. Old GUI - Leap.py
+    does not compiles and is missing files</p>
+<p>1.1.C.2. Include a copywrite or limited distribution in the comment header
+</p>
+<p><strong>1.2. Technical Tasks</strong></p>
+<p>The technical tasks for this section are categorized as Image <em>Acquistion
+    </em>and Image <em>Processing</em>.&nbsp;</p>
+<p>1.2.A. Image&nbsp;<em>Acquistion</em> Collaboration</p>
+<p>1.2.A.1. Complete remaining tasks identified by previvous team members, "The
+    GUI above needs an image between the "Calibrate Dist" and "White Level" to
+    push the columns apart."&nbsp;</p>
+<p>1.2.A.2 Integrate our code for Camera Init with COM PORT dialogue box.&nbsp;
+</p>
+<p>1.2.B. Image <em>Processing </em>Collaboration</p>
+<p>1.2.B.1. Make ready widgets/functions from Old GUI</p>
+<p>1.2.B.2. Collaborate with the Image Processing test to incorporate their
+    tested features</p>
+<p>&nbsp;</p>
 <h2 style="text-align: center;">Create New GUI that combines the Image
     Acquisition and Image Processing GUIs</h2>
-<p>This GUI is made from running Python code. This code requires the python
-    environment&nbsp;<a
+<p>This project aims to improve the current workflow employed by Standard
+    Mechanics when conducting experimentation on their Hopkin's Bar Measurement
+    test bench. Currently, Standard Mechanic's test bench requires interfacing
+    with several software suites, such as the control tool, Sapera, xyz, and
+    Leap. Their workflow is constantly interrupted by having to move from one
+    software to another, utilizing a particular function from a software suite
+    and then relying on the next toolset for a specific feature, and so on.
+    Below is a list of software one may interface with during the
+    testing.&nbsp;</p>
+<table
+    style="border-collapse: collapse; width: 67.153%; border-width: 1px; margin-left: auto; margin-right: auto;"
+    border="1">
+    <colgroup>
+        <col style="width: 24.2971%;">
+        <col style="width: 75.7123%;">
+    </colgroup>
+    <tbody>
+        <tr>
+            <td style="border-width: 1px;"><strong>Software&nbsp;</strong></td>
+            <td style="text-align: left; border-width: 1px;">
+                <strong>Purpose</strong></td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">Control Tool</td>
+            <td style="border-width: 1px;">Manufacture software to control JAI
+                Camera</td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">Sapera</td>
+            <td style="border-width: 1px;">Manufacture software used to obtain
+                Camera Imagery</td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">Leap</td>
+            <td style="border-width: 1px;">Custom software developed by
+                Standard Mechanics for custom image processing algorithm</td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<p>A custom GUI containing specific features will be necessary to improve the
+    workflow to minimize interruptions and allow for a one-stop shop interface
+    for the test bench. This GUI is made from running Python code. This code
+    requires the python environment&nbsp;<a
         href="https://github.com/TomSchimansky/CustomTkinter">CustomTkinter</a>
     to be pip installed. This link is to the creator of CustomTkinter's Github
     which contains all of the tutorials and examples you need regarding the
@@ -62,6 +265,82 @@
 </p>
 <p style="text-align: center;"><img title="Image Acquisition"
         src="Current_GUI_2.jpg" width="731" height="133"></p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;">&nbsp;</p>
+<table
+    style="border-collapse: collapse; width: 56.2977%; border-width: 1px; margin-left: auto; margin-right: auto;"
+    border="1">
+    <colgroup>
+        <col style="width: 41.9271%;">
+        <col style="width: 58.1095%;">
+    </colgroup>
+    <tbody>
+        <tr>
+            <td style="text-align: center; border-width: 1px;">Current Camera
+                Configuration workflow</td>
+            <td style="text-align: center; border-width: 1px;">Improved
+                workflow interface</td>
+        </tr>
+        <tr>
+            <td style="border-width: 1px;">
+                <p style="text-align: center;">Control Tool Software&nbsp;</p>
+                <p>1. Configure High Speed Camera COM Port:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="ControlTool_1.png" alt="" width="346"
+                        height="376"></p>
+                <p>&nbsp;</p>
+                <p>2. Configure High Speed Camera COM Specs:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="ControlTool_3.PNG" alt="" width="615"
+                        height="397"></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>3. Configure High Speed Camera Settings:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="ControlTool_2.PNG" alt="" width="624"
+                        height="388"></p>
+            </td>
+            <td style="border-width: 1px; text-align: left;">
+                <p>1. Select COM Port:&nbsp;</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="Example_1.PNG" alt="" width="821" height="164">
+                </p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;2. Select Baudrate:</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="Example_2.PNG" alt="" width="820" height="218">
+                </p>
+                <p>&nbsp;</p>
+                <p><img style="display: block; margin-left: auto; margin-right: auto;"
+                        src="Example_3.PNG" alt="" width="940" height="155">
+                </p>
+                <p>&nbsp;<a
+                        href="https://pythonassets.com/posts/drop-down-list-combobox-in-tk-tkinter/">TKinter
+                        combo box</a> was used to create the drop down
+                    selection menu.</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>3. Configure High Speed Camera Settings:</p>
+                <p><span style="background-color: rgb(45, 194, 107);">(In
+                        working progress)</span></p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h2>&nbsp;</h2>
 <h2>Helpful Tips:</h2>
 <p>GUIs built using tkinter revolves around placing widgets on a grid. Below is
     an example of a grid with widgets (found in this <a
@@ -124,4 +403,106 @@
         </tr>
     </tbody>
 </table>
+<p>&nbsp;</p>
+<h2>Temporary Section - Transition team response (04.11.23) [K. Farrar and M.
+    Nguyen]</h2>
+<p>Note: This new section has been created to stage notes ready for the
+    transition to new team members, Michael Nguyen and Kyler Farrar. Below are
+    the response for the following sprint required for project 2 task.&nbsp;
+</p>
+<p>&nbsp;</p>
+<p><strong>Project 2 task description, provide a detailed plan and posted as
+        prewriting in a readme.cchtml or similar file of the relevant
+        repository in Github, that:</strong></p>
+<p>1. Describes the feature you will add.&nbsp;</p>
+<p>We want to add the following features to this project, categorized and
+    placed two separate bins, Adminstrative and Technical Tasks:</p>
+<p><strong>1.1 Adminstrative Tasks</strong></p>
+<p>1.1.A. Update the ReadMe.cchtml to include: Table of Content hyperlinks,
+    requirement.txt hyperlinks, Leap.py hyperlinks, New_Leap.py hyperlinks, and
+    Workflow statement</p>
+<p>1.1.B. We will include a scope of work section in the pre-writing to
+    identify the customer requirements</p>
+<p>1.1.B.1. Discuss about the task concentrated on the Goal to implement the
+    Image Acquistion feature</p>
+<p>1.1.B.2. Discuss about the task to integrate Camera Init features in the GUI
+</p>
+<p>1.1.C. Modify code to show coorespondance between New GUI (LEAP.py) and Old
+    GUI ( New_GUI_Leap.py)</p>
+<p>1.1.C.1. New GUI compiles and executes without any errors. Old GUI - Leap.py
+    does not compiles and is missing files</p>
+<p>1.1.C.2. Include a copywrite or limited distribution in the comment header
+</p>
+<p><strong>1.2. Technical Tasks</strong></p>
+<p>The technical tasks for this section are categorized as Image <em>Acquistion
+    </em>and Image <em>Processing</em>.&nbsp;</p>
+<p>1.2.A. Image&nbsp;<em>Acquistion</em> Collaboration</p>
+<p>1.2.A.1. Complete remaining tasks identified by previvous team members, "The
+    GUI above needs an image between the "Calibrate Dist" and "White Level" to
+    push the columns apart."&nbsp;</p>
+<p>1.2.A.2 Integrate our code for Camera Init with COM PORT dialogue box.&nbsp;
+</p>
+<p>1.2.B. Image <em>Processing </em>Collaboration</p>
+<p>1.2.B.1. Make ready widgets/functions from Old GUI</p>
+<p>1.2.B.2. Collaborate with the Image Processing test to incorporate their
+    tested features</p>
+<p>&nbsp;</p>
+<p>2. Defines which repository/repositories your code will be added to.</p>
+<p>We will maintain a similar cadence as done for the Initialize Camera
+    Project. We plan to publish our changes within the mpn21 (Michael Nguyen)
+    GitHub account.&nbsp;</p>
+<p>&nbsp;</p>
+<p>3. Specifies what libraries, languages, and interfaces your code must work
+    with.</p>
+<p>The programming language utilized in this project is Python and possibly C#.
+    Python programming language is used to review the old GUI (Leap.py) and
+    design a new GUI for our customer, Standard Mechanics. Moreover, C#
+    interfaces with Sapera frame grabber SDK to acquire camera imagery function
+    calls. As a result, becoming familiar with C# may be required for this
+    project. The libraries involved in this project are tkinter, CustomTkinter,
+    and possibly Sapera SDK. In addition, Requirements.txt contained a list of
+    libraries identified for this project. &nbsp;</p>
+<p>Libraries identified within requirements.txt:</p>
+<pre>contourpy==1.0.7
+customtkinter==5.1.2
+cycler==0.11.0
+darkdetect==0.8.0
+fonttools==4.38.0
+kiwisolver==1.4.4
+matplotlib==3.7.0
+numpy==1.24.2
+opencv-python==4.7.0.68
+packaging==23.0
+pandas==1.5.3
+Pillow==9.4.0
+pyparsing==3.0.9
+python-dateutil==2.8.2
+pytz==2022.7.1
+scipy==1.10.1
+six==1.16.0<br><br></pre>
+<p>4. Details a series of steps you will follow to complete this feature.</p>
+<p>Adminstrative Tasks: For 1.1.A and 1.1.B tasks, the steps to complete are to
+    update the pre-writing file and table of contents hyperlinks. Moreover,
+    task 1.1.C will require meeting with the previous team/customer to
+    understand about image file, such as logo and dialogue boxes for printout
+    statements and function call outlined in the Leap.py/Old GUI.&nbsp;</p>
+<p>Technical Tasks:<strong>&nbsp;</strong>For the 1.2.A task, code must be
+    modified to incorporate the image widget and com port print dialogue box.
+    Moreover, tasks 1.2.B would require updates from the impage processing team
+    via sprint or separate meeting to discuss the inclusion of their
+    features.&nbsp;</p>
+<p>5. Defines tests to show the feature works correctly.</p>
+<p>Adminstrative Tasks: Besides the 1.C.1. task, tests will not be required to
+    verify the features identified in tasks 1.A, 1.B and 1.C because these
+    features can be validated by inspection.&nbsp;&nbsp;</p>
+<p>Technical Tasks: Tasks in 1.2 will require both integration and testing
+    events to ensure that the functionality of the equal or enhance capability
+    as of old GUI features. Scheduling with our customer is a must to ensure
+    that we can deliver/sell off features or release a software.&nbsp;</p>
+<p>6. Outlines goals for the draft pull request and final pull request.</p>
+<p>The goals for the draft pull request is to complete tasks identified in
+    section 1.1 and final pull request is to include work accomplished for
+    section 1.2. &nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
