@@ -25,6 +25,10 @@
             <li><a href="Serial-Communications/README.cchtml">Initialize/confirm
                     certain camera operating values</a>
                 <ol>
+                    <li><a href="Serial-Communications/main.py">Main -
+                            Main.py</a></li>
+                    <li><a href="Serial-Communications/SerialManager.py">Function
+                            file - Serial Manager.py</a></li>
                     <li><a
                             href="Serial-Communications/CameraCommunications.py">Python
                             Code</a></li>
