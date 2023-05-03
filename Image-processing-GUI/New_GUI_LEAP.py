@@ -7,17 +7,12 @@ from ImageAcquisition import ImageAcquisitionManager
 import cv2
 import numpy as np
 from PIL import Image, ImageTk
-import cairo
 
 # <p>Modes: "System" (standard), "Dark", "Light"</p>
 customtkinter.set_appearance_mode("Dark")
 # <p>Themes: can be a color ex: "blue", but also a .json file if available in
 #     the same folder as the program</p>
 customtkinter.set_default_color_theme("Theme.json")
-
-JAISerialHandle = None
-ImageAcquisitionHandle = None
-
 
 class App(customtkinter.CTk):
     # <p>Code that affects the GUI's design are put under def __init__(self)
@@ -26,6 +21,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         self.ImageAcquisitionHandle = ImageAcquisitionManager(self.ImageHandler)
+        
         # <p>Data Members</p>
         self.COMPort = "COM1"
 
@@ -118,8 +114,8 @@ class App(customtkinter.CTk):
         print("sidebar_button click")
 
     def Freeze(self):
-        if (ImageAcquisitionHandle is not None):
-            xfer = ImageAcquisitionHandle.Freeze()
+        if (self.ImageAcquisitionHandle is not None):
+            xfer = self.ImageAcquisitionHandle.Freeze()
             if (xfer is not None and xfer.Grabbing is False):
                 self.SnapButton.configure(state="enabled")
                 self.GrabButton.configure(state="enabled")
@@ -131,8 +127,8 @@ class App(customtkinter.CTk):
     # Calls the Grab function from the ImageAcquisitionHandle class
     # Additionally disables the Snap and Grab buttons and enables the Freeze button to allow the user to freeze the image
     def Grab(self):
-        if (ImageAcquisitionHandle is not None):
-            xfer = ImageAcquisitionHandle.Grab()
+        if (self.ImageAcquisitionHandle is not None):
+            xfer = self.ImageAcquisitionHandle.Grab()
             if (xfer is not None and xfer.Grabbing is True):
                 self.SnapButton.configure(state="disabled")
                 self.GrabButton.configure(state="disabled")

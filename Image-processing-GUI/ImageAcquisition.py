@@ -52,11 +52,9 @@ class ImageAcquisitionManager:
                 self.m_ServerName, self.m_ResourceIndex)
 
             if (SapBuffer.IsBufferTypeSupported(self.m_ServerLocation, SapBuffer.MemoryType.ScatterGather)):
-                self.m_Buffers = SapBufferWithTrash(
-                    2, self.m_Acquisition, SapBuffer.MemoryType.ScatterGather)
+                self.m_Buffers = SapBufferWithTrash(2, self.m_Acquisition, SapBuffer.MemoryType.ScatterGather)
             else:
-                self.m_Buffers = SapBufferWithTrash(
-                    2, self.m_Acquisition, SapBuffer.MemoryType.ScatterGatherPhysical)
+                self.m_Buffers = SapBufferWithTrash(2, self.m_Acquisition, SapBuffer.MemoryType.ScatterGatherPhysical)
 
             self.m_Xfer = SapAcqDeviceToBuf(self.m_Acquisition, self.m_Buffers)
             self.m_View = SapView(self.m_Buffers)
