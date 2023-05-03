@@ -33,7 +33,6 @@
 #     intended to mimic how the grab demo initializes the components. The
 #     variable names and function names are the same in this file and within the
 #     grab demo.&nbsp;</p>
-from asyncio.windows_events import NULL
 import sys
 import clr
 
@@ -81,6 +80,7 @@ m_Xfer = SapAcqToBuf(m_Acquisition, m_Buffers)
 m_View = SapView()
 m_IsSignalDetected = True
 m_ServerLocation = SapLocation()
+m_isOpen = False
          
 
 # <p>AcqConfigDlg() is a function within the grab demo. It needs to be
@@ -122,6 +122,44 @@ print(m_online)
 num_servers = SapManager.GetServerCount(SapManager.ResourceType.Acq)
 print(num_servers)
 
+# <p>This function, <a
+#         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#DestroyObjects">DestroyObjects()</a>,
+#     closes all connections and can be found within the grab demo. It is used
+#     in several different locations within the grab demo to end all
+#     connections. This was added in during our testing on Dr. Leonard's
+#     equipment. Without this function called at the end of the script/ closing
+#     of the GUI / anytime the connections need to be changed, the connections
+#     will remain &amp; the script will fail to run again due to the connections
+#     being in use already.&nbsp;</p>
+def DestroyObjects():
+    if (m_Xfer is not None and m_Xfer.Initialized):
+        m_Xfer.Destroy()
+    if (m_View is not None and m_View.Initialized):
+        m_View.Destroy()
+    if (m_Buffers is not None and m_Buffers.Initialized):
+        m_Buffers.Destroy()
+    if (m_Acquisition is not None and m_Acquisition.Initialized):
+        m_Acquisition.Destroy()
+DestroyObjects()
+
+
+# <p>DisposeObjects() is supposed to be called when any of the objects fail to
+#     create and in the same locations where the connections are closed with
+#     DestroyObjects().</p>
+def DisposeObjects():
+    if (m_Xfer is not None):
+        m_Xfer.Dispose()
+        m_Xfer = None
+    if (m_View is not None):
+        m_View.Dispose()
+        m_View = None
+    if (m_Buffers is not None):
+        m_Buffers.Dispose()
+        m_Buffers = None
+    if (m_Acquisition is not None):
+        m_Acquisition.Dispose()
+        m_Acquisition = None
+DisposeObjects()
    
 # <p>Create and Destroy Object</p>
 # <p>&nbsp;-----------------------------</p>
@@ -175,9 +213,9 @@ def CreateNewObjects(acConfigDlg, Restore):
         m_Buffers = SapBuffer()
         m_View = SapView(m_Buffers)
 
-    if (not(CreateObjects())):
-        DisposeObjects();
-        return False;
+    if (not CreateObjects()):
+        DisposeObjects()
+        return False
       
         
    # <p>EnableSignalStatsu() not been tested to run under this function.
@@ -195,8 +233,8 @@ def CreateNewObjects(acConfigDlg, Restore):
     #     DisposeObjects() can be called at the proper time on failure.&nbsp;
     # </p>
 def CreateObjects():    
-    if (m_Acquisition != None and not m_Acquisition.Initialized):
-        if (m_Acquisition.Create() == False):
+    if (m_Acquisition is not None and not m_Acquisition.Initialized):
+        if (not m_Acquisition.Create()):
             # <p><span style="background-color: rgb(248, 202, 198);">NOT
             #         TESTED</span>, but I went back to see when
             #     DestoryObjects() was called after meeting with Dr. Leonard
@@ -209,7 +247,7 @@ def CreateObjects():
         else:
             print("m_Acquisition create success")
     
-    if (m_Buffers != None and not m_Buffers.Initialized):
+    if (m_Buffers is not None and not m_Buffers.Initialized):
         if (m_Buffers.Create() == False):
             DestroyObjects()
             print("m_Buffers create failed")
@@ -217,7 +255,7 @@ def CreateObjects():
         else:
             print("m_Buffers create success")
     
-    if (m_View != None and not m_View.Initialized):
+    if (m_View is not None and not m_View.Initialized):
         if (m_View.Create() == False):
             DestroyObjects()
             print("m_View create failed")
@@ -225,7 +263,7 @@ def CreateObjects():
         else:
             print("m_View create success")
     
-    if (m_Xfer != None and not m_Xfer.Initialized):
+    if (m_Xfer is not None and not m_Xfer.Initialized):
         if (m_Xfer.Create() == False):
             DestroyObjects()
             print("m_Xfer create failed")
@@ -266,45 +304,6 @@ def EnableSignalStatus():
 # <p>Here is where EnableSignalStatus() was originally called and was tested to
 #     be working</p>
 #EnableSignalStatus()
-
-# <p>This function, <a
-#         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#DestroyObjects">DestroyObjects()</a>,
-#     closes all connections and can be found within the grab demo. It is used
-#     in several different locations within the grab demo to end all
-#     connections. This was added in during our testing on Dr. Leonard's
-#     equipment. Without this function called at the end of the script/ closing
-#     of the GUI / anytime the connections need to be changed, the connections
-#     will remain &amp; the script will fail to run again due to the connections
-#     being in use already.&nbsp;</p>
-def DestroyObjects():
-    if (m_Xfer != None and m_Xfer.Initialized):
-        m_Xfer.Destroy()
-    if (m_View != None and m_View.Initialized):
-        m_View.Destroy()
-    if (m_Buffers != None and m_Buffers.Initialized):
-        m_Buffers.Destroy()
-    if (m_Acquisition != None and m_Acquisition.Initialized):
-        m_Acquisition.Destroy()
-DestroyObjects()
-
-
-# <p>DisposeObjects() is supposed to be called when any of the objects fail to
-#     create and in the same locations where the connections are closed with
-#     DestroyObjects().</p>
-def DisposeObjects():
-    if (m_Xfer != None):
-        m_Xfer.Dispose()
-        m_Xfer = None
-    if (m_View != None):
-        m_View.Dispose()
-        m_View = None
-    if (m_Buffers != None):
-        m_Buffers.Dispose()
-        m_Buffers = None
-    if (m_Acquisition != None):
-        m_Acquisition.Dispose()
-        m_Acquisition = None
-DisposeObjects()
 
 
 # <p>File Control</p>
