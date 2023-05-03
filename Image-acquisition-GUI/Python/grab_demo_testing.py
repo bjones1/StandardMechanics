@@ -83,6 +83,45 @@ m_ServerLocation = SapLocation()
 m_isOpen = False
          
 
+# <p>This function, <a
+#         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#DestroyObjects">DestroyObjects()</a>,
+#     closes all connections and can be found within the grab demo. It is used
+#     in several different locations within the grab demo to end all
+#     connections. This was added in during our testing on Dr. Leonard's
+#     equipment. Without this function called at the end of the script/ closing
+#     of the GUI / anytime the connections need to be changed, the connections
+#     will remain &amp; the script will fail to run again due to the connections
+#     being in use already.&nbsp;</p>
+def DestroyObjects():
+    if m_Xfer is not None and m_Xfer.Initialized:
+        m_Xfer.Destroy()
+    if m_View is not None and m_View.Initialized:
+        m_View.Destroy()
+    if m_Buffers is not None and m_Buffers.Initialized:
+        m_Buffers.Destroy()
+    if m_Acquisition is not None and m_Acquisition.Initialized:
+        m_Acquisition.Destroy()
+DestroyObjects()
+
+
+# <p>DisposeObjects() is supposed to be called when any of the objects fail to
+#     create and in the same locations where the connections are closed with
+#     DestroyObjects().</p>
+def DisposeObjects():
+    if m_Xfer is not None:
+        m_Xfer.Dispose()
+        m_Xfer = None
+    if m_View is not None:
+        m_View.Dispose()
+        m_View = None
+    if m_Buffers is not None:
+        m_Buffers.Dispose()
+        m_Buffers = None
+    if m_Acquisition is not None:
+        m_Acquisition.Dispose()
+        m_Acquisition = None
+DisposeObjects()
+
 # <p>AcqConfigDlg() is a function within the grab demo. It needs to be
 #     determined if this function is fine as is called directly from the grab
 #     functions dll, needs to be ported over to python, or for the values to be
@@ -113,7 +152,7 @@ dialog_result = acConfigDlg.ShowDialog()
 print(dialog_result)
 # <p>Set m_online based on if the Dialog populated correctly. This should work
 #     if the Sapera server exists</p>
-if (dialog_result == DialogResult.OK):
+if dialog_result == DialogResult.OK:
     m_online = True
 else:
     m_online = False
@@ -132,13 +171,13 @@ print(num_servers)
 #     will remain &amp; the script will fail to run again due to the connections
 #     being in use already.&nbsp;</p>
 def DestroyObjects():
-    if (m_Xfer is not None and m_Xfer.Initialized):
+    if m_Xfer is not None and m_Xfer.Initialized:
         m_Xfer.Destroy()
-    if (m_View is not None and m_View.Initialized):
+    if m_View is not None and m_View.Initialized:
         m_View.Destroy()
-    if (m_Buffers is not None and m_Buffers.Initialized):
+    if m_Buffers is not None and m_Buffers.Initialized:
         m_Buffers.Destroy()
-    if (m_Acquisition is not None and m_Acquisition.Initialized):
+    if m_Acquisition is not None and m_Acquisition.Initialized:
         m_Acquisition.Destroy()
 DestroyObjects()
 
@@ -147,16 +186,16 @@ DestroyObjects()
 #     create and in the same locations where the connections are closed with
 #     DestroyObjects().</p>
 def DisposeObjects():
-    if (m_Xfer is not None):
+    if m_Xfer is not None:
         m_Xfer.Dispose()
         m_Xfer = None
-    if (m_View is not None):
+    if m_View is not None:
         m_View.Dispose()
         m_View = None
-    if (m_Buffers is not None):
+    if m_Buffers is not None:
         m_Buffers.Dispose()
         m_Buffers = None
-    if (m_Acquisition is not None):
+    if m_Acquisition is not None:
         m_Acquisition.Dispose()
         m_Acquisition = None
 DisposeObjects()
@@ -178,8 +217,8 @@ def CreateNewObjects(acConfigDlg, Restore):
     global m_View
     global m_ServerLocation
 
-    if (m_online):
-        if (not Restore):
+    if m_online:
+        if not Restore:
             m_ServerLocation = acConfigDlg.ServerLocation
             m_ConfigFileName = acConfigDlg.ConfigFile
         
@@ -187,7 +226,7 @@ def CreateNewObjects(acConfigDlg, Restore):
         print(m_ServerLocation)
         print(m_ConfigFileName)
 
-        if (SapBuffer.IsBufferTypeSupported(m_ServerLocation, SapBuffer.MemoryType.ScatterGather)):
+        if SapBuffer.IsBufferTypeSupported(m_ServerLocation, SapBuffer.MemoryType.ScatterGather):
             m_Buffers = SapBufferWithTrash(2, m_Acquisition, SapBuffer.MemoryType.ScatterGather)
             print(1)
         else:
@@ -213,7 +252,7 @@ def CreateNewObjects(acConfigDlg, Restore):
         m_Buffers = SapBuffer()
         m_View = SapView(m_Buffers)
 
-    if (not CreateObjects()):
+    if not CreateObjects():
         DisposeObjects()
         return False
       
@@ -233,8 +272,8 @@ def CreateNewObjects(acConfigDlg, Restore):
     #     DisposeObjects() can be called at the proper time on failure.&nbsp;
     # </p>
 def CreateObjects():    
-    if (m_Acquisition is not None and not m_Acquisition.Initialized):
-        if (not m_Acquisition.Create()):
+    if m_Acquisition is not None and not m_Acquisition.Initialized:
+        if not m_Acquisition.Create():
             # <p><span style="background-color: rgb(248, 202, 198);">NOT
             #         TESTED</span>, but I went back to see when
             #     DestoryObjects() was called after meeting with Dr. Leonard
@@ -247,16 +286,16 @@ def CreateObjects():
         else:
             print("m_Acquisition create success")
     
-    if (m_Buffers is not None and not m_Buffers.Initialized):
-        if (m_Buffers.Create() == False):
+    if m_Buffers is not None and not m_Buffers.Initialized:
+        if m_Buffers.Create() == False:
             DestroyObjects()
             print("m_Buffers create failed")
             return False
         else:
-            print("m_Buffers create success")
-    
-    if (m_View is not None and not m_View.Initialized):
-        if (m_View.Create() == False):
+            print("m_Buffers create success"):
+   
+    if (m_View is not None and not m_View.Initialized:
+        if m_View.Create() == False
             DestroyObjects()
             print("m_View create failed")
             return False
@@ -264,7 +303,7 @@ def CreateObjects():
             print("m_View create success")
     
     if (m_Xfer is not None and not m_Xfer.Initialized):
-        if (m_Xfer.Create() == False):
+        if m_Xfer.Create() == False:
             DestroyObjects()
             print("m_Xfer create failed")
             return False
@@ -292,11 +331,11 @@ CreateNewObjects(acConfigDlg, False)
 #         EnableSignalStatus()</a>, is called from the first CreateNewObjects()
 #     function within the grab demo.</p>
 def EnableSignalStatus():
-    if (m_Acquisition != None):
+    if m_Acquisition != None:
         print(m_Acquisition.SignalStatus)
         print(SapAcquisition.AcqSignalStatus(0))
         m_IsSignalDetected = (m_Acquisition.SignalStatus != (SapAcquisition.AcqSignalStatus(0)))
-        if (not m_IsSignalDetected):
+        if not m_IsSignalDetected:
             print("Online... No camera signal detected")
         else:
             print("Online... camera signal detected")
@@ -310,7 +349,7 @@ def EnableSignalStatus():
 # <p>-----------------------------</p>
 # <p>Initialize() of the LoadSaveDlg.cs is needed ot get m_FileDialog.Filename
 # </p>
-if (m_isOpen):
+if m_isOpen:
          
       m_FileDialog = OpenFileDialog();
       m_FileDialog.Title = "Loading a file..."  
@@ -357,13 +396,13 @@ def Save_Image():
 def button_Grab_Click(sender, e):
 
     StatusLabelInfoTrash.Text = ""
-    if (m_Xfer.Grab()):
+    if m_Xfer.Grab():
         UpdateControls()
 
 def button_Freeze_Click(sender,e):
     abort = AbortDlg(m_Xfer)
-    if (m_Xfer.Freeze()):
-        if (abort.ShowDialog() != DialogResult.OK):
+    if m_Xfer.Freeze():
+        if abort.ShowDialog() != DialogResult.OK:
             m_Xfer.Abort()
         UpdateControls()
      
