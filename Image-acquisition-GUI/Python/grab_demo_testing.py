@@ -287,15 +287,15 @@ def CreateObjects():
             print("m_Acquisition create success")
     
     if m_Buffers is not None and not m_Buffers.Initialized:
-        if m_Buffers.Create() == False:
+        if not m_Buffers.Create():
             DestroyObjects()
             print("m_Buffers create failed")
             return False
         else:
-            print("m_Buffers create success"):
+            print("m_Buffers create success")
    
-    if (m_View is not None and not m_View.Initialized:
-        if m_View.Create() == False
+    if m_View is not None and not m_View.Initialized:
+        if not m_View.Create():
             DestroyObjects()
             print("m_View create failed")
             return False
@@ -303,7 +303,7 @@ def CreateObjects():
             print("m_View create success")
     
     if (m_Xfer is not None and not m_Xfer.Initialized):
-        if m_Xfer.Create() == False:
+        if not m_Xfer.Create():
             DestroyObjects()
             print("m_Xfer create failed")
             return False
@@ -331,7 +331,7 @@ CreateNewObjects(acConfigDlg, False)
 #         EnableSignalStatus()</a>, is called from the first CreateNewObjects()
 #     function within the grab demo.</p>
 def EnableSignalStatus():
-    if m_Acquisition != None:
+    if m_Acquisition is not None:
         print(m_Acquisition.SignalStatus)
         print(SapAcquisition.AcqSignalStatus(0))
         m_IsSignalDetected = (m_Acquisition.SignalStatus != (SapAcquisition.AcqSignalStatus(0)))
