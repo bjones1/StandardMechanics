@@ -23,8 +23,8 @@
 #     everything is installed, activate your Python environment, and run this
 #     script.</p>
 # <p><span style="font-size: 12pt; font-family: Calibri, sans-serif;">For the
-#         line images, only use .bmp images. The .jpeg images are simply for the
-#         GUI (Standard Mechanics Logo).</span></p>
+#         line images, only use .bmp images. The .jpeg images are for the GUI
+#         (Standard Mechanics Logo).</span></p>
 # <p>&nbsp;</p>
 # <p>&nbsp;</p>
 # <h2>Current Implementation:</h2>
@@ -80,6 +80,47 @@ m_Xfer = SapAcqToBuf(m_Acquisition, m_Buffers)
 m_View = SapView()
 m_IsSignalDetected = True
 m_ServerLocation = SapLocation()
+m_isOpen = False
+         
+
+# <p>This function, <a
+#         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#DestroyObjects">DestroyObjects()</a>,
+#     closes all connections and can be found within the grab demo. It is used
+#     in several different locations within the grab demo to end all
+#     connections. This was added in during our testing on Dr. Leonard's
+#     equipment. Without this function called at the end of the script/ closing
+#     of the GUI / anytime the connections need to be changed, the connections
+#     will remain &amp; the script will fail to run again due to the connections
+#     being in use already.&nbsp;</p>
+def DestroyObjects():
+    if m_Xfer is not None and m_Xfer.Initialized:
+        m_Xfer.Destroy()
+    if m_View is not None and m_View.Initialized:
+        m_View.Destroy()
+    if m_Buffers is not None and m_Buffers.Initialized:
+        m_Buffers.Destroy()
+    if m_Acquisition is not None and m_Acquisition.Initialized:
+        m_Acquisition.Destroy()
+DestroyObjects()
+
+
+# <p>DisposeObjects() is supposed to be called when any of the objects fail to
+#     create and in the same locations where the connections are closed with
+#     DestroyObjects().</p>
+def DisposeObjects():
+    if m_Xfer is not None:
+        m_Xfer.Dispose()
+        m_Xfer = None
+    if m_View is not None:
+        m_View.Dispose()
+        m_View = None
+    if m_Buffers is not None:
+        m_Buffers.Dispose()
+        m_Buffers = None
+    if m_Acquisition is not None:
+        m_Acquisition.Dispose()
+        m_Acquisition = None
+DisposeObjects()
 
 # <p>AcqConfigDlg() is a function within the grab demo. It needs to be
 #     determined if this function is fine as is called directly from the grab
@@ -111,7 +152,7 @@ dialog_result = acConfigDlg.ShowDialog()
 print(dialog_result)
 # <p>Set m_online based on if the Dialog populated correctly. This should work
 #     if the Sapera server exists</p>
-if (dialog_result == DialogResult.OK):
+if dialog_result == DialogResult.OK:
     m_online = True
 else:
     m_online = False
@@ -120,7 +161,47 @@ print(m_online)
 num_servers = SapManager.GetServerCount(SapManager.ResourceType.Acq)
 print(num_servers)
 
-# <p>Create and Destroy Object -----------------------------</p>
+# <p>This function, <a
+#         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#DestroyObjects">DestroyObjects()</a>,
+#     closes all connections and can be found within the grab demo. It is used
+#     in several different locations within the grab demo to end all
+#     connections. This was added in during our testing on Dr. Leonard's
+#     equipment. Without this function called at the end of the script/ closing
+#     of the GUI / anytime the connections need to be changed, the connections
+#     will remain &amp; the script will fail to run again due to the connections
+#     being in use already.&nbsp;</p>
+def DestroyObjects():
+    if m_Xfer is not None and m_Xfer.Initialized:
+        m_Xfer.Destroy()
+    if m_View is not None and m_View.Initialized:
+        m_View.Destroy()
+    if m_Buffers is not None and m_Buffers.Initialized:
+        m_Buffers.Destroy()
+    if m_Acquisition is not None and m_Acquisition.Initialized:
+        m_Acquisition.Destroy()
+DestroyObjects()
+
+
+# <p>DisposeObjects() is supposed to be called when any of the objects fail to
+#     create and in the same locations where the connections are closed with
+#     DestroyObjects().</p>
+def DisposeObjects():
+    if m_Xfer is not None:
+        m_Xfer.Dispose()
+        m_Xfer = None
+    if m_View is not None:
+        m_View.Dispose()
+        m_View = None
+    if m_Buffers is not None:
+        m_Buffers.Dispose()
+        m_Buffers = None
+    if m_Acquisition is not None:
+        m_Acquisition.Dispose()
+        m_Acquisition = None
+DisposeObjects()
+   
+# <p>Create and Destroy Object</p>
+# <p>&nbsp;-----------------------------</p>
 
 # <p>GrabDemoDlg() calls a function named <a
 #         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#CreateNewObjects1">CreateNewObjects()</a>.
@@ -135,9 +216,9 @@ def CreateNewObjects(acConfigDlg, Restore):
     global m_Xfer
     global m_View
     global m_ServerLocation
-    
-    if (m_online):
-        if (not Restore):
+
+    if m_online:
+        if not Restore:
             m_ServerLocation = acConfigDlg.ServerLocation
             m_ConfigFileName = acConfigDlg.ConfigFile
         
@@ -145,7 +226,7 @@ def CreateNewObjects(acConfigDlg, Restore):
         print(m_ServerLocation)
         print(m_ConfigFileName)
 
-        if (SapBuffer.IsBufferTypeSupported(m_ServerLocation, SapBuffer.MemoryType.ScatterGather)):
+        if SapBuffer.IsBufferTypeSupported(m_ServerLocation, SapBuffer.MemoryType.ScatterGather):
             m_Buffers = SapBufferWithTrash(2, m_Acquisition, SapBuffer.MemoryType.ScatterGather)
             print(1)
         else:
@@ -163,7 +244,7 @@ def CreateNewObjects(acConfigDlg, Restore):
         #     what needs to be added here.</p>
         #m_Xfer.XferNotify += SapXferNotifyHandler(grabDemo.xfer_XferNotify)
         #m_Xfer.XferNotifyContext = grabDemo
-        
+
 
         #m_Acquisition.SignalNotify += SapSignalNotifyHandler(grabDemo.GetSignalStatus)
         #m_Acquisition.SignalNotifyContext = grabDemo
@@ -171,48 +252,64 @@ def CreateNewObjects(acConfigDlg, Restore):
         m_Buffers = SapBuffer()
         m_View = SapView(m_Buffers)
 
+    if not CreateObjects():
+        DisposeObjects()
+        return False
+      
+        
+   # <p>EnableSignalStatsu() not been tested to run under this function.
+   #     Originally placed outside of function, thus being under main.</p>
+    EnableSignalStatus()
+    return True
+    
     # <p>Within the first CreateNewObjects() function it calls a <a
     #         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#CreateNewObjects2">CreateObjects()</a>
     #     function. There are a couple of CreateNewObjects() functions within
     #     the grab demo due to function overloading. This is the start of the
     #     next function and where the errors occur.</p>
-    # <p>This section may need to be split into a separate function similar to
-    #     how it is within the grab demo to handle failure returns and so
+    # <p>CreateObjects() and CreateNewObjects() are separate, similar to how it
+    #     is within the grab demo to handle failure returns and so
     #     DisposeObjects() can be called at the proper time on failure.&nbsp;
     # </p>
-    if (m_Acquisition != None and not m_Acquisition.Initialized):
-        if (m_Acquisition.Create() == False):
+def CreateObjects():    
+    if m_Acquisition is not None and not m_Acquisition.Initialized:
+        if not m_Acquisition.Create():
             # <p><span style="background-color: rgb(248, 202, 198);">NOT
             #         TESTED</span>, but I went back to see when
             #     DestoryObjects() was called after meeting with Dr. Leonard
             #     &amp; it needs to be called here if create fails and in
             #     several other locations. Also needs to be called if any of the
             #     following creates fail as well.</p>
+            DestroyObjects()
             print("m_Acquisition create failed")
+            return False
         else:
             print("m_Acquisition create success")
     
-    if (m_Buffers != None and not m_Buffers.Initialized):
-        if (m_Buffers.Create() == False):
-            #DestoryObjects()
+    if m_Buffers is not None and not m_Buffers.Initialized:
+        if not m_Buffers.Create():
+            DestroyObjects()
             print("m_Buffers create failed")
+            return False
         else:
             print("m_Buffers create success")
-    
-    if (m_View != None and not m_View.Initialized):
-        if (m_View.Create() == False):
-            #DestoryObjects()
+   
+    if m_View is not None and not m_View.Initialized:
+        if not m_View.Create():
+            DestroyObjects()
             print("m_View create failed")
+            return False
         else:
             print("m_View create success")
     
-    if (m_Xfer != None and not m_Xfer.Initialized):
-        if (m_Xfer.Create() == False):
-            #DestoryObjects()
+    if (m_Xfer is not None and not m_Xfer.Initialized):
+        if not m_Xfer.Create():
+            DestroyObjects()
             print("m_Xfer create failed")
-            DestoryObjects()
+            return False
         else:
             print("m_Xfer create success")
+    return True
     
     # <p>Attempt to use the Grab function from SapTransfer(). This should be
     #     successful if m_Xfer can create successfully. It needs a server
@@ -234,45 +331,82 @@ CreateNewObjects(acConfigDlg, False)
 #         EnableSignalStatus()</a>, is called from the first CreateNewObjects()
 #     function within the grab demo.</p>
 def EnableSignalStatus():
-    if (m_Acquisition != None):
+    if m_Acquisition is not None:
         print(m_Acquisition.SignalStatus)
         print(SapAcquisition.AcqSignalStatus(0))
         m_IsSignalDetected = (m_Acquisition.SignalStatus != (SapAcquisition.AcqSignalStatus(0)))
-        if (not m_IsSignalDetected):
+        if not m_IsSignalDetected:
             print("Online... No camera signal detected")
         else:
             print("Online... camera signal detected")
         m_Acquisition.SignalNotifyEnable = True
+# <p>Here is where EnableSignalStatus() was originally called and was tested to
+#     be working</p>
+#EnableSignalStatus()
 
-EnableSignalStatus()
 
-# <p>This function, <a
-#         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#DestroyObjects">DestroyObjects()</a>,
-#     closes all connections and can be found within the grab demo. It is used
-#     in several different locations within the grab demo to end all
-#     connections. This was added in during our testing on Dr. Leonard's
-#     equipment. Without this function called at the end of the script/ closing
-#     of the GUI / anytime the connections need to be changed, the connections
-#     will remain &amp; the script will fail to run again due to the connections
-#     being in use already.&nbsp;</p>
-def DestroyObjects():
-    if (m_Xfer != None and m_Xfer.Initialized):
-        m_Xfer.Destroy()
-    if (m_View != None and m_View.Initialized):
-        m_View.Destroy()
-    if (m_Buffers != None and m_Buffers.Initialized):
-        m_Buffers.Destroy()
-    if (m_Acquisition != None and m_Acquisition.Initialized):
-        m_Acquisition.Destroy()
-DestroyObjects()
+# <p>File Control</p>
+# <p>-----------------------------</p>
+# <p>Initialize() of the LoadSaveDlg.cs is needed ot get m_FileDialog.Filename
+# </p>
+if m_isOpen:
+         
+      m_FileDialog = OpenFileDialog();
+      m_FileDialog.Title = "Loading a file..."  
+else:
+   
+      m_FileDialog = SaveFileDialog()
+      m_FileDialog.Title = "Saving a file..."
 
-# <p>I would assume <a
-#         href="../Sapera-Demos/Net/GrabDemo/CSharp/GrabDemoDlg.cs#DisposeObjects">DisposeObjects()</a>,
-#     not yet implemented in this script <span
-#         style="background-color: rgb(248, 202, 198);">(TODO)</span>, is
-#     similar to DestroyObjects(). DisposeObjects() is supposed to be called
-#     when any of the objects fail to create and in the same locations where the
-#     connections are closed with DestroyObjects().&nbsp;</p>
+
+def button_New_Click(sender, e):
+    m_Buffers.Clear()
+
+
+# <p>Under button_Load_Click and button_Save_Click, the commented-out code
+#     should work if you uncomment it. However, these imitate GUI functions and
+#     will take functions based on the CSharp code entirely, so it may cause
+#     problems such as the problems stated above such as the old GUI appearing.
+#     These were left here as reference to how the button should work overall.
+#     The GUI functions should call Load_Image() and Save_Image() instead.</p>
+
+#def button_Load_Click(sender, e):
+    #newDialogLoad = LoadSaveDlg(m_Buffers, True, False)
+    #newDialogLoad.ShowDialog()
+    #newDialogSave.Dispose();
+
+#def button_Save_Click(sender, e):
+     #newDialogSave = LoadSaveDlg(m_Buffers, False, False)
+     #newDialogSave.ShowDialog()
+     #newDialogSave.Dispose();
+
+def Load_Image():
+    global m_isOpen
+    m_isOpen = True
+    m_Buffers.Load(m_FileDialog.FileName, 0)
+
+def Save_Image():
+    global m_isOpen
+    m_isOpen = False
+    m_Buffers.Save(m_FileDialog.FileName, "-format .bmp")
+
+
+# <p>Acquisition Control</p>
+# <p>&nbsp;-----------------------------</p>
+def button_Grab_Click(sender, e):
+
+    StatusLabelInfoTrash.Text = ""
+    if m_Xfer.Grab():
+        UpdateControls()
+
+def button_Freeze_Click(sender,e):
+    abort = AbortDlg(m_Xfer)
+    if m_Xfer.Freeze():
+        if abort.ShowDialog() != DialogResult.OK:
+            m_Xfer.Abort()
+        UpdateControls()
+     
+
 # <h2>Notes:</h2>
 # <p><span style="background-color: rgb(251, 238, 184);">As of 2023-04-07, we've
 #         run the above code on Dr. Leonard's hardware, and confirmed that it
@@ -291,8 +425,24 @@ DestroyObjects()
 #     library of the demos.</p>
 # <p>Creating the Linescan option seems to require writing a C# dialogue for
 #     that</p>
-# <p>&nbsp;</p>
+# <p>We have understood that we need to look and filter out certain functions
+#     within the LoadSaveDlg.cs, which contains classes used by GrabDemoDlg.cs
+#     to make the file controls for the GUI. We need to look further into the
+#     SAP buffer grasp our understanding of how we can port over these certain
+#     functions to python.</p>
+# <p>We learned that it is best to look at the Sapera.NET.pdf document (under
+#     the repository StandardMechanics\datasheets) to find the Sapera functions
+#     that you need to call directly in the python code. As said above, some
+#     functions need to be updated this way so that errors are fixed, and parts
+#     of the C# GUI do not appear when the code is run. When looking through the
+#     C# GrabDemo code, it is probably best to open the GrabDemoDlg.cs code in
+#     the project so that you can easily follow the functions called from
+#     separate files, like LoadSaveDlg.cs.&nbsp;</p>
 # <h2><strong>Next Steps:</strong>&nbsp;</h2>
+# <p><span style="background-color: rgb(251, 238, 184);">As of 2023-04-27, some
+#         changes are listed below in <strong>bold</strong>, but the request of
+#         the change are left below as these changes have not been tested
+#         yet.&nbsp;</span></p>
 # <ul>
 #     <li>Look into porting AcqConfigDlg() into Python with the config file
 #         provided by Dr. Leonard automatically used.</li>
@@ -304,7 +454,9 @@ DestroyObjects()
 #         of the functions need to be moved around &amp; called from different
 #         locations such as the EnableSignalStatus() function should be called
 #         from within the CreateNewObjects() function, but is currently just
-#         called from the main section.&nbsp;</li>
+#         called from the main section. <strong>Update:</strong>
+#         <strong>EnableSignalStatus() was moved to be under the
+#             CreateNewObjects() function.</strong></li>
 #     <li>Implement error handling for failures. This should just be simple
 #         calls to DestoryObjects() and DisposeObjects() mostly. The
 #         CreateNewObjects() function should return a boolean value depending on
@@ -315,9 +467,12 @@ DestroyObjects()
 #         within this script so that it can properly handle failures and know
 #         when to call DisposeObjects(). This will follow how it is currently
 #         already implemented within the C# grab demo so you should be able to
-#         just follow how it is implemented there.&nbsp;</li>
+#         just follow how it is implemented there. <strong>Update: these
+#             functions are now separated in this code</strong></li>
 #     <li>Implement functions for button presses, and ensure that these can be
-#         directly called from the new GUI.</li>
+#         directly called from the new GUI. <strong>Update: Load and Save
+#             functions have been added, but should be called using GUI
+#             functions that do not originate from the C# code</strong></li>
 #     <li>Look further into how to implement the select/deselect trigger
 #         function within the Line Scan Modal. As Dr. Leonard said, this is the
 #         only function he uses within this modal. This function is not within
@@ -325,51 +480,3 @@ DestroyObjects()
 #         implementation of the Grab Demo.&nbsp;</li>
 # </ul>
 
-
-# <p>File Control -----------------------------</p>
-
-# <p>We had looked at both the Grabdemo dialog file and the loadsave dialog file
-#     and We have understood that we need to look and filter out certain
-#     functions within the loadsave dialog to make the file controls for the gui
-#     Also the loadsave dialog will allow us to use various format files of
-#     pictures and will make sure to only use the necessary ones But we need to
-#     Look further into the SAP buffer grasp our understanding of how we can
-#     port over these certain functions to python</p>
-# <p>We learned that it is best to look at the Sapera.NET.pdf document to find
-#     the Sapera functions that you need to call directly in the python code. As
-#     said above, some functions need to be updated this way so that errors are
-#     fixed, and parts of the C# GUI do not appear when the code is run. When
-#     looking through the C# GrabDemo code, it is probably best to open the
-#     GrabDemoDlg.cs code in the project so that you can easily follow the
-#     functions called from separate files, like LoadSaveDlg.cs.&nbsp;</p>
-# <p>&nbsp;</p>
-def button_New_Click(sender, e):
-    m_Buffers.Clear()
-
-
-def button_Load_Click(sender, e):
-    #newDialogLoad = LoadSaveDlg(m_Buffers, True, False)
-    #newDialogLoad.ShowDialog()
-    m_Buffers.Load(m_FileDialog.FileName, 0)
-
-
-def button_Save_Click(sender, e):
-     #newDialogSave = LoadSaveDlg(m_Buffers, False, False)
-     #newDialogSave.ShowDialog()
-    m_Buffers.Save(m_FileDialog.FileName, "-format .bmp")
-
-# <p>Acquisition Control -----------------------------</p>
-def button_Grab_Click(sender, e):
-
-    StatusLabelInfoTrash.Text = ""
-    if (m_Xfer.Grab()):
-        UpdateControls()
-
-def button_Freeze_Click(sender,e):
-    abort = AbortDlg(m_Xfer)
-    if (m_Xfer.Freeze()):
-        if (abort.ShowDialog() != DialogResult.OK):
-            m_Xfer.Abort()
-        UpdateControls()
-     
-    
